@@ -72,7 +72,7 @@
       name="ticket_system"
       select="ancestor::c:release/@ticket-system" />
     <xt:value-of
-      select="concat(' (Ticket ', id($ticket_system)/c:ticket-url, '/', ., ')')" />
+      select="concat(' (Ticket ', id($ticket_system)/c:ticket-url, ., ')')" />
   </xt:template>
 
   <xt:template
