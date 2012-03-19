@@ -79,7 +79,7 @@
     <xt:value-of select="' (ticket '" />
     <sp:link-ext>
       <xt:attribute name="target">
-        <xt:value-of select="concat(id($ticket_system)/c:ticket-url,'/',.)" />
+        <xt:value-of select="concat(id($ticket_system)/c:ticket-url,.)" />
       </xt:attribute>
       <xt:value-of select="." />
     </sp:link-ext>
