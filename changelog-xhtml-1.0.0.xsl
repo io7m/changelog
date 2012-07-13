@@ -29,7 +29,7 @@
     method="xml"
     encoding="UTF-8"
     indent="yes"
-    omit-xml-declaration="no" />
+    omit-xml-declaration="yes" />
 
   <xt:template
     match="c:date"
@@ -121,7 +121,7 @@
   <xt:template
     match="c:changelog"
     mode="io7m.changelog.primitives">
-    <table class="software_releases page_table" summary="Changes">
+    <table class="changelog page_table" summary="Changes">
       <xt:apply-templates select="c:release" mode="io7m.changelog.primitives" />
     </table>
   </xt:template>
