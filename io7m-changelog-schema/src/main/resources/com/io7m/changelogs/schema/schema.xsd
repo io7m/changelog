@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright © 2014 http://io7m.com
+  
+  Permission to use, copy, modify, and/or distribute this software for any
+  purpose with or without fee is hereby granted, provided that the above
+  copyright notice and this permission notice appear in all copies.
+  
+  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://schemas.io7m.com/changelog/2.0.0" xmlns:c="http://schemas.io7m.com/changelog/2.0.0">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
+  <!-- A summary of a particular change. -->
+  <xs:element name="summary" type="xs:token"/>
+  <!-- A date of a release or change. -->
+  <xs:element name="date" type="xs:date"/>
+  <!-- A ticket that a particular changelog item affects. -->
+  <xs:element name="ticket" type="xs:token"/>
+  <!-- The type of backwards-compatible code additions -->
+  <xs:element name="type-code-new">
+    <xs:complexType/>
+  </xs:element>
+  <!-- The type of backwards-compatible code fixes -->
+  <xs:element name="type-code-fix">
+    <xs:complexType/>
+  </xs:element>
+  <!-- The type of backwards-incompatible code changes -->
+  <xs:element name="type-code-change">
+    <xs:complexType/>
+  </xs:element>
+  <!-- A change with a date, zero or more affected tickets, a summary, and type. -->
+  <xs:element name="item">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="c:ticket"/>
+        <xs:element ref="c:summary"/>
+        <xs:element ref="c:date"/>
+        <xs:choice>
+          <xs:element ref="c:type-code-new"/>
+          <xs:element ref="c:type-code-fix"/>
+          <xs:element ref="c:type-code-change"/>
+        </xs:choice>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <!-- The version number of the current release. -->
+  <xs:element name="version" type="xs:token"/>
+  <!-- A software release. -->
+  <xs:element name="release">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="c:date"/>
+          <xs:element ref="c:version"/>
+        </xs:choice>
+        <xs:element maxOccurs="unbounded" ref="c:item"/>
+      </xs:sequence>
+      <xs:attribute name="ticket-system" use="required" form="qualified" type="xs:IDREF"/>
+    </xs:complexType>
+  </xs:element>
+  <!-- A base URL for a ticket. -->
+  <xs:element name="ticket-url" type="xs:anyURI"/>
+  <!-- A description of a ticketing system. -->
+  <xs:element name="ticket-system">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="c:ticket-url"/>
+      </xs:sequence>
+      <xs:attribute ref="xml:id" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <!-- The name of a project. -->
+  <xs:element name="project" type="xs:token"/>
+  <!-- A changelog consisting of ticketing systems and releases. -->
+  <xs:element name="changelog">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="c:project"/>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="c:release"/>
+          <xs:element ref="c:ticket-system"/>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute ref="xml:base"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<c:changelog xmlns:c="http://www.io7m.com/schemas/changelog/1.0.0">
+<c:changelog xmlns:c="http://schemas.io7m.com/changelog/2.0.0">
   <c:project>io7m-changelog</c:project>
+
+  <c:release ticket-system="com.io7m.fossil.changelog">
+    <c:date>2014-04-17</c:date>
+    <c:version>2.0.0</c:version>
+    <c:item>
+      <c:date>2014-04-17</c:date>
+      <c:type-code-new/>
+      <c:summary>Allow for zero or more releases in a file.</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2014-04-17</c:date>
+      <c:type-code-change/>
+      <c:summary>Do not allow xml:id on changelogs.</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2014-04-17</c:date>
+      <c:type-code-new/>
+      <c:summary>Allow multiple tickets per changelog item.</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2014-04-17</c:date>
+      <c:type-code-change/>
+      <c:summary>Redevelop package in Java, eliminate XSLT stylesheets.</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2014-04-17</c:date>
+      <c:type-code-change/>
+      <c:summary>Change schema URI and increment version to 2.0.0</c:summary>
+    </c:item>
+  </c:release>
 
   <c:release ticket-system="com.io7m.fossil.changelog">
     <c:date>2012-03-15</c:date>

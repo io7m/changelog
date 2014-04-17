@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright © 2012 http://io7m.com
+  Copyright © 2014 http://io7m.com
 
   Permission to use, copy, modify, and/or distribute this software for any
   purpose with or without fee is hereby granted, provided that the above
@@ -16,70 +16,86 @@
   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 -->
 
-<!-- version: changelog 1.0.0 -->
-
 <r:grammar
-  xmlns:c="http://www.io7m.com/schemas/changelog/1.0.0"
+  xmlns:c="http://schemas.io7m.com/changelog/2.0.0"
   xmlns:r="http://relaxng.org/ns/structure/1.0"
   datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
 
   <r:start combine="choice">
     <r:ref name="io7m.changelog.changelog" />
   </r:start>
-  
+
+  <!-- A summary of a particular change. -->
   <r:define name="io7m.changelog.item.summary">
     <r:element name="c:summary">
       <r:data type="token" />
     </r:element>
   </r:define>
 
+  <!-- A date of a release or change. -->
   <r:define name="io7m.changelog.date">
     <r:element name="c:date">
       <r:data type="date" />
     </r:element>
   </r:define>
 
+  <!-- A ticket that a particular changelog item affects. -->
   <r:define name="io7m.changelog.item.ticket">
     <r:element name="c:ticket">
       <r:data type="token" />
     </r:element>
   </r:define>
 
+  <!-- The type of backwards-compatible code additions -->
+  <r:define name="io7m.changelog.item.type-code-new">
+    <r:element name="c:type-code-new">
+      <r:empty />
+    </r:element>
+  </r:define>
+
+  <!-- The type of backwards-compatible code fixes -->
+  <r:define name="io7m.changelog.item.type-code-fix">
+    <r:element name="c:type-code-fix">
+      <r:empty />
+    </r:element>
+  </r:define>
+
+  <!-- The type of backwards-incompatible code changes -->
+  <r:define name="io7m.changelog.item.type-code-change">
+    <r:element name="c:type-code-change">
+      <r:empty />
+    </r:element>
+  </r:define>
+
+  <!-- A change with a date, zero or more affected tickets, a summary, and type. -->
   <r:define name="io7m.changelog.item">
     <r:element name="c:item">
       <r:interleave>
-        <r:optional>
+        <r:zeroOrMore>
           <r:ref name="io7m.changelog.item.ticket" />
-        </r:optional>
+        </r:zeroOrMore>
         <r:ref name="io7m.changelog.item.summary" />
         <r:ref name="io7m.changelog.date" />
         <r:choice>
-          <r:element name="c:type-code-new">
-            <r:empty />
-          </r:element>
-          <r:element name="c:type-code-change">
-            <r:empty />
-          </r:element>
-          <r:element name="c:type-code-fix">
-            <r:empty />
-          </r:element>
-          <r:element name="c:type-platform-new">
-            <r:empty />
-          </r:element>
+          <r:ref name="io7m.changelog.item.type-code-new"/>
+          <r:ref name="io7m.changelog.item.type-code-fix"/>
+          <r:ref name="io7m.changelog.item.type-code-change"/>
         </r:choice>
       </r:interleave>
     </r:element>
   </r:define>
 
+  <!-- The version number of the current release. -->
   <r:define name="io7m.changelog.release.version">
     <r:element name="c:version">
       <r:data type="token" />
     </r:element>
   </r:define>
 
+  <!-- A software release. -->
   <r:define name="io7m.changelog.release">
     <r:element name="c:release">
-      <r:attribute name="ticket-system">
+      <r:attribute name="c:ticket-system">
         <r:data type="IDREF" />
       </r:attribute>
       <r:interleave>
@@ -92,12 +108,14 @@
     </r:element>
   </r:define>
 
+  <!-- A base URL for a ticket. -->
   <r:define name="io7m.changelog.ticket-url">
     <r:element name="c:ticket-url">
       <r:data type="anyURI" />
     </r:element>
   </r:define>
 
+  <!-- A description of a ticketing system. -->
   <r:define name="io7m.changelog.ticket-system">
     <r:element name="c:ticket-system">
       <r:attribute name="xml:id">
@@ -109,31 +127,28 @@
     </r:element>
   </r:define>
 
+  <!-- The name of a project. -->
   <r:define name="io7m.changelog.project">
     <r:element name="c:project">
       <r:data type="token" />
     </r:element>
   </r:define>
 
+  <!-- A changelog consisting of ticketing systems and releases. -->
   <r:define name="io7m.changelog.changelog">
     <r:element name="c:changelog">
-      <r:optional>
-        <r:attribute name="xml:id">
-          <r:data type="ID" />
-        </r:attribute>
-      </r:optional>
       <r:optional>
         <r:attribute name="xml:base">
           <r:data type="token" />
         </r:attribute>
       </r:optional>
       <r:ref name="io7m.changelog.project" />
-      <r:oneOrMore>
+      <r:zeroOrMore>
         <r:choice>
           <r:ref name="io7m.changelog.release" />
           <r:ref name="io7m.changelog.ticket-system" />
         </r:choice>
-      </r:oneOrMore>
+      </r:zeroOrMore>
     </r:element>
   </r:define>
 

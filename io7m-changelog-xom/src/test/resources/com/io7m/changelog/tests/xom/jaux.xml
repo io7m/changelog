@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<c:changelog xmlns:c="http://schemas.io7m.com/changelog/2.0.0">
+  <c:project>io7m-jaux</c:project>
+
+  <c:release c:ticket-system="com.io7m.fossil.jaux">
+    <c:date>2013-12-17</c:date>
+    <c:version>3.0.0</c:version>
+    <c:item>
+      <c:date>2013-12-17</c:date>
+      <c:type-code-change/>
+      <c:summary>Option is now abstract</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2013-12-17</c:date>
+      <c:type-code-new/>
+      <c:summary>Added Option.map and Option.mapPartial</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2013-12-17</c:date>
+      <c:type-code-change/>
+      <c:summary>Delete ApproximatelyEqual*, which has been deprecated since 2.4.0</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2013-12-17</c:date>
+      <c:type-code-change/>
+      <c:summary>Remove deprecated parts of the Unit type</c:summary>
+    </c:item>
+  </c:release>
+
+  <c:release c:ticket-system="com.io7m.fossil.jaux">
+    <c:date>2013-12-08</c:date>
+    <c:version>2.9.0</c:version>
+    <c:item>
+      <c:date>2013-12-08</c:date>
+      <c:type-code-new/>
+      <c:summary>Add PartialProcedure</c:summary>
+    </c:item>
+  </c:release>
+
+  <c:release c:ticket-system="com.io7m.fossil.jaux">
+    <c:date>2013-11-21</c:date>
+    <c:version>2.8.0</c:version>
+    <c:item>
+      <c:date>2013-11-21</c:date>
+      <c:type-code-new/>
+      <c:summary>Add convenience functions some() and none() to create Option values</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2013-11-21</c:date>
+      <c:type-code-new/>
+      <c:summary>Add convenience functions failure() and success() to create Indeterminate values</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2013-11-21</c:date>
+      <c:type-code-new/>
+      <c:summary>Add convenience function unit() to create Unit values</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2013-11-21</c:date>
+      <c:type-code-change/>
+      <c:summary>Deprecate Unit's constructor and "value"</c:summary>
+    </c:item>
+  </c:release>
+
+  <c:release c:ticket-system="com.io7m.fossil.jaux">
+    <c:date>2013-10-27</c:date>
+    <c:version>2.7.0</c:version>
+    <c:item>
+      <c:date>2013-10-27</c:date>
+      <c:type-code-new/>
+      <c:summary>Add long/double variant of CheckedMath.multiply</c:summary>
+    </c:item>
+  </c:release>
+
+  <c:release c:ticket-system="com.io7m.fossil.jaux">
+    <c:date>2013-10-20</c:date>
+    <c:version>2.6.0</c:version>
+    <c:item>
+      <c:date>2013-10-20</c:date>
+      <c:type-code-new/>
+      <c:summary>Add cause constructors to Unimplemented and Unreachable exceptions</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2013-10-20</c:date>
+      <c:type-code-new/>
+      <c:summary>Add Integer16 and Integer24</c:summary>
+    </c:item>
+  </c:release>
+
+  <c:release c:ticket-system="com.io7m.fossil.jaux">
+    <c:date>2013-07-08</c:date>
+    <c:version>2.5.0</c:version>
+    <c:item>
+      <c:date>2013-07-08</c:date>
+      <c:type-code-fix/>
+      <c:summary>Add explicit checks to AlmostEqualFloat and AlmostEqualDouble to give better behaviour when infinities are involved</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2013-05-04</c:date>
+      <c:type-code-new/>
+      <c:summary>Produce a jar file for unit tests</c:summary>
+    </c:item>
+  </c:release>
+
+  <c:release c:ticket-system="com.io7m.fossil.jaux">
+    <c:date>2012-12-18</c:date>
+    <c:version>2.4.0</c:version>
+    <c:item>
+      <c:date>2012-12-18</c:date>
+      <c:type-code-new/>
+      <c:summary>Add AlmostEqual*</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2012-11-28</c:date>
+      <c:type-code-new/>
+      <c:summary>Add RangeInclusive</c:summary>
+    </c:item>
+  </c:release>
+
+  <c:release c:ticket-system="com.io7m.fossil.jaux">
+    <c:date>2012-10-21</c:date>
+    <c:version>2.3.0</c:version>
+    <c:item>
+      <c:date>2012-11-08</c:date>
+      <c:type-code-fix/>
+      <c:summary>Use latest versions of all Maven plugins. Use JSR 305 2.0.1</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2012-10-21</c:date>
+      <c:type-code-new/>
+      <c:summary>Added UnreachableCodeException and UnimplementedCodeException</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2012-10-21</c:date>
+      <c:type-code-fix/>
+      <c:summary>Add more JSR 305 annotations</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2012-07-27</c:date>
+      <c:type-code-fix/>
+      <c:summary>Update saxon-plugin to 1.1.0 to correct documentation builds on Windows</c:summary>
+    </c:item>
+  </c:release>
+
+  <c:release c:ticket-system="com.io7m.fossil.jaux">
+    <c:date>2012-07-23</c:date>
+    <c:version>2.2.0</c:version>
+    <c:item>
+      <c:date>2012-07-23</c:date>
+      <c:type-code-fix/>
+      <c:summary>Update all POM plugins to their latest versions</c:summary>
+    </c:item>
+  </c:release>
+
+  <c:release c:ticket-system="com.io7m.fossil.jaux">
+    <c:date>2012-07-23</c:date>
+    <c:version>2.1.2</c:version>
+    <c:item>
+      <c:date>2012-07-23</c:date>
+      <c:type-code-fix/>
+      <c:summary>Documentation improvements</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2012-07-23</c:date>
+      <c:type-code-new/>
+      <c:summary>Use saxon-plugin to produce documentation</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2012-07-15</c:date>
+      <c:type-code-fix/>
+      <c:summary>Add missing documentation CSS</c:summary>
+    </c:item>
+  </c:release>
+
+  <c:release c:ticket-system="com.io7m.fossil.jaux">
+    <c:date>2012-07-14</c:date>
+    <c:version>2.1.1</c:version>
+    <c:item>
+      <c:date>2012-07-14</c:date>
+      <c:type-code-fix/>
+      <c:summary>Produce all documentation with Maven</c:summary>
+    </c:item>
+  </c:release>
+
+  <c:release c:ticket-system="com.io7m.fossil.jaux">
+    <c:date>2012-07-11</c:date>
+    <c:version>2.1.0</c:version>
+    <c:item>
+      <c:date>2012-07-11</c:date>
+      <c:type-code-fix/>
+      <c:summary>Make dependencies more honest: The package only depends on jsr305, not all of findbugs</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2012-07-01</c:date>
+      <c:type-code-new/>
+      <c:summary>Add PartialFunction</c:summary>
+    </c:item>
+  </c:release>
+
+  <c:release c:ticket-system="com.io7m.fossil.jaux">
+    <c:date>2012-06-19</c:date>
+    <c:version>2.0.0</c:version>
+    <c:item>
+      <c:date>2012-06-19</c:date>
+      <c:type-code-new/>
+      <c:summary>Switch to maven for builds</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2012-05-12</c:date>
+      <c:type-code-new/>
+      <c:summary>Add ApproximatelyEqual* from io7m-jtensors</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2012-03-25</c:date>
+      <c:type-code-new/>
+      <c:summary>Add Integer32 and Integer64</c:summary>
+    </c:item>
+  </c:release>
+
+  <c:release c:ticket-system="com.io7m.fossil.jaux">
+    <c:date>2012-03-15</c:date>
+    <c:version>1.0.0</c:version>
+    <c:item>
+      <c:date>2012-03-15</c:date>
+      <c:type-code-new/>
+      <c:summary>Initial version</c:summary>
+    </c:item>
+  </c:release>
+
+  <c:ticket-system xml:id="com.io7m.fossil.jaux">
+    <c:ticket-url>http://fossil.io7m.com/repo.cgi/io7m-jaux/tktview?name=</c:ticket-url>
+  </c:ticket-system>
+
+</c:changelog>
