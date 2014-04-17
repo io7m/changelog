@@ -145,11 +145,6 @@
         <artifactId>maven-install-plugin</artifactId>
         <version>2.4</version>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>2.6</version>
-      </plugin>
 
       <!-- Require JDK >= 1.6 -->
       <plugin>
