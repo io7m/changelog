@@ -11,6 +11,7 @@
     <version>2.0.0</version>
   </parent>
   <artifactId>io7m-changelog-schema</artifactId>
+
   <packaging>jar</packaging>
   <description>Software changelogs (RELAX-NG and XSD schemas)</description>
   <url>http://mvn.io7m.com/${project.artifactId}/</url>

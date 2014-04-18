@@ -11,6 +11,7 @@
     <version>2.0.0</version>
   </parent>
   <artifactId>io7m-changelog-documentation</artifactId>
+
   <packaging>jar</packaging>
   <description>Software changelogs (Documentations)</description>
   <url>http://mvn.io7m.com/${project.artifactId}/</url>
@@ -78,9 +79,9 @@
       <version>4.11</version>
     </dependency>
     <dependency>
-      <groupId>com.io7m.jstructural.tools</groupId>
+      <groupId>com.io7m.jstructural</groupId>
       <artifactId>io7m-jstructural-tools</artifactId>
-      <version>0.1.0</version>
+      <version>2.0.0</version>
     </dependency>
 
     <!-- Depend on the javadoc for each module, in order to aggregate it. -->
@@ -300,11 +301,34 @@
         </executions>
       </plugin>
 
-      <!-- Produce aggregate dependency javadocs -->
+      <!-- Javadoc handling -->
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>2.9.1</version>
         <executions>
+          <!-- Produce javadoc jar for Central -->
+          <execution>
+            <id>attach-javadocs</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <archive>
+                <manifestEntries>
+                  <Specification-Title>${project.name}</Specification-Title>
+                  <Specification-Version>${project.version}</Specification-Version>
+                  <Specification-Vendor>io7m.com</Specification-Vendor>
+                  <Implementation-Title>${project.name}</Implementation-Title>
+                  <Implementation-Version>${project.version}</Implementation-Version>
+                  <Implementation-Vendor>io7m.com</Implementation-Vendor>
+                  <Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>
+                  <Built-By>io7m</Built-By>
+                </manifestEntries>
+              </archive>
+            </configuration>
+          </execution>
+          <!-- Produce aggregate dependency javadocs -->
           <execution>
             <id>javadoc-aggregate</id>
             <phase>package</phase>
