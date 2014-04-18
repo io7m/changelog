@@ -23,7 +23,7 @@
         <li><a href="documentation/index.xhtml">XHTML - single page</a></li>
       </ul>
       <p>
-        Older documentation is archived in the
+        Documentation is archived in the
         <a href="http://mvn-repository.io7m.com/${siteDocumentationDirectory}">repository</a>.
       </p>
     </section>

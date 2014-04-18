@@ -11,7 +11,7 @@
   <packaging>pom</packaging>
   <name>${project.artifactId}</name>
   <description>Software changelogs</description>
-  <url>http://mvn.io7m.com/io7m-changelog/</url>
+  <url>http://mvn.io7m.com/${project.artifactId}/</url>
 
   <modules>
     <module>io7m-changelog-core</module>
@@ -59,7 +59,7 @@
     <site>
       <id>io7m</id>
       <name>io7m.com</name>
-      <url>http://mvn.io7m.com/io7m-changelog/</url>
+      <url>http://mvn.io7m.com/${project.artifactId}/</url>
     </site>
   </distributionManagement>
 
