@@ -13,7 +13,8 @@
   <artifactId>io7m-changelog-schema</artifactId>
   <packaging>jar</packaging>
   <description>Software changelogs (RELAX-NG and XSD schemas)</description>
-  <url>http://mvn.io7m.com/changelog-schema/</url>
+  <url>http://mvn.io7m.com/io7m-changelog-schema/</url>
+  <name>${project.artifactId}</name>
 
   <licenses>
     <license>
@@ -46,7 +47,7 @@
     <site>
       <id>io7m</id>
       <name>io7m.com</name>
-      <url>http://mvn.io7m.com/changelog-schema/</url>
+      <url>http://mvn.io7m.com/io7m-changelog-schema/</url>
     </site>
   </distributionManagement>
 

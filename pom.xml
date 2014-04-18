@@ -9,9 +9,9 @@
   <artifactId>io7m-changelog</artifactId>
   <version>2.0.0</version>
   <packaging>pom</packaging>
-  <name>io7m-changelog</name>
-  <description>Changelog</description>
-  <url>http://mvn.io7m.com/changelog/</url>
+  <name>${project.artifactId}</name>
+  <description>Software changelogs</description>
+  <url>http://mvn.io7m.com/io7m-changelog/</url>
 
   <modules>
     <module>io7m-changelog-core</module>
@@ -52,7 +52,7 @@
     <site>
       <id>io7m</id>
       <name>io7m.com</name>
-      <url>http://mvn.io7m.com/changelog/</url>
+      <url>http://mvn.io7m.com/io7m-changelog/</url>
     </site>
   </distributionManagement>
 

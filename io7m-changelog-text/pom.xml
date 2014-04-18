@@ -13,7 +13,8 @@
   <artifactId>io7m-changelog-text</artifactId>
   <packaging>jar</packaging>
   <description>Software changelogs (Text utilities)</description>
-  <url>http://mvn.io7m.com/changelog-text/</url>
+  <url>http://mvn.io7m.com/io7m-changelog-text/</url>
+  <name>${project.artifactId}</name>
 
   <licenses>
     <license>
@@ -46,7 +47,7 @@
     <site>
       <id>io7m</id>
       <name>io7m.com</name>
-      <url>http://mvn.io7m.com/changelog-text/</url>
+      <url>http://mvn.io7m.com/io7m-changelog-text/</url>
     </site>
   </distributionManagement>
 
