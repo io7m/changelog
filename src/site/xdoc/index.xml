@@ -5,12 +5,19 @@
   xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
 
   <properties>
-    <title>io7m-changelog-core</title>
+    <title>io7m-changelog</title>
   </properties>
 
   <body>
-    <subsection name="changelog-core">
-      The <var>changelog-core</var> package contains the core types of the package.
+    <subsection name="changelog">
+      <p>The <var>changelog</var> package defines a simple schema for
+      software changelogs. It categorizes changes by type. This allows,
+      for example, easy checking for backwards-incompatible changes
+      on each new release of a piece of software. The changelogs can
+      also reference ticketing systems to show that a given change
+      fixes a given ticket.</p>
+      <p>It also defines a set of Java classes to parse and transform
+      changelogs.</p>
     </subsection>
   </body>
 

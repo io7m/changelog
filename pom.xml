@@ -122,7 +122,7 @@
         <inherited>false</inherited>
         <executions>
           <execution>
-            <id>copy-out-files</id>
+            <id>copy-site-documentation</id>
             <goals>
               <goal>copy</goal>
             </goals>
