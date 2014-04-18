@@ -70,6 +70,7 @@ public final class CChangelogXHTMLWriter
 
     final Element et =
       new Element("table", CChangelogXHTMLWriter.XHTML_URI.toString());
+    et.addAttribute(new Attribute("class", "changelog"));
     et.addAttribute(new Attribute("summary", String.format(
       "Changes for project %s",
       c.getProject())));
@@ -85,7 +86,7 @@ public final class CChangelogXHTMLWriter
         etdate.appendChild(df.format(r.getDate()));
 
         line.setLength(0);
-        line.append(" Release: ");
+        line.append("Release: ");
         line.append(c.getProject());
         line.append(" ");
         line.append(r.getVersion());

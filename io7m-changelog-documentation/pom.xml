@@ -39,7 +39,7 @@
   </developers>
 
   <issueManagement>
-    <url>http://fossil.io7m.com/repo.cgi/io7m-changelog</url>
+    <url>http://fossil.io7m.com/repo.cgi/io7m-changelog/reportlist</url>
     <system>Fossil</system>
   </issueManagement>
 
@@ -340,7 +340,6 @@
               <goal>single</goal>
             </goals>
             <configuration>
-              <finalName>${project.parent.name}-${project.version}-documentation</finalName>
               <appendAssemblyId>false</appendAssemblyId>
             </configuration>
           </execution>

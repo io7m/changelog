@@ -16,7 +16,9 @@
 
 package com.io7m.changelog.tests.xom;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.ParseException;
@@ -25,11 +27,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import nu.xom.Document;
 import nu.xom.Element;
+import nu.xom.ParsingException;
 import nu.xom.Serializer;
+import nu.xom.ValidityException;
 
+import org.junit.Assume;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 import com.io7m.changelog.core.CChangeType;
 import com.io7m.changelog.core.CChangelog;
@@ -38,9 +46,31 @@ import com.io7m.changelog.core.CItem;
 import com.io7m.changelog.core.CRelease;
 import com.io7m.changelog.core.CVersionStandard;
 import com.io7m.changelog.xom.CChangelogXHTMLWriter;
+import com.io7m.changelog.xom.CChangelogXMLReader;
 
 public class CChangelogXHTMLWriterTest
 {
+  @SuppressWarnings("static-method") @Test public void testLog()
+    throws MalformedURLException,
+      ValidityException,
+      IOException,
+      SAXException,
+      ParserConfigurationException,
+      ParsingException,
+      URISyntaxException,
+      ParseException
+  {
+    Assume.assumeTrue(false);
+
+    final File file = new File("../README-CHANGES.xml");
+    final CChangelog cc0 = CChangelogXMLReader.readFromURI(file.toURI());
+    final Element e = CChangelogXHTMLWriter.writeElement(cc0);
+    final Document d = new Document(e);
+    final Serializer s = new Serializer(System.out);
+    s.setIndent(2);
+    s.write(d);
+  }
+
   @SuppressWarnings("static-method") @Test public void testPlain()
     throws URISyntaxException,
       ParseException,
