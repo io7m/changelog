@@ -20,6 +20,11 @@
   font-weight: bold;
 }
 
+.term
+{
+  font-style: italic;
+}
+
 .attribute,
 .class,
 .command,
