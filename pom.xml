@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.io7m.changelog</groupId>
   <artifactId>io7m-changelog</artifactId>
-  <version>2.0.0</version>
+  <version>2.1.0</version>
 
   <packaging>pom</packaging>
   <name>${project.artifactId}</name>
@@ -17,6 +17,7 @@
   <modules>
     <module>io7m-changelog-core</module>
     <module>io7m-changelog-documentation</module>
+    <module>io7m-changelog-plugin</module>
     <module>io7m-changelog-schema</module>
     <module>io7m-changelog-text</module>
     <module>io7m-changelog-xom</module>

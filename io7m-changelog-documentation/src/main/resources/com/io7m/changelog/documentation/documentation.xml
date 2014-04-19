@@ -216,6 +216,53 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.]]>
   </s:part>
 
   <s:part>
+    <s:part-title>Maven plugin</s:part-title>
+    <s:part-contents/>
+    <s:section>
+      <s:section-title>Overview</s:section-title>
+      <s:paragraph>
+        The <s:term s:type="package">changelog</s:term> package provides
+        a Maven plugin for generating site pages for changelogs, complete
+        with an <s:link-external s:target="http://tools.ietf.org/html/rfc4287">Atom</s:link-external>
+        feed for releases.
+      </s:paragraph>
+    </s:section>
+    <s:section>
+      <s:section-title>Usage</s:section-title>
+      <s:paragraph>
+        The following should be placed in the <s:term s:type="element">reporting</s:term>
+        section of your project's <s:term s:type="file">pom.xml</s:term>:
+      </s:paragraph>
+      <s:formal-item s:kind="examples">
+        <s:formal-item-title>Report example</s:formal-item-title>
+        <s:verbatim><![CDATA[<plugin>
+  <groupId>${project.groupId}</groupId>
+  <artifactId>${project.parent.name}-plugin</artifactId>
+  <version>${project.version}</version>
+  <configuration>
+    <file>README-CHANGES.xml</file>
+    <feedAuthorEmail>contact@io7m.com</feedAuthorEmail>
+    <feedAuthorName>io7m release robot</feedAuthorName>
+  </configuration>
+</plugin>]]></s:verbatim>
+      </s:formal-item>
+      <s:paragraph>
+        Where the <s:term s:type="element">file</s:term> parameter specifies
+        the path to an XML changelog relative to the current project root, and
+        the <s:term s:type="element">feedAuthorEmail</s:term> and
+        <s:term s:type="element">feedAuthorName</s:term> parameters specify
+        the author email and author name that will appear in the generated Atom feed,
+        respectively.
+      </s:paragraph>
+      <s:paragraph>
+        The plugin will generate files <s:term s:type="file">changes.html</s:term>
+        and <s:term s:type="file">releases.atom</s:term> in the root of the generated
+        site directory.
+      </s:paragraph>
+    </s:section>
+  </s:part>
+
+  <s:part>
     <s:part-title>API Reference</s:part-title>
     <s:part-contents/>
     <s:section>

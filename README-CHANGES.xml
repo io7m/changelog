@@ -3,6 +3,21 @@
   <c:project>io7m-changelog</c:project>
 
   <c:release c:ticket-system="com.io7m.fossil.changelog">
+    <c:date>2014-04-19</c:date>
+    <c:version>2.1.0</c:version>
+    <c:item>
+      <c:date>2014-04-19</c:date>
+      <c:type-code-new/>
+      <c:summary>Add Maven report plugin.</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2014-04-19</c:date>
+      <c:type-code-new/>
+      <c:summary>Add simple Atom feed generator.</c:summary>
+    </c:item>
+  </c:release>
+
+  <c:release c:ticket-system="com.io7m.fossil.changelog">
     <c:date>2014-04-17</c:date>
     <c:version>2.0.0</c:version>
     <c:item>
