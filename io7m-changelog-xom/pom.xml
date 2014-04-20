@@ -174,13 +174,8 @@
               <Implementation-Vendor>io7m.com</Implementation-Vendor>
               <Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>
               <Built-By>io7m</Built-By>
+              <Sealed>true</Sealed>
             </manifestEntries>
-            <manifestSection>
-              <name>com/io7m/changelog/xom</name>
-              <manifestEntries>
-                <Sealed>true</Sealed>
-              </manifestEntries>
-            </manifestSection>
           </archive>
         </configuration>
       </plugin>
@@ -231,9 +226,6 @@
                   <Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>
                   <Built-By>io7m</Built-By>
                 </manifestEntries>
-                <manifestSection>
-                  <name>com/io7m/changelog/xom</name>
-                </manifestSection>
               </archive>
             </configuration>
           </execution>
@@ -264,9 +256,6 @@
                   <Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>
                   <Built-By>io7m</Built-By>
                 </manifestEntries>
-                <manifestSection>
-                  <name>com/io7m/changelog/xom</name>
-                </manifestSection>
               </archive>
             </configuration>
           </execution>
