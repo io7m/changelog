@@ -23,6 +23,10 @@ import javax.annotation.Nonnull;
 
 import com.io7m.jaux.UnreachableCodeException;
 
+/**
+ * Functions for retrieving the documentation.
+ */
+
 public final class CDocumentation
 {
   public static @Nonnull URI getDocumentationXMLLocation()
