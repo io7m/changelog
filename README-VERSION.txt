@@ -1,1 +1,1 @@
-io7m-changelog 2.1.0
+io7m-changelog 2.1.1
