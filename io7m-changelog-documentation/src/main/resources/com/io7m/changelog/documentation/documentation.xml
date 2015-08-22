@@ -17,7 +17,7 @@
   -->
 
 <s:document
-  xmlns:s="http://schemas.io7m.com/structural/2.0.0"
+  xmlns:s="http://schemas.io7m.com/structural/2.1.0"
   xmlns:xi="http://www.w3.org/2001/XInclude">
   <s:document-title>${project.parent.name} ${project.version} Documentation</s:document-title>
   <s:document-style>documentation.css</s:document-style>
@@ -31,7 +31,7 @@
       <s:subsection>
         <s:subsection-title>Overview</s:subsection-title>
         <s:paragraph>
-          The <s:term s:type="package">${project.parent.name}</s:term> package 
+          The <s:term s:type="package">${project.parent.name}</s:term> package
           implements a schema for expressing humanly readable software changelogs
           and a set of Java functions for manipulating them and converting them
           to various output formats (plain text, XHTML, etc).
@@ -126,8 +126,8 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.]]>
     <s:section xml:id="${project.groupId}.guide.overview">
       <s:section-title>Overview</s:section-title>
       <s:paragraph>
-        A <s:term s:type="term">changelog</s:term> records a series of 
-        <s:term s:type="term">releases</s:term>, each of which may be associated 
+        A <s:term s:type="term">changelog</s:term> records a series of
+        <s:term s:type="term">releases</s:term>, each of which may be associated
         with a <s:term s:type="term">ticket system</s:term>.
         A <s:term s:type="term">release</s:term> consists of a series of
         <s:term s:type="term">changes</s:term> with each change affecting
@@ -197,7 +197,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.]]>
 </c:changelog>]]></s:verbatim>
       </s:formal-item>
       <s:paragraph>
-        The above, when processed with the 
+        The above, when processed with the
         <s:link-external s:target="apidocs/com/io7m/changelog/text/CChangelogTextWriter.html">CChangelogTextWriter</s:link-external>
         class will produce the following output:
       </s:paragraph>
