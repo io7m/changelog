@@ -6,30 +6,37 @@
   </a:author>
   <a:id>http://io7m.github.io/changelog//releases.atom</a:id>
   <a:title>io7m-changelog Releases</a:title>
-  <a:updated>2015-08-22T00:00:00Z</a:updated>
+  <a:updated>2016-05-06T00:00:00Z</a:updated>
   <a:entry>
     <a:id>0</a:id>
+    <a:updated>2016-05-06T00:00:00Z</a:updated>
+    <a:published>2016-05-06T00:00:00Z</a:published>
+    <a:title>io7m-changelog 2.1.2 released</a:title>
+    <a:content type="text"> io7m-changelog 2.1.2 released </a:content>
+  </a:entry>
+  <a:entry>
+    <a:id>1</a:id>
     <a:updated>2015-08-22T00:00:00Z</a:updated>
     <a:published>2015-08-22T00:00:00Z</a:published>
     <a:title>io7m-changelog 2.1.1 released</a:title>
     <a:content type="text"> io7m-changelog 2.1.1 released </a:content>
   </a:entry>
   <a:entry>
-    <a:id>1</a:id>
+    <a:id>2</a:id>
     <a:updated>2014-04-19T00:00:00Z</a:updated>
     <a:published>2014-04-19T00:00:00Z</a:published>
     <a:title>io7m-changelog 2.1.0 released</a:title>
     <a:content type="text"> io7m-changelog 2.1.0 released </a:content>
   </a:entry>
   <a:entry>
-    <a:id>2</a:id>
+    <a:id>3</a:id>
     <a:updated>2014-04-17T00:00:00Z</a:updated>
     <a:published>2014-04-17T00:00:00Z</a:published>
     <a:title>io7m-changelog 2.0.0 released</a:title>
     <a:content type="text"> io7m-changelog 2.0.0 released </a:content>
   </a:entry>
   <a:entry>
-    <a:id>3</a:id>
+    <a:id>4</a:id>
     <a:updated>2012-03-15T00:00:00Z</a:updated>
     <a:published>2012-03-15T00:00:00Z</a:published>
     <a:title>io7m-changelog 1.0.0 released</a:title>
