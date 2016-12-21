@@ -99,6 +99,12 @@
       </dependency>
 
       <dependency>
+        <groupId>org.immutables</groupId>
+        <artifactId>value</artifactId>
+        <version>2.3.10</version>
+      </dependency>
+
+      <dependency>
         <groupId>org.apache.maven.plugin-tools</groupId>
         <artifactId>maven-plugin-annotations</artifactId>
         <version>3.2</version>

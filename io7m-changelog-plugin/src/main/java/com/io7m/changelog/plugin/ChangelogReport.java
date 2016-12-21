@@ -1,5 +1,5 @@
 /*
- * Copyright © 2014 <code@io7m.com> http://io7m.com
+ * Copyright © 2016 <code@io7m.com> http://io7m.com
  * 
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -16,6 +16,21 @@
 
 package com.io7m.changelog.plugin;
 
+import com.io7m.changelog.core.CChangelog;
+import com.io7m.changelog.core.CItem;
+import com.io7m.changelog.core.CRelease;
+import com.io7m.changelog.xom.CAtomFeedMeta;
+import com.io7m.changelog.xom.CChangelogAtomWriter;
+import com.io7m.changelog.xom.CChangelogXMLReader;
+import nu.xom.Document;
+import nu.xom.Element;
+import nu.xom.ParsingException;
+import nu.xom.Serializer;
+import nu.xom.ValidityException;
+import org.apache.maven.doxia.sink.Sink;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -28,30 +43,12 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import nu.xom.Document;
-import nu.xom.Element;
-import nu.xom.ParsingException;
-import nu.xom.Serializer;
-import nu.xom.ValidityException;
-
-import org.apache.maven.doxia.sink.Sink;
-import org.xml.sax.SAXException;
-
-import com.io7m.changelog.core.CChangelog;
-import com.io7m.changelog.core.CItem;
-import com.io7m.changelog.core.CRelease;
-import com.io7m.changelog.xom.CAtomFeedMeta;
-import com.io7m.changelog.xom.CChangelogAtomWriter;
-import com.io7m.changelog.xom.CChangelogXMLReader;
-
 final class ChangelogReport
 {
-  private final File          feed_file;
+  private final File feed_file;
   private final CAtomFeedMeta feed_meta;
-  private final URI           file;
-  private final Sink          sink;
+  private final URI file;
+  private final Sink sink;
 
   ChangelogReport(
     final CAtomFeedMeta in_feed_meta,
@@ -67,13 +64,13 @@ final class ChangelogReport
 
   void run()
     throws MalformedURLException,
-      ValidityException,
-      IOException,
-      SAXException,
-      ParserConfigurationException,
-      ParsingException,
-      URISyntaxException,
-      ParseException
+    ValidityException,
+    IOException,
+    SAXException,
+    ParserConfigurationException,
+    ParsingException,
+    URISyntaxException,
+    ParseException
   {
     final CChangelog c = CChangelogXMLReader.readFromURI(this.file);
     this.write(c);
@@ -110,51 +107,48 @@ final class ChangelogReport
 
     this.sink.table();
 
-    final Map<String, URI> ticket_systems = c.getTicketSystemsMap();
+    final Map<String, URI> ticket_systems = c.ticketSystems();
 
-    for (final CRelease r : c.getReleases()) {
+    for (final CRelease r : c.releases()) {
       this.sink.tableRow();
       this.sink.tableCell();
-      this.sink.text(df.format(r.getDate()));
+      this.sink.text(df.format(r.date()));
       this.sink.tableCell_();
       this.sink.tableCell();
       this.sink.text(String.format(
         "Release: %s %s",
-        c.getProject(),
-        r.getVersion()));
+        c.project(),
+        r.version()));
       this.sink.tableCell_();
       this.sink.tableRow_();
 
-      final URI sys = ticket_systems.get(r.getTicketSystemID());
+      final URI sys = ticket_systems.get(r.ticketSystemID());
 
-      for (final CItem i : r.getItems()) {
+      for (final CItem i : r.items()) {
         this.sink.tableRow();
         this.sink.tableCell();
-        this.sink.text(df.format(i.getDate()));
+        this.sink.text(df.format(i.date()));
         this.sink.tableCell_();
         this.sink.tableCell();
 
-        switch (i.getType()) {
-          case CHANGE_TYPE_CODE_CHANGE:
-          {
+        switch (i.type()) {
+          case CHANGE_TYPE_CODE_CHANGE: {
             this.sink.text("Code change: ");
             break;
           }
-          case CHANGE_TYPE_CODE_FIX:
-          {
+          case CHANGE_TYPE_CODE_FIX: {
             this.sink.text("Code fix: ");
             break;
           }
-          case CHANGE_TYPE_CODE_NEW:
-          {
+          case CHANGE_TYPE_CODE_NEW: {
             this.sink.text("Code new: ");
             break;
           }
         }
 
-        this.sink.text(i.getSummary());
+        this.sink.text(i.summary());
 
-        final List<String> tickets = i.getTickets();
+        final List<String> tickets = i.tickets();
         if (tickets.size() > 0) {
           this.sink.text(" (tickets: ");
 

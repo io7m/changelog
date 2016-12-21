@@ -1,5 +1,5 @@
 /*
- * Copyright © 2014 <code@io7m.com> http://io7m.com
+ * Copyright © 2016 <code@io7m.com> http://io7m.com
  * 
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -16,15 +16,16 @@
 
 package com.io7m.changelog.text;
 
-import java.io.PrintWriter;
-import java.net.URI;
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Map;
-
 import com.io7m.changelog.core.CChangelog;
 import com.io7m.changelog.core.CItem;
 import com.io7m.changelog.core.CRelease;
+import com.io7m.jnull.NullCheck;
+
+import java.io.PrintWriter;
+import java.net.URI;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A plain-text changelog serializer.
@@ -32,67 +33,62 @@ import com.io7m.changelog.core.CRelease;
 
 public final class CChangelogTextWriter
 {
+  private CChangelogTextWriter()
+  {
+    throw new AssertionError("Unreachable");
+  }
+
   /**
    * Serialize the given changelog to plain text.
-   * 
-   * @param c
-   *          The changelog
-   * @param out
-   *          The writer
+   *
+   * @param c   The changelog
+   * @param out The writer
    */
 
   public static void writeChangelog(
     final CChangelog c,
     final PrintWriter out)
   {
-    if (c == null) {
-      throw new NullPointerException("Changelog");
-    }
-    if (out == null) {
-      throw new NullPointerException("Output");
-    }
+    NullCheck.notNull(c, "Changelog");
+    NullCheck.notNull(out, "Output");
 
-    final Map<String, URI> ticket_systems = c.getTicketSystemsMap();
+    final Map<String, URI> ticket_systems = c.ticketSystems();
     final StringBuilder line = new StringBuilder();
-    final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-    for (final CRelease r : c.getReleases()) {
+    for (final CRelease r : c.releases()) {
       line.setLength(0);
-      line.append(df.format(r.getDate()));
+      line.append(DateTimeFormatter.ISO_DATE.format(r.date()));
       line.append(" Release: ");
-      line.append(c.getProject());
+      line.append(c.project());
       line.append(" ");
-      line.append(r.getVersion());
+      line.append(r.version().toVersionString());
       out.println(line.toString());
 
-      final URI sys = ticket_systems.get(r.getTicketSystemID());
+      final URI sys = ticket_systems.get(r.ticketSystemID());
 
-      for (final CItem i : r.getItems()) {
+      for (final CItem i : r.items()) {
 
         line.setLength(0);
-        line.append(df.format(r.getDate()));
+        line.append(DateTimeFormatter.ISO_DATE.format(r.date()));
         line.append(" ");
 
-        switch (i.getType()) {
-          case CHANGE_TYPE_CODE_CHANGE:
-          {
+        switch (i.type()) {
+          case CHANGE_TYPE_CODE_CHANGE: {
             line.append("Code change: ");
             break;
           }
-          case CHANGE_TYPE_CODE_FIX:
-          {
+          case CHANGE_TYPE_CODE_FIX: {
             line.append("Code fix: ");
             break;
           }
-          case CHANGE_TYPE_CODE_NEW:
-          {
+          case CHANGE_TYPE_CODE_NEW: {
             line.append("Code new: ");
             break;
           }
         }
 
-        line.append(i.getSummary());
+        line.append(i.summary());
 
-        final List<String> tickets = i.getTickets();
+        final List<String> tickets = i.tickets();
         if (tickets.size() > 0) {
           line.append(" (tickets: ");
           for (int index = 0; index < tickets.size(); ++index) {
@@ -111,10 +107,5 @@ public final class CChangelogTextWriter
     }
 
     out.flush();
-  }
-
-  private CChangelogTextWriter()
-  {
-    throw new AssertionError("Unreachable");
   }
 }

@@ -1,10 +1,10 @@
 /*
- * Copyright © 2014 <code@io7m.com> http://io7m.com
- * 
+ * Copyright © 2016 <code@io7m.com> http://io7m.com
+ *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
  * copyright notice and this permission notice appear in all copies.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
  * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
  * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
@@ -14,54 +14,46 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.changelog.core;
+package com.io7m.changelog.xom;
+
+import com.io7m.changelog.core.CImmutableStyleType;
+import org.immutables.value.Value;
 
 import java.net.URI;
 
 /**
- * The type of mutable changelog builders.
+ * The type of Atom feed metadata.
  */
 
-public interface CChangelogBuilderType
+@CImmutableStyleType
+@Value.Immutable
+public interface CAtomFeedMetaType
 {
   /**
-   * Set the project name.
-   * 
-   * @param project
-   *          The project name
+   * @return The email of the feed author
    */
 
-  void setProjectName(
-    final String project);
+  @Value.Parameter
+  String authorEmail();
 
   /**
-   * Add the ticketing system with the given name and URI.
-   * 
-   * @param name
-   *          The name
-   * @param uri
-   *          The URI
+   * @return The name of the feed author
    */
 
-  void addTicketSystem(
-    final String name,
-    final URI uri);
+  @Value.Parameter
+  String authorName();
 
   /**
-   * Add the given release.
-   * 
-   * @param release
-   *          The release
+   * @return The feed title
    */
 
-  void addRelease(
-    final CRelease release);
+  @Value.Parameter
+  String title();
 
   /**
-   * Construct a changelog with the given releases and ticket systems.
-   * 
-   * @return A new changelog
+   * @return The URI of the feed
    */
 
-  CChangelog build();
+  @Value.Parameter
+  URI uri();
 }

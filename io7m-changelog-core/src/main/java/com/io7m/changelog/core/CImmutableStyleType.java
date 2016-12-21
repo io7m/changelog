@@ -1,10 +1,10 @@
 /*
  * Copyright © 2016 <code@io7m.com> http://io7m.com
- * 
+ *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
  * copyright notice and this permission notice appear in all copies.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
  * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
  * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
@@ -16,39 +16,30 @@
 
 package com.io7m.changelog.core;
 
+import org.immutables.value.Value;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
- * A version number visitor.
- *
- * @param <A> The type of returned values
+ * Style settings for generated immutable types.
  */
 
-public interface CVersionVisitorType<A>
+@Target({ElementType.PACKAGE, ElementType.TYPE})
+@Retention(RetentionPolicy.CLASS)
+@Value.Style(
+  get = {"is*", "get*"},
+  init = "set*",
+  typeAbstract = {"Abstract*", "*Type"},
+  typeImmutable = "*",
+  typeModifiable = "*Mutable",
+  builder = "builder",
+  build = "build",
+  visibility = Value.Style.ImplementationVisibility.PUBLIC,
+  defaults = @Value.Immutable(copy = true))
+public @interface CImmutableStyleType
 {
-  /**
-   * Visit a {@link CVersionStandardType}.
-   *
-   * @param s The number
-   *
-   * @return A value of type {@code A}
-   *
-   * @throws Exception If required
-   */
-
-  A standard(
-    final CVersionStandardType s)
-    throws Exception;
-
-  /**
-   * Visit a {@link CVersionTextType}.
-   *
-   * @param s The number
-   *
-   * @return A value of type {@code A}
-   *
-   * @throws Exception If required
-   */
-
-  A text(
-    final CVersionTextType s)
-    throws Exception;
+  // No extra values
 }

@@ -1,10 +1,10 @@
 /*
  * Copyright © 2016 <code@io7m.com> http://io7m.com
- * 
+ *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
  * copyright notice and this permission notice appear in all copies.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
  * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
  * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
@@ -16,39 +16,30 @@
 
 package com.io7m.changelog.core;
 
+import org.immutables.value.Value;
+
+import java.net.URI;
+import java.util.List;
+
 /**
- * A version number visitor.
- *
- * @param <A> The type of returned values
+ * The definition of a ticket system.
  */
 
-public interface CVersionVisitorType<A>
+@CImmutableStyleType
+@Value.Immutable
+public interface CTicketSystemType
 {
   /**
-   * Visit a {@link CVersionStandardType}.
-   *
-   * @param s The number
-   *
-   * @return A value of type {@code A}
-   *
-   * @throws Exception If required
+   * @return The ID of the ticket system
    */
 
-  A standard(
-    final CVersionStandardType s)
-    throws Exception;
+  @Value.Parameter
+  String id();
 
   /**
-   * Visit a {@link CVersionTextType}.
-   *
-   * @param s The number
-   *
-   * @return A value of type {@code A}
-   *
-   * @throws Exception If required
+   * @return The list of URIs for the ticket system
    */
 
-  A text(
-    final CVersionTextType s)
-    throws Exception;
+  @Value.Parameter
+  List<URI> uris();
 }

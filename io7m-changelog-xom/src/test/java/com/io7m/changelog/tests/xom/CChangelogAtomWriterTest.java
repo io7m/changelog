@@ -1,5 +1,5 @@
 /*
- * Copyright © 2014 <code@io7m.com> http://io7m.com
+ * Copyright © 2016 <code@io7m.com> http://io7m.com
  * 
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -16,62 +16,58 @@
 
 package com.io7m.changelog.tests.xom;
 
+import com.io7m.changelog.core.CChangeType;
+import com.io7m.changelog.core.CChangelog;
+import com.io7m.changelog.core.CItem;
+import com.io7m.changelog.core.CRelease;
+import com.io7m.changelog.core.CVersions;
+import com.io7m.changelog.xom.CAtomFeedMeta;
+import com.io7m.changelog.xom.CChangelogAtomWriter;
+import com.io7m.changelog.xom.CChangelogXMLReader;
+import nu.xom.Document;
+import nu.xom.Element;
+import nu.xom.ParsingException;
+import nu.xom.Serializer;
+import nu.xom.ValidityException;
+import org.junit.Assume;
+import org.junit.Test;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import nu.xom.Document;
-import nu.xom.Element;
-import nu.xom.ParsingException;
-import nu.xom.Serializer;
-import nu.xom.ValidityException;
-
-import org.junit.Assume;
-import org.junit.Test;
-import org.xml.sax.SAXException;
-
-import com.io7m.changelog.core.CChangeType;
-import com.io7m.changelog.core.CChangelog;
-import com.io7m.changelog.core.CChangelogBuilderType;
-import com.io7m.changelog.core.CItem;
-import com.io7m.changelog.core.CRelease;
-import com.io7m.changelog.core.CVersionStandard;
-import com.io7m.changelog.xom.CAtomFeedMeta;
-import com.io7m.changelog.xom.CAtomFeedMetaBuilderType;
-import com.io7m.changelog.xom.CChangelogAtomWriter;
-import com.io7m.changelog.xom.CChangelogXMLReader;
 
 public class CChangelogAtomWriterTest
 {
-  @SuppressWarnings("static-method") @Test public void testLog()
+  @SuppressWarnings("static-method")
+  @Test
+  public void testLog()
     throws MalformedURLException,
-      ValidityException,
-      IOException,
-      SAXException,
-      ParserConfigurationException,
-      ParsingException,
-      URISyntaxException,
-      ParseException
+    ValidityException,
+    IOException,
+    SAXException,
+    ParserConfigurationException,
+    ParsingException,
+    URISyntaxException,
+    ParseException
   {
     Assume.assumeTrue(false);
 
     final File file = new File("../README-CHANGES.xml");
     final CChangelog cc0 = CChangelogXMLReader.readFromURI(file.toURI());
 
-    final CAtomFeedMetaBuilderType builder = CAtomFeedMeta.newBuilder();
+    final CAtomFeedMeta.Builder builder = CAtomFeedMeta.builder();
     builder.setAuthorEmail("someone@example.com");
     builder.setAuthorName("Someone");
     builder.setTitle("Example feed");
-    builder.setURI(new URI("http://example.com"));
+    builder.setUri(new URI("http://example.com"));
     final CAtomFeedMeta meta = builder.build();
 
     final Element e = CChangelogAtomWriter.writeElement(meta, cc0);
@@ -81,49 +77,51 @@ public class CChangelogAtomWriterTest
     s.write(d);
   }
 
-  @SuppressWarnings("static-method") @Test public void testPlain()
+  @SuppressWarnings("static-method")
+  @Test
+  public void testPlain()
     throws URISyntaxException,
-      ParseException,
-      IOException
+    ParseException,
+    IOException
   {
-    final CChangelogBuilderType b = CChangelog.newBuilder();
-    b.setProjectName("example");
-    b.addTicketSystem("t", new URI("http://example.com/tickets/"));
-    final Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2014-01-01");
-    final List<CItem> items = new ArrayList<CItem>();
+    final CChangelog.Builder b = CChangelog.builder();
+    b.setProject("example");
+    b.putTicketSystems("t", new URI("http://example.com/tickets/"));
+    final LocalDate date = LocalDate.parse("2014-01-01");
+    final List<CItem> items = new ArrayList<>();
 
-    items.add(CItem.newItem(
-      new ArrayList<String>(),
-      "Summary 0",
+    items.add(CItem.of(
       date,
+      "Summary 0",
+      new ArrayList<>(),
       CChangeType.CHANGE_TYPE_CODE_FIX));
 
-    final ArrayList<String> tickets = new ArrayList<String>();
+    final ArrayList<String> tickets = new ArrayList<>();
     tickets.add("23");
     tickets.add("48");
-    items.add(CItem.newItem(
-      tickets,
-      "Summary 1",
+    items.add(CItem.of(
       date,
+      "Summary 1",
+      tickets,
       CChangeType.CHANGE_TYPE_CODE_CHANGE));
 
-    items.add(CItem.newItem(
-      new ArrayList<String>(),
-      "Summary 2",
+    items.add(CItem.of(
       date,
+      "Summary 2",
+      new ArrayList<>(),
       CChangeType.CHANGE_TYPE_CODE_NEW));
 
-    b.addRelease(CRelease.newRelease(
-      "t",
+    b.addReleases(CRelease.of(
       date,
-      CVersionStandard.parse("1.0.0"),
-      items));
+      items,
+      "t",
+      CVersions.parse("1.0.0")));
 
-    final CAtomFeedMetaBuilderType builder = CAtomFeedMeta.newBuilder();
+    final CAtomFeedMeta.Builder builder = CAtomFeedMeta.builder();
     builder.setAuthorEmail("someone@example.com");
     builder.setAuthorName("Someone");
     builder.setTitle("Example feed");
-    builder.setURI(new URI("http://example.com"));
+    builder.setUri(new URI("http://example.com"));
     final CAtomFeedMeta meta = builder.build();
 
     final Element e = CChangelogAtomWriter.writeElement(meta, b.build());

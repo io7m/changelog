@@ -1,10 +1,10 @@
 /*
- * Copyright © 2014 <code@io7m.com> http://io7m.com
- * 
+ * Copyright © 2016 <code@io7m.com> http://io7m.com
+ *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
  * copyright notice and this permission notice appear in all copies.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
  * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
  * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
@@ -14,61 +14,46 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.changelog.xom;
+package com.io7m.changelog.core;
 
-import java.net.URI;
+import org.immutables.value.Value;
+
+import java.time.LocalDate;
+import java.util.List;
 
 /**
- * The type of mutable atom feed builders.
+ * A changelog item for a specific release.
  */
 
-public interface CAtomFeedMetaBuilderType
+@CImmutableStyleType
+@Value.Immutable
+public interface CItemType
 {
   /**
-   * Construct a new feed based on the parameters so far.
-   * 
-   * @return A feed
+   * @return The change date
    */
 
-  CAtomFeedMeta build();
+  @Value.Parameter
+  LocalDate date();
 
   /**
-   * Set the feed author email address.
-   * 
-   * @param email
-   *          The email
+   * @return The change summary
    */
 
-  void setAuthorEmail(
-    final String email);
+  @Value.Parameter
+  String summary();
 
   /**
-   * Set the feed author name.
-   * 
-   * @param name
-   *          The name
+   * @return The change tickets
    */
 
-  void setAuthorName(
-    final String name);
+  @Value.Parameter
+  List<String> tickets();
 
   /**
-   * Set the feed title.
-   * 
-   * @param title
-   *          The title
+   * @return The change type
    */
 
-  void setTitle(
-    final String title);
-
-  /**
-   * Set the feed URI.
-   * 
-   * @param uri
-   *          The URI
-   */
-
-  void setURI(
-    final URI uri);
+  @Value.Parameter
+  CChangeType type();
 }

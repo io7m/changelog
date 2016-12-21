@@ -1,5 +1,5 @@
 /*
- * Copyright © 2014 <code@io7m.com> http://io7m.com
+ * Copyright © 2016 <code@io7m.com> http://io7m.com
  * 
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -16,24 +16,21 @@
 
 package com.io7m.changelog.plugin;
 
-import java.io.File;
-import java.net.URI;
-import java.util.Locale;
-
+import com.io7m.changelog.xom.CAtomFeedMeta;
 import org.apache.maven.doxia.siterenderer.Renderer;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.reporting.AbstractMavenReport;
 import org.apache.maven.reporting.MavenReportException;
 
-import com.io7m.changelog.xom.CAtomFeedMeta;
-import com.io7m.changelog.xom.CAtomFeedMetaBuilderType;
+import java.io.File;
+import java.net.URI;
+import java.util.Locale;
 
 /**
  * The changelog page report plugin.
- * 
+ *
  * @goal changelog
- * 
  * @phase site
  */
 
@@ -41,15 +38,15 @@ public final class ChangelogReportPlugin extends AbstractMavenReport
 {
   /**
    * The file containing an XML changelog.
-   * 
+   *
    * @parameter
    */
 
-  private File         file;
+  private File file;
 
   /**
    * The current maven project.
-   * 
+   *
    * @component
    */
 
@@ -57,55 +54,62 @@ public final class ChangelogReportPlugin extends AbstractMavenReport
 
   /**
    * The name of the Atom feed author.
-   * 
+   *
    * @parameter
    */
 
-  private String       feedAuthorName;
+  private String feedAuthorName;
 
   /**
    * The email of the Atom feed author.
-   * 
+   *
    * @parameter
    */
 
-  private String       feedAuthorEmail;
+  private String feedAuthorEmail;
 
-  @Override public String getOutputName()
+  @Override
+  public String getOutputName()
   {
     return "changes";
   }
 
-  @Override public String getName(
+  @Override
+  public String getName(
     final Locale locale)
   {
     return "Changelog generation";
   }
 
-  @Override public String getDescription(
+  @Override
+  public String getDescription(
     final Locale locale)
   {
     return "Generate a changelog page.";
   }
 
-  @Override protected Renderer getSiteRenderer()
+  @Override
+  protected Renderer getSiteRenderer()
   {
     // TODO Auto-generated method stub
     throw new AssertionError("Unimplemented");
   }
 
-  @Override protected String getOutputDirectory()
+  @Override
+  protected String getOutputDirectory()
   {
     // TODO Auto-generated method stub
     throw new AssertionError("Unimplemented");
   }
 
-  @Override protected MavenProject getProject()
+  @Override
+  protected MavenProject getProject()
   {
     return this.project;
   }
 
-  @Override protected void executeReport(
+  @Override
+  protected void executeReport(
     final Locale locale)
     throws MavenReportException
   {
@@ -126,11 +130,11 @@ public final class ChangelogReportPlugin extends AbstractMavenReport
       final File atom =
         new File(this.getReportOutputDirectory(), "releases.atom");
 
-      final CAtomFeedMetaBuilderType builder = CAtomFeedMeta.newBuilder();
+      final CAtomFeedMeta.Builder builder = CAtomFeedMeta.builder();
       builder.setAuthorEmail(this.feedAuthorEmail);
       builder.setAuthorName(this.feedAuthorName);
       builder.setTitle(this.project.getName() + " Releases");
-      builder.setURI(new URI(this.project.getUrl() + "/releases.atom"));
+      builder.setUri(new URI(this.project.getUrl() + "/releases.atom"));
       final CAtomFeedMeta meta = builder.build();
 
       final ChangelogReport r =

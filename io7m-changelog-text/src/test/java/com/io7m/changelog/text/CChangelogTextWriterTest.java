@@ -1,5 +1,5 @@
 /*
- * Copyright © 2014 <code@io7m.com> http://io7m.com
+ * Copyright © 2016 <code@io7m.com> http://io7m.com
  * 
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -16,62 +16,62 @@
 
 package com.io7m.changelog.text;
 
+import com.io7m.changelog.core.CChangeType;
+import com.io7m.changelog.core.CChangelog;
+import com.io7m.changelog.core.CItem;
+import com.io7m.changelog.core.CRelease;
+import com.io7m.changelog.core.CVersionStandard;
+import com.io7m.changelog.core.CVersions;
+import org.junit.Test;
+
 import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import org.junit.Test;
-
-import com.io7m.changelog.core.CChangeType;
-import com.io7m.changelog.core.CChangelog;
-import com.io7m.changelog.core.CChangelogBuilderType;
-import com.io7m.changelog.core.CItem;
-import com.io7m.changelog.core.CRelease;
-import com.io7m.changelog.core.CVersionStandard;
 
 public class CChangelogTextWriterTest
 {
-  @SuppressWarnings("static-method") @Test public void testPlain()
+  @SuppressWarnings("static-method")
+  @Test
+  public void testPlain()
     throws URISyntaxException,
-      ParseException
+    ParseException
   {
-    final CChangelogBuilderType b = CChangelog.newBuilder();
-    b.setProjectName("example");
-    b.addTicketSystem("t", new URI("http://example.com/tickets/"));
-    final Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2014-01-01");
-    final List<CItem> items = new ArrayList<CItem>();
+    final CChangelog.Builder b = CChangelog.builder();
+    b.setProject("example");
+    b.putTicketSystems("t", new URI("http://example.com/tickets/"));
+    final LocalDate date = LocalDate.parse("2014-01-01");
+    final List<CItem> items = new ArrayList<>();
 
-    items.add(CItem.newItem(
-      new ArrayList<String>(),
-      "Summary 0",
+    items.add(CItem.of(
       date,
+      "Summary 0",
+      new ArrayList<>(),
       CChangeType.CHANGE_TYPE_CODE_FIX));
 
-    final ArrayList<String> tickets = new ArrayList<String>();
+    final ArrayList<String> tickets = new ArrayList<>();
     tickets.add("23");
     tickets.add("48");
-    items.add(CItem.newItem(
-      tickets,
-      "Summary 1",
+    items.add(CItem.of(
       date,
+      "Summary 1",
+      tickets,
       CChangeType.CHANGE_TYPE_CODE_CHANGE));
 
-    items.add(CItem.newItem(
-      new ArrayList<String>(),
-      "Summary 2",
+    items.add(CItem.of(
       date,
+      "Summary 2",
+      new ArrayList<>(),
       CChangeType.CHANGE_TYPE_CODE_NEW));
 
-    b.addRelease(CRelease.newRelease(
-      "t",
+    b.addReleases(CRelease.of(
       date,
-      CVersionStandard.parse("1.0.0"),
-      items));
+      items,
+      "t",
+      CVersions.parse("1.0.0")));
 
     final PrintWriter writer = new PrintWriter(System.out);
     CChangelogTextWriter.writeChangelog(b.build(), writer);
