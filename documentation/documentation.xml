@@ -19,7 +19,7 @@
 <s:document
   xmlns:s="http://schemas.io7m.com/structural/2.1.0"
   xmlns:xi="http://www.w3.org/2001/XInclude">
-  <s:document-title>io7m-changelog 2.1.2 Documentation</s:document-title>
+  <s:document-title>io7m-changelog 3.0.1 Documentation</s:document-title>
   <s:document-style>documentation.css</s:document-style>
   <s:document-contents/>
 
@@ -64,17 +64,17 @@
           <s:verbatim s:type="example"><![CDATA[<dependency>
   <groupId>com.io7m.changelog</groupId>
   <artifactId>io7m-changelog-core</artifactId>
-  <version>2.1.2</version>
+  <version>3.0.1</version>
 </dependency>
 <dependency>
   <groupId>com.io7m.changelog</groupId>
   <artifactId>io7m-changelog-xom</artifactId>
-  <version>2.1.2</version>
+  <version>3.0.1</version>
 </dependency>
 <dependency>
   <groupId>com.io7m.changelog</groupId>
   <artifactId>io7m-changelog-text</artifactId>
-  <version>2.1.2</version>
+  <version>3.0.1</version>
 </dependency>]]></s:verbatim>
         </s:paragraph>
         <s:paragraph>
@@ -238,7 +238,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.]]>
         <s:verbatim><![CDATA[<plugin>
   <groupId>com.io7m.changelog</groupId>
   <artifactId>io7m-changelog-plugin</artifactId>
-  <version>2.1.2</version>
+  <version>3.0.1</version>
   <configuration>
     <file>README-CHANGES.xml</file>
     <feedAuthorEmail>contact@io7m.com</feedAuthorEmail>
