@@ -4,6 +4,16 @@
 
   <c:release c:ticket-system="com.io7m.fossil.changelog">
     <c:date>2016-12-21</c:date>
+    <c:version>3.0.1</c:version>
+    <c:item>
+      <c:date>2016-12-21</c:date>
+      <c:type-code-fix/>
+      <c:summary>Fix the command line frontend onejar configuration.</c:summary>
+    </c:item>
+  </c:release>
+
+  <c:release c:ticket-system="com.io7m.fossil.changelog">
+    <c:date>2016-12-21</c:date>
     <c:version>3.0.0</c:version>
     <c:item>
       <c:date>2016-12-21</c:date>
