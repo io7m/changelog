@@ -14,14 +14,14 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.changelog.text;
+package com.io7m.changelog.tests.text;
 
 import com.io7m.changelog.core.CChangeType;
 import com.io7m.changelog.core.CChangelog;
 import com.io7m.changelog.core.CItem;
 import com.io7m.changelog.core.CRelease;
-import com.io7m.changelog.core.CVersionStandard;
 import com.io7m.changelog.core.CVersions;
+import com.io7m.changelog.text.CChangelogTextWriter;
 import org.junit.Test;
 
 import java.io.PrintWriter;
@@ -32,7 +32,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CChangelogTextWriterTest
+public final class CChangelogTextWriterTest
 {
   @SuppressWarnings("static-method")
   @Test

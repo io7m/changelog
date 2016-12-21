@@ -20,6 +20,7 @@
     <module>io7m-changelog-documentation</module>
     <module>io7m-changelog-plugin</module>
     <module>io7m-changelog-schema</module>
+    <module>io7m-changelog-tests</module>
     <module>io7m-changelog-text</module>
     <module>io7m-changelog-xom</module>
   </modules>

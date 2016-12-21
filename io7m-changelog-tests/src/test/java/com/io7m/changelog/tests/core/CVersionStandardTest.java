@@ -1,4 +1,4 @@
-/*
+package com.io7m.changelog.tests.core;/*
  * Copyright © 2016 <code@io7m.com> http://io7m.com
  * 
  * Permission to use, copy, modify, and/or distribute this software for any
@@ -14,8 +14,6 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.changelog.tests.core;
-
 import com.io7m.changelog.core.CVersionStandard;
 import com.io7m.changelog.core.CVersionText;
 import com.io7m.changelog.core.CVersionType;
@@ -27,7 +25,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CVersionStandardTest
+public final class CVersionStandardTest
 {
   @Test(
     expected = IllegalArgumentException.class)
