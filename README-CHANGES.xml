@@ -3,9 +3,38 @@
   <c:project>io7m-changelog</c:project>
 
   <c:release c:ticket-system="com.io7m.fossil.changelog">
+    <c:date>2016-12-21</c:date>
+    <c:version>3.0.0</c:version>
+    <c:item>
+      <c:date>2016-12-21</c:date>
+      <c:type-code-change/>
+      <c:summary>The package now requires Java 8.</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2016-12-21</c:date>
+      <c:type-code-new/>
+      <c:summary>The published artifacts are now OSGi bundles.</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2016-12-21</c:date>
+      <c:type-code-change/>
+      <c:summary>Consistently use com.io7m.changelog.* everywhere (some packages were rooted at com.io7m.changelogs).</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2016-12-21</c:date>
+      <c:type-code-change/>
+      <c:summary>Replace most of the API with Immutables.org generated types.</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2016-12-21</c:date>
+      <c:type-code-new/>
+      <c:summary>Add a command-line frontend.</c:summary>
+    </c:item>
+  </c:release>
+
+  <c:release c:ticket-system="com.io7m.fossil.changelog">
     <c:date>2016-05-06</c:date>
     <c:version>2.1.2</c:version>
-
     <c:item>
       <c:date>2016-05-06</c:date>
       <c:type-code-fix/>

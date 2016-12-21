@@ -1,5 +1,5 @@
 /*
- * Copyright © 2014 <code@io7m.com> http://io7m.com
+ * Copyright © 2016 <code@io7m.com> http://io7m.com
  * 
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -18,38 +18,37 @@ package com.io7m.changelog.core;
 
 /**
  * A version number visitor.
- * 
- * @param <A>
- *          The type of returned values
+ *
+ * @param <A> The type of returned values
  */
 
 public interface CVersionVisitorType<A>
 {
   /**
-   * Visit a {@link CVersionStandard}.
-   * 
-   * @param s
-   *          The number
-   * @return A value of type <code>A</code>
-   * @throws Exception
-   *           If required
+   * Visit a {@link CVersionStandardType}.
+   *
+   * @param s The number
+   *
+   * @return A value of type {@code A}
+   *
+   * @throws Exception If required
    */
 
   A standard(
-    final CVersionStandard s)
+    final CVersionStandardType s)
     throws Exception;
 
   /**
-   * Visit a {@link CVersionText}.
-   * 
-   * @param s
-   *          The number
-   * @return A value of type <code>A</code>
-   * @throws Exception
-   *           If required
+   * Visit a {@link CVersionTextType}.
+   *
+   * @param s The number
+   *
+   * @return A value of type {@code A}
+   *
+   * @throws Exception If required
    */
 
   A text(
-    final CVersionText s)
+    final CVersionTextType s)
     throws Exception;
 }

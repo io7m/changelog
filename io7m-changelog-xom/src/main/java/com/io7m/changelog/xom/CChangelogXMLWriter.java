@@ -1,5 +1,5 @@
 /*
- * Copyright © 2014 <code@io7m.com> http://io7m.com
+ * Copyright © 2016 <code@io7m.com> http://io7m.com
  * 
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -16,21 +16,19 @@
 
 package com.io7m.changelog.xom;
 
-import java.net.URI;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import nu.xom.Attribute;
-import nu.xom.Element;
-
 import com.io7m.changelog.core.CChangelog;
 import com.io7m.changelog.core.CItem;
 import com.io7m.changelog.core.CRelease;
 import com.io7m.changelog.core.CVersionType;
-import com.io7m.changelogs.schema.CSchema;
+import com.io7m.changelog.schema.CSchema;
+import nu.xom.Attribute;
+import nu.xom.Element;
+
+import java.net.URI;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A changelog XML writer.
@@ -38,39 +36,41 @@ import com.io7m.changelogs.schema.CSchema;
 
 public final class CChangelogXMLWriter
 {
+  private CChangelogXMLWriter()
+  {
+    throw new AssertionError("Unreachable");
+  }
+
   private static Element item(
     final String uri,
-    final DateFormat df,
+    final DateTimeFormatter df,
     final CItem i)
   {
     final Element e = new Element("c:item", uri);
 
-    for (final String t : i.getTickets()) {
+    for (final String t : i.tickets()) {
       final Element et = new Element("c:ticket", uri);
       et.appendChild(t);
       e.appendChild(et);
     }
 
     final Element es = new Element("c:summary", uri);
-    es.appendChild(i.getSummary());
+    es.appendChild(i.summary());
     final Element ed = new Element("c:date", uri);
-    ed.appendChild(df.format(i.getDate()));
+    ed.appendChild(df.format(i.date()));
 
-    switch (i.getType()) {
-      case CHANGE_TYPE_CODE_CHANGE:
-      {
+    switch (i.type()) {
+      case CHANGE_TYPE_CODE_CHANGE: {
         final Element ety = new Element("c:type-code-change", uri);
         e.appendChild(ety);
         break;
       }
-      case CHANGE_TYPE_CODE_FIX:
-      {
+      case CHANGE_TYPE_CODE_FIX: {
         final Element ety = new Element("c:type-code-fix", uri);
         e.appendChild(ety);
         break;
       }
-      case CHANGE_TYPE_CODE_NEW:
-      {
+      case CHANGE_TYPE_CODE_NEW: {
         final Element ety = new Element("c:type-code-new", uri);
         e.appendChild(ety);
         break;
@@ -84,27 +84,27 @@ public final class CChangelogXMLWriter
 
   private static Element release(
     final String uri,
-    final DateFormat df,
+    final DateTimeFormatter df,
     final CRelease r)
   {
-    final Date d = r.getDate();
-    final CVersionType v = r.getVersion();
+    final LocalDate d = r.date();
+    final CVersionType v = r.version();
     final Attribute at =
-      new Attribute("c:ticket-system", uri, r.getTicketSystemID());
+      new Attribute("c:ticket-system", uri, r.ticketSystemID());
 
     final Element ed = new Element("c:date", uri);
     ed.appendChild(df.format(d));
     final Element ev = new Element("c:version", uri);
-    ev.appendChild(v.toString());
+    ev.appendChild(v.toVersionString());
 
     final Element er = new Element("c:release", uri);
     er.addAttribute(at);
     er.appendChild(ed);
     er.appendChild(ev);
 
-    final List<CItem> items = r.getItems();
+    final List<CItem> items = r.items();
     for (final CItem i : items) {
-      er.appendChild(CChangelogXMLWriter.item(uri, df, i));
+      er.appendChild(item(uri, df, i));
     }
     return er;
   }
@@ -126,9 +126,9 @@ public final class CChangelogXMLWriter
 
   /**
    * Serialize the given changelog to XML.
-   * 
-   * @param c
-   *          The changelog
+   *
+   * @param c The changelog
+   *
    * @return An XML changelog
    */
 
@@ -144,31 +144,26 @@ public final class CChangelogXMLWriter
 
     {
       final Element ep = new Element("c:project", uri);
-      ep.appendChild(c.getProject());
+      ep.appendChild(c.project());
       e.appendChild(ep);
     }
 
     {
-      final Map<String, URI> m = c.getTicketSystemsMap();
+      final Map<String, URI> m = c.ticketSystems();
       for (final String id : m.keySet()) {
-        final Element et = CChangelogXMLWriter.ticketSystem(uri, m, id);
+        final Element et = ticketSystem(uri, m, id);
         e.appendChild(et);
       }
     }
 
     {
-      final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-      for (final CRelease r : c.getReleases()) {
-        final Element er = CChangelogXMLWriter.release(uri, df, r);
+      final DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+      for (final CRelease r : c.releases()) {
+        final Element er = release(uri, df, r);
         e.appendChild(er);
       }
     }
 
     return e;
-  }
-
-  private CChangelogXMLWriter()
-  {
-    throw new AssertionError("Unreachable");
   }
 }

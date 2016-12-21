@@ -1,5 +1,5 @@
 /*
- * Copyright © 2014 <code@io7m.com> http://io7m.com
+ * Copyright © 2016 <code@io7m.com> http://io7m.com
  * 
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -24,17 +24,22 @@ public interface CVersionType extends Comparable<CVersionType>
 {
   /**
    * Accept a generic visitor.
-   * 
-   * @param <A>
-   *          The type of returned values
-   * @param v
-   *          The visitor
+   *
+   * @param <A> The type of returned values
+   * @param v   The visitor
+   *
    * @return The value returned by the visitor
-   * @throws Exception
-   *           If the visitor raises {@link Exception}
+   *
+   * @throws Exception If the visitor raises {@link Exception}
    */
 
   <A> A versionAccept(
     final CVersionVisitorType<A> v)
     throws Exception;
+
+  /**
+   * @return The version number in canonical format
+   */
+
+  String toVersionString();
 }
