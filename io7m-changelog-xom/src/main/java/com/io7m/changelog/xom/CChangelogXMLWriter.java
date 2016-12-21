@@ -30,7 +30,7 @@ import com.io7m.changelog.core.CChangelog;
 import com.io7m.changelog.core.CItem;
 import com.io7m.changelog.core.CRelease;
 import com.io7m.changelog.core.CVersionType;
-import com.io7m.changelogs.schema.CSchema;
+import com.io7m.changelog.schema.CSchema;
 
 /**
  * A changelog XML writer.

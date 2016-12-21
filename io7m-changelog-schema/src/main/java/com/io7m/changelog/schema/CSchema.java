@@ -14,7 +14,7 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.changelogs.schema;
+package com.io7m.changelog.schema;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -47,7 +47,7 @@ public final class CSchema
   {
     try {
       return CSchema.class.getResource(
-        "/com/io7m/changelogs/schema/schema.rng").toURI();
+        "/com/io7m/changelog/schema/schema.rng").toURI();
     } catch (final URISyntaxException e) {
       throw new AssertionError(e);
     }
@@ -61,7 +61,7 @@ public final class CSchema
   {
     try {
       return CSchema.class.getResource(
-        "/com/io7m/changelogs/schema/schema.xsd").toURI();
+        "/com/io7m/changelog/schema/schema.xsd").toURI();
     } catch (final URISyntaxException e) {
       throw new AssertionError(e);
     }
@@ -75,7 +75,7 @@ public final class CSchema
   {
     try {
       return CSchema.class
-        .getResource("/com/io7m/changelogs/schema/xml.xsd")
+        .getResource("/com/io7m/changelog/schema/xml.xsd")
         .toURI();
     } catch (final URISyntaxException e) {
       throw new AssertionError(e);

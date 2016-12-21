@@ -35,6 +35,7 @@ import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.SchemaFactory;
 
+import com.io7m.changelog.schema.CSchema;
 import nu.xom.Attribute;
 import nu.xom.Builder;
 import nu.xom.Document;
@@ -55,7 +56,6 @@ import com.io7m.changelog.core.CItem;
 import com.io7m.changelog.core.CRelease;
 import com.io7m.changelog.core.CVersionStandard;
 import com.io7m.changelog.core.CVersionType;
-import com.io7m.changelogs.schema.CSchema;
 
 /**
  * A changelog XML writer.
@@ -71,7 +71,7 @@ public final class CChangelogXMLReader
   {
     private SAXParseException exception;
 
-    public TrivialErrorHandler()
+    TrivialErrorHandler()
     {
       // Nothing
     }

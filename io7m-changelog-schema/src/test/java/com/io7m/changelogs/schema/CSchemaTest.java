@@ -16,6 +16,7 @@
 
 package com.io7m.changelogs.schema;
 
+import com.io7m.changelog.schema.CSchema;
 import org.junit.Assert;
 import org.junit.Test;
 

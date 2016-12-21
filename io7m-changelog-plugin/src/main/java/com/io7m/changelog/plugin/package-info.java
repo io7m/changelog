@@ -18,5 +18,5 @@
  * Functions for accessing schema files from Java.
  */
 
-package com.io7m.changelogs.schema;
+package com.io7m.changelog.plugin;
 

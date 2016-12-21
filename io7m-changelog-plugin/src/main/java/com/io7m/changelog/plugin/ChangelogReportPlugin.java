@@ -14,7 +14,7 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.changelogs.plugin;
+package com.io7m.changelog.plugin;
 
 import java.io.File;
 import java.net.URI;
