@@ -14,35 +14,36 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.changelog.documentation;
+package com.io7m.changelog.cmdline;
 
-import com.io7m.junreachable.UnreachableCodeException;
-
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.beust.jcommander.IStringConverter;
 
 /**
- * Functions for retrieving the documentation.
+ * A converter for {@link CLLogLevel} values.
  */
 
-public final class CDocumentation
+public final class CLLogLevelConverter implements
+  IStringConverter<CLLogLevel>
 {
-  private CDocumentation()
-  {
-    throw new UnreachableCodeException();
-  }
-
   /**
-   * @return The URI of the documentation
+   * Construct a new converter.
    */
 
-  public static URI getDocumentationXMLLocation()
+  public CLLogLevelConverter()
   {
-    try {
-      return CDocumentation.class.getResource(
-        "/com/io7m/changelog/documentation/documentation.xml").toURI();
-    } catch (final URISyntaxException e) {
-      throw new UnreachableCodeException(e);
+
+  }
+
+  @Override
+  public CLLogLevel convert(final String value)
+  {
+    for (final CLLogLevel v : CLLogLevel.values()) {
+      if (value.equals(v.getName())) {
+        return v;
+      }
     }
+
+    throw new CLLogLevelUnrecognized(
+      "Unrecognized verbosity level: " + value);
   }
 }

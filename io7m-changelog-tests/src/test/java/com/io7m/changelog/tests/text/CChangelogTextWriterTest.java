@@ -22,6 +22,7 @@ import com.io7m.changelog.core.CItem;
 import com.io7m.changelog.core.CRelease;
 import com.io7m.changelog.core.CVersions;
 import com.io7m.changelog.text.CChangelogTextWriter;
+import com.io7m.changelog.text.CChangelogTextWriterConfiguration;
 import org.junit.Test;
 
 import java.io.PrintWriter;
@@ -74,6 +75,9 @@ public final class CChangelogTextWriterTest
       CVersions.parse("1.0.0")));
 
     final PrintWriter writer = new PrintWriter(System.out);
-    CChangelogTextWriter.writeChangelog(b.build(), writer);
+    CChangelogTextWriter.writeChangelog(
+      b.build(),
+      CChangelogTextWriterConfiguration.builder().build(),
+      writer);
   }
 }

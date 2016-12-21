@@ -150,7 +150,7 @@ public interface CVersionStandardType extends CVersionType
     builder.append(this.minor());
     builder.append(".");
     builder.append(this.patch());
-    if (this.qualifier().isEmpty() == false) {
+    if (!this.qualifier().isEmpty()) {
       builder.append("-");
       builder.append(this.qualifier());
     }

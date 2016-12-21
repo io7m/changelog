@@ -14,35 +14,9 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.changelog.documentation;
-
-import com.io7m.junreachable.UnreachableCodeException;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-
 /**
- * Functions for retrieving the documentation.
+ * Command line interface.
  */
 
-public final class CDocumentation
-{
-  private CDocumentation()
-  {
-    throw new UnreachableCodeException();
-  }
+@com.io7m.jnull.NonNullByDefault package com.io7m.changelog.cmdline;
 
-  /**
-   * @return The URI of the documentation
-   */
-
-  public static URI getDocumentationXMLLocation()
-  {
-    try {
-      return CDocumentation.class.getResource(
-        "/com/io7m/changelog/documentation/documentation.xml").toURI();
-    } catch (final URISyntaxException e) {
-      throw new UnreachableCodeException(e);
-    }
-  }
-}

@@ -14,35 +14,12 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.changelog.documentation;
+package com.io7m.changelog.cmdline;
 
-import com.io7m.junreachable.UnreachableCodeException;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-
-/**
- * Functions for retrieving the documentation.
- */
-
-public final class CDocumentation
+final class CLLogLevelUnrecognized extends RuntimeException
 {
-  private CDocumentation()
+  CLLogLevelUnrecognized(final String message)
   {
-    throw new UnreachableCodeException();
-  }
-
-  /**
-   * @return The URI of the documentation
-   */
-
-  public static URI getDocumentationXMLLocation()
-  {
-    try {
-      return CDocumentation.class.getResource(
-        "/com/io7m/changelog/documentation/documentation.xml").toURI();
-    } catch (final URISyntaxException e) {
-      throw new UnreachableCodeException(e);
-    }
+    super(message);
   }
 }

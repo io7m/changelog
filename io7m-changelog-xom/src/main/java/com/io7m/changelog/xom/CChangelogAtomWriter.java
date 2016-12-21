@@ -155,7 +155,7 @@ public final class CChangelogAtomWriter
     final StringBuilder text = new StringBuilder();
     text.append(c.project());
     text.append(" ");
-    text.append(r.version());
+    text.append(r.version().toVersionString());
     text.append(" released");
 
     et.appendChild(text.toString());

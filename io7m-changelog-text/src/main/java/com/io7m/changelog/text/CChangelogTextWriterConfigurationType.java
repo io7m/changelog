@@ -14,35 +14,37 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.changelog.documentation;
+package com.io7m.changelog.text;
 
-import com.io7m.junreachable.UnreachableCodeException;
+import com.io7m.changelog.core.CImmutableStyleType;
+import com.io7m.changelog.core.CVersionType;
+import org.immutables.value.Value;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.util.Optional;
 
 /**
- * Functions for retrieving the documentation.
+ * The type of text writer configurations.
  */
 
-public final class CDocumentation
+@CImmutableStyleType
+@Value.Immutable
+public interface CChangelogTextWriterConfigurationType
 {
-  private CDocumentation()
-  {
-    throw new UnreachableCodeException();
-  }
-
   /**
-   * @return The URI of the documentation
+   * @return The release, if any, to which the output should be restricted
    */
 
-  public static URI getDocumentationXMLLocation()
+  @Value.Parameter
+  Optional<CVersionType> release();
+
+  /**
+   * @return {@code true} iff dates should be shown in the output
+   */
+
+  @Value.Parameter
+  @Value.Default
+  default boolean showDates()
   {
-    try {
-      return CDocumentation.class.getResource(
-        "/com/io7m/changelog/documentation/documentation.xml").toURI();
-    } catch (final URISyntaxException e) {
-      throw new UnreachableCodeException(e);
-    }
+    return true;
   }
 }

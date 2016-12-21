@@ -25,6 +25,11 @@
       <c:type-code-change/>
       <c:summary>Replace most of the API with Immutables.org generated types.</c:summary>
     </c:item>
+    <c:item>
+      <c:date>2016-12-21</c:date>
+      <c:type-code-new/>
+      <c:summary>Add a command-line frontend.</c:summary>
+    </c:item>
   </c:release>
 
   <c:release c:ticket-system="com.io7m.fossil.changelog">
