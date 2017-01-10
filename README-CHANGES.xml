@@ -3,6 +3,17 @@
   <c:project>io7m-changelog</c:project>
 
   <c:release c:ticket-system="com.io7m.fossil.changelog">
+    <c:date>2017-01-10</c:date>
+    <c:version>3.0.2</c:version>
+    <c:item>
+      <c:date>2017-01-10</c:date>
+      <c:type-code-fix/>
+      <c:ticket>2</c:ticket>
+      <c:summary>Fix date formatting in report generation.</c:summary>
+    </c:item>
+  </c:release>
+
+  <c:release c:ticket-system="com.io7m.fossil.changelog">
     <c:date>2016-12-21</c:date>
     <c:version>3.0.1</c:version>
     <c:item>
