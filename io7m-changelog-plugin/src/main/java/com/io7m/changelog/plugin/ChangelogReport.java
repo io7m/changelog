@@ -118,7 +118,7 @@ final class ChangelogReport
       this.sink.text(String.format(
         "Release: %s %s",
         c.project(),
-        r.version()));
+        r.version().toVersionString()));
       this.sink.tableCell_();
       this.sink.tableRow_();
 
