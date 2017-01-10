@@ -37,9 +37,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -84,8 +83,6 @@ final class ChangelogReport
       throw new NullPointerException("Changelog");
     }
 
-    final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-
     this.sink.head();
     this.sink.title();
     this.sink.text("Changes");
@@ -109,10 +106,13 @@ final class ChangelogReport
 
     final Map<String, URI> ticket_systems = c.ticketSystems();
 
+    final DateTimeFormatter formatter =
+      DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
     for (final CRelease r : c.releases()) {
       this.sink.tableRow();
       this.sink.tableCell();
-      this.sink.text(df.format(r.date()));
+      this.sink.text(formatter.format(r.date()));
       this.sink.tableCell_();
       this.sink.tableCell();
       this.sink.text(String.format(
@@ -127,7 +127,7 @@ final class ChangelogReport
       for (final CItem i : r.items()) {
         this.sink.tableRow();
         this.sink.tableCell();
-        this.sink.text(df.format(i.date()));
+        this.sink.text(formatter.format(i.date()));
         this.sink.tableCell_();
         this.sink.tableCell();
 
