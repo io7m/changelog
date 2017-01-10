@@ -2,7 +2,7 @@
 <c:changelog xmlns:c="http://schemas.io7m.com/changelog/2.0.0">
   <c:project>io7m-changelog</c:project>
 
-  <c:release c:ticket-system="com.io7m.fossil.changelog">
+  <c:release c:ticket-system="com.io7m.github.changelog">
     <c:date>2017-01-10</c:date>
     <c:version>3.0.2</c:version>
     <c:item>
@@ -13,7 +13,7 @@
     </c:item>
   </c:release>
 
-  <c:release c:ticket-system="com.io7m.fossil.changelog">
+  <c:release c:ticket-system="com.io7m.github.changelog">
     <c:date>2016-12-21</c:date>
     <c:version>3.0.1</c:version>
     <c:item>
@@ -138,7 +138,12 @@
     </c:item>
   </c:release>
 
+  <c:ticket-system xml:id="com.io7m.github.changelog">
+    <c:ticket-url>https://github.com/io7m/changelog/issues/</c:ticket-url>
+  </c:ticket-system>
+
   <c:ticket-system xml:id="com.io7m.fossil.changelog">
     <c:ticket-url>http://fossil.io7m.com/repo.cgi/io7m-changelog/tktview?name=</c:ticket-url>
   </c:ticket-system>
+
 </c:changelog>
