@@ -7,14 +7,14 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.io7m.changelog</groupId>
-    <artifactId>io7m-changelog</artifactId>
+    <artifactId>com.io7m.changelog</artifactId>
     <version>3.0.3</version>
   </parent>
-  <artifactId>io7m-changelog-tests</artifactId>
+  <artifactId>com.io7m.changelog.schema</artifactId>
 
   <packaging>jar</packaging>
-  <name>io7m-changelog-tests</name>
-  <description>Software changelogs (Unit tests)</description>
+  <name>com.io7m.changelog.schema</name>
+  <description>Software changelogs (XML schema)</description>
   <url>http://io7m.github.io/changelog/</url>
 
   <scm>
@@ -25,27 +25,6 @@
   </scm>
 
   <dependencies>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>io7m-changelog-core</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>io7m-changelog-text</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>io7m-changelog-schema</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>io7m-changelog-xom</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -59,6 +38,11 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
       </plugin>
     </plugins>
   </build>

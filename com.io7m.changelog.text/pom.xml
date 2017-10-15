@@ -7,14 +7,14 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.io7m.changelog</groupId>
-    <artifactId>io7m-changelog</artifactId>
+    <artifactId>com.io7m.changelog</artifactId>
     <version>3.0.3</version>
   </parent>
-  <artifactId>io7m-changelog-core</artifactId>
+  <artifactId>com.io7m.changelog.text</artifactId>
 
   <packaging>bundle</packaging>
-  <name>io7m-changelog-core</name>
-  <description>Software changelogs (Core)</description>
+  <name>com.io7m.changelog.text</name>
+  <description>Software changelogs (Plain text processing)</description>
   <url>http://io7m.github.io/changelog/</url>
 
   <scm>
@@ -26,20 +26,19 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.io7m.junreachable</groupId>
-      <artifactId>io7m-junreachable-core</artifactId>
+      <groupId>com.io7m.jnull</groupId>
+      <artifactId>com.io7m.jnull.core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>com.io7m.changelog.core</artifactId>
+      <version>${project.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.immutables</groupId>
       <artifactId>value</artifactId>
       <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -58,7 +57,7 @@
         <extensions>true</extensions>
         <configuration>
           <instructions>
-            <Export-Package>com.io7m.changelog.core</Export-Package>
+            <Export-Package>com.io7m.changelog.text</Export-Package>
           </instructions>
         </configuration>
       </plugin>

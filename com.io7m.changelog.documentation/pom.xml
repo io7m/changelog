@@ -7,15 +7,19 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.io7m.changelog</groupId>
-    <artifactId>io7m-changelog</artifactId>
+    <artifactId>com.io7m.changelog</artifactId>
     <version>3.0.3</version>
   </parent>
-  <artifactId>io7m-changelog-documentation</artifactId>
+  <artifactId>com.io7m.changelog.documentation</artifactId>
 
   <packaging>jar</packaging>
-  <name>io7m-changelog-documentation</name>
+  <name>com.io7m.changelog.documentation</name>
   <description>Software changelogs (Documentation)</description>
   <url>http://io7m.github.io/changelog/</url>
+
+  <properties>
+    <mdep.analyze.skip>true</mdep.analyze.skip>
+  </properties>
 
   <scm>
     <url>${project.parent.scm.url}</url>
@@ -26,32 +30,32 @@
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>io7m-changelog-core</artifactId>
+      <artifactId>com.io7m.changelog.core</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>io7m-changelog-text</artifactId>
+      <artifactId>com.io7m.changelog.text</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>io7m-changelog-schema</artifactId>
+      <artifactId>com.io7m.changelog.schema</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>io7m-changelog-xom</artifactId>
+      <artifactId>com.io7m.changelog.xom</artifactId>
       <version>${project.version}</version>
     </dependency>
 
     <dependency>
       <groupId>com.io7m.jnull</groupId>
-      <artifactId>io7m-jnull-core</artifactId>
+      <artifactId>com.io7m.jnull.core</artifactId>
     </dependency>
     <dependency>
       <groupId>com.io7m.junreachable</groupId>
-      <artifactId>io7m-junreachable-core</artifactId>
+      <artifactId>com.io7m.junreachable.core</artifactId>
     </dependency>
   </dependencies>
 
