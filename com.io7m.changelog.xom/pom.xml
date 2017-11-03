@@ -67,6 +67,7 @@
         <extensions>true</extensions>
         <configuration>
           <instructions>
+            <Automatic-Module-Name>com.io7m.changelog.text</Automatic-Module-Name>
             <Export-Package>com.io7m.changelog.xom</Export-Package>
           </instructions>
         </configuration>
