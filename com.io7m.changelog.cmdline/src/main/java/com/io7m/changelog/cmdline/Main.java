@@ -28,8 +28,6 @@ import com.io7m.changelog.text.CChangelogTextWriterConfiguration;
 import com.io7m.changelog.xom.CAtomFeedMeta;
 import com.io7m.changelog.xom.CChangelogAtomWriter;
 import com.io7m.changelog.xom.CChangelogXMLReader;
-import com.io7m.jfunctional.Unit;
-import java.util.Objects;
 import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Serializer;
@@ -46,8 +44,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.Callable;
 
 /**
  * Main command line entry point.
@@ -127,8 +125,7 @@ public final class Main implements Runnable
       }
 
       final CommandType command = this.commands.get(cmd);
-      command.call();
-
+      command.execute();
     } catch (final ParameterException e) {
       final StringBuilder sb = new StringBuilder(128);
       this.commander.usage(sb);
@@ -140,9 +137,10 @@ public final class Main implements Runnable
     }
   }
 
-  private interface CommandType extends Callable<Unit>
+  private interface CommandType
   {
-
+    void execute()
+      throws Exception;
   }
 
   private class CommandRoot implements CommandType
@@ -159,7 +157,7 @@ public final class Main implements Runnable
     }
 
     @Override
-    public Unit call()
+    public void execute()
       throws Exception
     {
       final ch.qos.logback.classic.Logger root =
@@ -167,7 +165,6 @@ public final class Main implements Runnable
           Logger.ROOT_LOGGER_NAME);
       root.setLevel(this.verbose.toLevel());
       LOG.trace("start");
-      return Unit.unit();
     }
   }
 
@@ -180,10 +177,10 @@ public final class Main implements Runnable
     }
 
     @Override
-    public Unit call()
+    public void execute()
       throws Exception
     {
-      super.call();
+      super.execute();
 
       final Package p = this.getClass().getPackage();
       System.out.printf(
@@ -191,8 +188,6 @@ public final class Main implements Runnable
         p.getImplementationVendor(),
         p.getImplementationTitle(),
         p.getImplementationVersion());
-
-      return Unit.unit();
     }
   }
 
@@ -235,10 +230,10 @@ public final class Main implements Runnable
     }
 
     @Override
-    public Unit call()
+    public void execute()
       throws Exception
     {
-      super.call();
+      super.execute();
 
       final Path path = Paths.get(this.file);
       try (InputStream stream = Files.newInputStream(path)) {
@@ -260,8 +255,6 @@ public final class Main implements Runnable
         s.write(new Document(e));
         s.flush();
       }
-
-      return Unit.unit();
     }
   }
 
@@ -290,10 +283,10 @@ public final class Main implements Runnable
     }
 
     @Override
-    public Unit call()
+    public void execute()
       throws Exception
     {
-      super.call();
+      super.execute();
 
       final Optional<CVersionType> version;
       if (this.release != null) {
@@ -317,8 +310,6 @@ public final class Main implements Runnable
           CChangelogTextWriter.writeChangelog(clog, config_b.build(), writer);
         }
       }
-
-      return Unit.unit();
     }
   }
 }

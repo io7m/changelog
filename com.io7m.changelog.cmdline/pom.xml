@@ -54,10 +54,6 @@
       <groupId>com.io7m.xom</groupId>
       <artifactId>xom</artifactId>
     </dependency>
-    <dependency>
-      <groupId>com.io7m.jfunctional</groupId>
-      <artifactId>com.io7m.jfunctional.core</artifactId>
-    </dependency>
 
     <dependency>
       <groupId>com.beust</groupId>
