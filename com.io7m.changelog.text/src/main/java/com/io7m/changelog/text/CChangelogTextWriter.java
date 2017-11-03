@@ -20,7 +20,6 @@ import com.io7m.changelog.core.CChangelog;
 import com.io7m.changelog.core.CItem;
 import com.io7m.changelog.core.CRelease;
 import com.io7m.changelog.core.CVersionType;
-import com.io7m.jnull.NullCheck;
 
 import java.io.PrintWriter;
 import java.net.URI;
@@ -54,9 +53,9 @@ public final class CChangelogTextWriter
     final CChangelogTextWriterConfiguration config,
     final PrintWriter out)
   {
-    NullCheck.notNull(c, "Changelog");
-    NullCheck.notNull(config, "Configuration");
-    NullCheck.notNull(out, "Output");
+    Objects.requireNonNull(c, "Changelog");
+    Objects.requireNonNull(config, "Configuration");
+    Objects.requireNonNull(out, "Output");
 
     final StringBuilder line = new StringBuilder();
     for (final CRelease r : c.releases()) {

@@ -26,10 +26,6 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.io7m.jnull</groupId>
-      <artifactId>com.io7m.jnull.core</artifactId>
-    </dependency>
-    <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>com.io7m.changelog.core</artifactId>
       <version>${project.version}</version>

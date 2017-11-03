@@ -14,9 +14,18 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-/**
- * Functions for accessing schema files from Java.
- */
+package com.io7m.changelog.tests.schema;
 
-package com.io7m.changelog.plugin;
+import com.io7m.changelog.schema.CSchema;
+import org.junit.Assert;
+import org.junit.Test;
 
+public class CSchemaTest
+{
+  @SuppressWarnings("static-method") @Test public void testURIs()
+  {
+    Assert.assertNotNull(CSchema.getURISchemaRNG());
+    Assert.assertNotNull(CSchema.getURISchemaXSD());
+    Assert.assertNotNull(CSchema.getURIXMLXSD());
+  }
+}

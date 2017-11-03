@@ -17,7 +17,7 @@
 package com.io7m.changelog.cmdline;
 
 import ch.qos.logback.classic.Level;
-import com.io7m.jnull.NullCheck;
+import java.util.Objects;
 import com.io7m.junreachable.UnreachableCodeException;
 
 /**
@@ -61,7 +61,7 @@ public enum CLLogLevel
 
   CLLogLevel(final String in_name)
   {
-    this.name = NullCheck.notNull(in_name);
+    this.name = Objects.requireNonNull(in_name, "Name");
   }
 
   @Override

@@ -3,6 +3,27 @@
   <c:project>com.io7m.changelog</c:project>
 
   <c:release c:ticket-system="com.io7m.github.changelog">
+    <c:date>2017-11-03</c:date>
+    <c:version>4.0.0</c:version>
+
+    <c:item>
+      <c:date>2017-11-03</c:date>
+      <c:type-code-change/>
+      <c:summary>Remove the Maven plugin.</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2017-11-03</c:date>
+      <c:type-code-change/>
+      <c:summary>Remove the com.io7m.jnull dependency.</c:summary>
+    </c:item>
+    <c:item>
+      <c:date>2017-11-03</c:date>
+      <c:type-code-change/>
+      <c:summary>Require JDK 9</c:summary>
+    </c:item>
+  </c:release>
+
+  <c:release c:ticket-system="com.io7m.github.changelog">
     <c:date>2017-10-15</c:date>
     <c:version>3.1.0</c:version>
     <c:item>

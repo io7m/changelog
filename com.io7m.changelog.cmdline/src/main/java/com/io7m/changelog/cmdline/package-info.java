@@ -18,5 +18,5 @@
  * Command line interface.
  */
 
-@com.io7m.jnull.NonNullByDefault package com.io7m.changelog.cmdline;
+package com.io7m.changelog.cmdline;
 

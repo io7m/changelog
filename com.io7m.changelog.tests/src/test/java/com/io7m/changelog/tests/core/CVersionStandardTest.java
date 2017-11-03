@@ -129,7 +129,7 @@ public final class CVersionStandardTest
   }
 
   @Test(
-    expected = NullCheckException.class)
+    expected = NullPointerException.class)
   public void testParseNull()
   {
     CVersions.parse(null);

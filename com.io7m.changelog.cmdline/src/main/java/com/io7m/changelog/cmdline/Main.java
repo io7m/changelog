@@ -29,7 +29,7 @@ import com.io7m.changelog.xom.CAtomFeedMeta;
 import com.io7m.changelog.xom.CChangelogAtomWriter;
 import com.io7m.changelog.xom.CChangelogXMLReader;
 import com.io7m.jfunctional.Unit;
-import com.io7m.jnull.NullCheck;
+import java.util.Objects;
 import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Serializer;
@@ -66,9 +66,11 @@ public final class Main implements Runnable
   private final String[] args;
   private int exit_code;
 
-  private Main(final String[] in_args)
+  private Main(
+    final String[] in_args)
   {
-    this.args = NullCheck.notNull(in_args);
+    this.args =
+      Objects.requireNonNull(in_args, "Command line arguments");
 
     final CommandRoot r = new CommandRoot();
     final CommandVersion version = new CommandVersion();
