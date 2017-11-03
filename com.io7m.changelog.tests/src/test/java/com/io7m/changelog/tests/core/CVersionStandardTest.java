@@ -18,7 +18,6 @@ import com.io7m.changelog.core.CVersionStandard;
 import com.io7m.changelog.core.CVersionText;
 import com.io7m.changelog.core.CVersionType;
 import com.io7m.changelog.core.CVersions;
-import com.io7m.jnull.NullCheckException;
 import org.junit.Assert;
 import org.junit.Test;
 
