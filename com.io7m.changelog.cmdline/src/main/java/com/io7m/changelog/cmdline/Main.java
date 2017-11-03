@@ -239,7 +239,7 @@ public final class Main implements Runnable
       super.call();
 
       final Path path = Paths.get(this.file);
-      try (final InputStream stream = Files.newInputStream(path)) {
+      try (InputStream stream = Files.newInputStream(path)) {
         final CChangelog clog =
           CChangelogXMLReader.readFromStream(path.toUri(), stream);
 
@@ -301,7 +301,7 @@ public final class Main implements Runnable
       }
 
       final Path path = Paths.get(this.file);
-      try (final InputStream stream = Files.newInputStream(path)) {
+      try (InputStream stream = Files.newInputStream(path)) {
         final CChangelog clog =
           CChangelogXMLReader.readFromStream(path.toUri(), stream);
         final CChangelogTextWriterConfiguration.Builder config_b =
@@ -309,7 +309,7 @@ public final class Main implements Runnable
             .setRelease(version)
             .setShowDates(this.date);
 
-        try (final PrintWriter writer =
+        try (PrintWriter writer =
                new PrintWriter(
                  new OutputStreamWriter(System.out, StandardCharsets.UTF_8))) {
           CChangelogTextWriter.writeChangelog(clog, config_b.build(), writer);

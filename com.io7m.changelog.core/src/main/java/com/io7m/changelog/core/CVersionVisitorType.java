@@ -35,7 +35,7 @@ public interface CVersionVisitorType<A>
    */
 
   A standard(
-    final CVersionStandardType s)
+    CVersionStandardType s)
     throws Exception;
 
   /**
@@ -49,6 +49,6 @@ public interface CVersionVisitorType<A>
    */
 
   A text(
-    final CVersionTextType s)
+    CVersionTextType s)
     throws Exception;
 }

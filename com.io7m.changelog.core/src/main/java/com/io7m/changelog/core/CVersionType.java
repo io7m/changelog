@@ -34,7 +34,7 @@ public interface CVersionType extends Comparable<CVersionType>
    */
 
   <A> A versionAccept(
-    final CVersionVisitorType<A> v)
+    CVersionVisitorType<A> v)
     throws Exception;
 
   /**
