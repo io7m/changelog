@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta content="https://www.github.com/io7m/minisite; 0.0.3" name="generator"/>
+        <meta content="application/xhtml+xml; charset=UTF-8" http-equiv="Content-Type"/>
+        <style type="text/css">body {
+  margin: 2em;
+  padding: 0px;
+  font-family: sans-serif;
+}
+
+div#main {
+  max-width: 50em;
+}
+
+p {
+  text-align: justify;
+}
+
+.changelog {
+  font-family: monospace;
+}
+.changelog td {
+  vertical-align: text-top;
+  padding-right: 2em;
+}
+.changelog td:nth-child(1) {
+  width: 10em;
+}
+
+.overview_content_area {
+
+}
+
+.overview_title_area {
+
+}
+
+.overview_title_area::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.icon {
+  float: left;
+  margin-right: 1em;
+}
+</style>
+        <title>com.io7m.changelog</title>
+    </head>
+    <body>
+        <div id="main">
+            <div id="overview">
+                <div class="overview_title_area">
+                    <img alt="Project icon" class="icon" height="64"
+                        src="icon.png" width="64"/>
+                    <h1>com.io7m.changelog</h1>
+                </div>
+                <div class="overview_content_area">
+                    <div>
+                        <p>
+                            <a href="https://travis-ci.org/io7m/changelog">
+                                <img alt="Build status" src="https://img.shields.io/travis/io7m/changelog.svg?style=flat-square"/>
+                            </a>
+                            <a href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.io7m.changelog%22">
+                                <img alt="Maven Central" src="https://img.shields.io/maven-central/v/com.io7m.changelog/com.io7m.changelog.svg?style=flat-square"/>
+                            </a>
+                            <a href="https://www.codacy.com/app/github_79/changelog">
+                                <img alt="Codacy" src="https://img.shields.io/codacy/grade/8c6f31d9eb2f4541836b27ad7e95153c.svg?style=flat-square"/>
+                            </a>
+                            <a href="https://codecov.io/gh/io7m/changelog">
+                                <img alt="Codecov" src="https://img.shields.io/codecov/c/github/io7m/changelog.svg?style=flat-square"/>
+                            </a>
+                        </p>
+                        <p>
+    The changelog package defines a simple schema for software
+    changelogs. It categorizes changes by type. This allows, for
+    example, easy checking for backwards-incompatible changes on
+    each new release of a piece of software. The changelogs can also
+    reference ticketing systems to show that a given change fixes a
+    given ticket.
+  </p>
+                        <p>
+    The package also defines a set of Java classes to parse and
+    transform changelogs.
+  </p>
+                    </div>
+                    <ul>
+                        <li>
+                            <a href="#features">Features</a>
+                        </li>
+                        <li>
+                            <a href="#releases">Releases</a>
+                        </li>
+                        <li>
+                            <a href="#documentation">Documentation</a>
+                        </li>
+                        <li>
+                            <a href="#maven">Maven</a>
+                        </li>
+                        <li>
+                            <a href="#changes">Changes</a>
+                        </li>
+                        <li>
+                            <a href="#sources">Sources</a>
+                        </li>
+                        <li>
+                            <a href="#license">License</a>
+                        </li>
+                        <li>
+                            <a href="#bug-tracker">Bug Tracker</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="features">
+                <h2>Features</h2>
+                <div>
+                    <ul>
+                        <li>ISC license</li>
+                        <li>RELAX-NG schema</li>
+                        <li>XSD schema generated from RELAX-NG schema</li>
+                        <li>Automated test suite with high coverage</li>
+                    </ul>
+                </div>
+            </div>
+            <div id="releases">
+                <h2>Releases</h2>
+                <p>The current release is <tt>4.0.0-beta0001</tt>.</p>
+                <p>Source code and binaries are available from the <a href="https://repo1.maven.org/maven2/com/io7m/changelog">repository</a>.</p>
+            </div>
+            <div id="documentation">
+                <h2>Documentation</h2>
+                <p>Documentation for the <tt>4.0.0-beta0001</tt> release is available for reading online.</p>
+                <ul>
+                    <li>
+                        <a href="documentation/index-m.xhtml">XHTML - one page per section</a>
+                    </li>
+                    <li>
+                        <a href="documentation/index.xhtml">XHTML - single page</a>
+                    </li>
+                    <li>
+                        <a href="documentation/main.txt">UTF-8 plain text</a>
+                    </li>
+                </ul>
+
+                <p>Documentation for current and older releases is archived in the <a href="https://repo1.maven.org/maven2/com/io7m/changelog">repository</a>.</p>
+            </div>
+            <div id="maven">
+                <h2>Maven</h2>
+                <p>The following is a complete list of the project's modules expressed as Maven dependencies: </p>
+                <pre>&lt;dependency&gt;
+  &lt;groupId&gt;<a
+                        href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.io7m.changelog%22">com.io7m.changelog</a>&lt;/groupId&gt;
+  &lt;artifactId&gt;<a
+                        href="http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22com.io7m.changelog%22">com.io7m.changelog</a>&lt;/artifactId&gt;
+  &lt;version&gt;<a
+                        href="http://search.maven.org/#artifactdetails%7Ccom.io7m.changelog%7Ccom.io7m.changelog%7C4.0.0-beta0001%7Cjar">4.0.0-beta0001</a>&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+  &lt;groupId&gt;<a
+                        href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.io7m.changelog%22">com.io7m.changelog</a>&lt;/groupId&gt;
+  &lt;artifactId&gt;<a
+                        href="http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22com.io7m.changelog.checkstyle%22">com.io7m.changelog.checkstyle</a>&lt;/artifactId&gt;
+  &lt;version&gt;<a
+                        href="http://search.maven.org/#artifactdetails%7Ccom.io7m.changelog%7Ccom.io7m.changelog.checkstyle%7C4.0.0-beta0001%7Cjar">4.0.0-beta0001</a>&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+  &lt;groupId&gt;<a
+                        href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.io7m.changelog%22">com.io7m.changelog</a>&lt;/groupId&gt;
+  &lt;artifactId&gt;<a
+                        href="http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22com.io7m.changelog.cmdline%22">com.io7m.changelog.cmdline</a>&lt;/artifactId&gt;
+  &lt;version&gt;<a
+                        href="http://search.maven.org/#artifactdetails%7Ccom.io7m.changelog%7Ccom.io7m.changelog.cmdline%7C4.0.0-beta0001%7Cjar">4.0.0-beta0001</a>&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+  &lt;groupId&gt;<a
+                        href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.io7m.changelog%22">com.io7m.changelog</a>&lt;/groupId&gt;
+  &lt;artifactId&gt;<a
+                        href="http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22com.io7m.changelog.core%22">com.io7m.changelog.core</a>&lt;/artifactId&gt;
+  &lt;version&gt;<a
+                        href="http://search.maven.org/#artifactdetails%7Ccom.io7m.changelog%7Ccom.io7m.changelog.core%7C4.0.0-beta0001%7Cjar">4.0.0-beta0001</a>&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+  &lt;groupId&gt;<a
+                        href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.io7m.changelog%22">com.io7m.changelog</a>&lt;/groupId&gt;
+  &lt;artifactId&gt;<a
+                        href="http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22com.io7m.changelog.documentation%22">com.io7m.changelog.documentation</a>&lt;/artifactId&gt;
+  &lt;version&gt;<a
+                        href="http://search.maven.org/#artifactdetails%7Ccom.io7m.changelog%7Ccom.io7m.changelog.documentation%7C4.0.0-beta0001%7Cjar">4.0.0-beta0001</a>&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+  &lt;groupId&gt;<a
+                        href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.io7m.changelog%22">com.io7m.changelog</a>&lt;/groupId&gt;
+  &lt;artifactId&gt;<a
+                        href="http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22com.io7m.changelog.schema%22">com.io7m.changelog.schema</a>&lt;/artifactId&gt;
+  &lt;version&gt;<a
+                        href="http://search.maven.org/#artifactdetails%7Ccom.io7m.changelog%7Ccom.io7m.changelog.schema%7C4.0.0-beta0001%7Cjar">4.0.0-beta0001</a>&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+  &lt;groupId&gt;<a
+                        href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.io7m.changelog%22">com.io7m.changelog</a>&lt;/groupId&gt;
+  &lt;artifactId&gt;<a
+                        href="http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22com.io7m.changelog.tests%22">com.io7m.changelog.tests</a>&lt;/artifactId&gt;
+  &lt;version&gt;<a
+                        href="http://search.maven.org/#artifactdetails%7Ccom.io7m.changelog%7Ccom.io7m.changelog.tests%7C4.0.0-beta0001%7Cjar">4.0.0-beta0001</a>&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+  &lt;groupId&gt;<a
+                        href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.io7m.changelog%22">com.io7m.changelog</a>&lt;/groupId&gt;
+  &lt;artifactId&gt;<a
+                        href="http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22com.io7m.changelog.text%22">com.io7m.changelog.text</a>&lt;/artifactId&gt;
+  &lt;version&gt;<a
+                        href="http://search.maven.org/#artifactdetails%7Ccom.io7m.changelog%7Ccom.io7m.changelog.text%7C4.0.0-beta0001%7Cjar">4.0.0-beta0001</a>&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+  &lt;groupId&gt;<a
+                        href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.io7m.changelog%22">com.io7m.changelog</a>&lt;/groupId&gt;
+  &lt;artifactId&gt;<a
+                        href="http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22com.io7m.changelog.xom%22">com.io7m.changelog.xom</a>&lt;/artifactId&gt;
+  &lt;version&gt;<a href="http://search.maven.org/#artifactdetails%7Ccom.io7m.changelog%7Ccom.io7m.changelog.xom%7C4.0.0-beta0001%7Cjar">4.0.0-beta0001</a>&lt;/version&gt;
+&lt;/dependency&gt;
+
+</pre>
+                <p>Each release of the project is made available on <a href="http://search.maven.org">Maven Central</a> within ten minutes of the release announcement.</p>
+            </div>
+            <div id="changes">
+                <h2>Changes</h2>
+                <p>Subscribe to the releases <a href="releases.atom">atom feed</a>.</p>
+                <table class="changelog" summary="Changes for project com.io7m.changelog">
+                    <tr>
+                        <td>2017-11-03</td>
+                        <td>Release: com.io7m.changelog 4.0.0</td>
+                    </tr>
+                    <tr>
+                        <td>2017-11-03</td>
+                        <td>Code change: Remove the Maven plugin.</td>
+                    </tr>
+                    <tr>
+                        <td>2017-11-03</td>
+                        <td>Code change: Remove the com.io7m.jnull dependency.</td>
+                    </tr>
+                    <tr>
+                        <td>2017-11-03</td>
+                        <td>Code change: Require JDK 9</td>
+                    </tr>
+                    <tr>
+                        <td>2017-10-15</td>
+                        <td>Release: com.io7m.changelog 3.1.0</td>
+                    </tr>
+                    <tr>
+                        <td>2017-10-15</td>
+                        <td>Code fix: Rename project. Use the new primogenitor POM and 2017 project conventions.</td>
+                    </tr>
+                    <tr>
+                        <td>2017-01-10</td>
+                        <td>Release: com.io7m.changelog 3.0.3</td>
+                    </tr>
+                    <tr>
+                        <td>2017-01-10</td>
+
+                        <td>Code fix: Fix printing of version numbers in report generation. (tickets: <a href="https://github.com/io7m/changelog/issues/3">3</a>)</td>
+                    </tr>
+                    <tr>
+                        <td>2017-01-10</td>
+                        <td>Release: com.io7m.changelog 3.0.2</td>
+                    </tr>
+                    <tr>
+                        <td>2017-01-10</td>
+
+                        <td>Code fix: Fix date formatting in report generation. (tickets: <a href="https://github.com/io7m/changelog/issues/2">2</a>)</td>
+                    </tr>
+                    <tr>
+                        <td>2016-12-21</td>
+                        <td>Release: com.io7m.changelog 3.0.1</td>
+                    </tr>
+                    <tr>
+                        <td>2016-12-21</td>
+                        <td>Code fix: Fix the command line frontend onejar configuration.</td>
+                    </tr>
+                    <tr>
+                        <td>2016-12-21</td>
+                        <td>Release: com.io7m.changelog 3.0.0</td>
+                    </tr>
+                    <tr>
+                        <td>2016-12-21</td>
+                        <td>Code change: The package now requires Java 8.</td>
+                    </tr>
+                    <tr>
+                        <td>2016-12-21</td>
+                        <td>Code new: The published artifacts are now OSGi bundles.</td>
+                    </tr>
+                    <tr>
+                        <td>2016-12-21</td>
+                        <td>Code change: Consistently use com.io7m.changelog.* everywhere (some packages were rooted at com.io7m.changelogs).</td>
+                    </tr>
+                    <tr>
+                        <td>2016-12-21</td>
+                        <td>Code change: Replace most of the API with Immutables.org generated types.</td>
+                    </tr>
+                    <tr>
+                        <td>2016-12-21</td>
+                        <td>Code new: Add a command-line frontend.</td>
+                    </tr>
+                    <tr>
+                        <td>2016-05-06</td>
+                        <td>Release: com.io7m.changelog 2.1.2</td>
+                    </tr>
+                    <tr>
+                        <td>2016-05-06</td>
+                        <td>Code fix: Update site links and POM metadata</td>
+                    </tr>
+                    <tr>
+                        <td>2015-08-22</td>
+                        <td>Release: com.io7m.changelog 2.1.1</td>
+                    </tr>
+                    <tr>
+                        <td>2015-08-22</td>
+                        <td>Code fix: Migrate to GitHub.</td>
+                    </tr>
+                    <tr>
+                        <td>2014-12-03</td>
+                        <td>Code fix: Fix javadoc comments for Java 8's doclint.</td>
+                    </tr>
+                    <tr>
+                        <td>2014-12-03</td>
+                        <td>Code fix: Ensure source jars for unit tests are created.</td>
+                    </tr>
+                    <tr>
+                        <td>2014-04-19</td>
+                        <td>Release: com.io7m.changelog 2.1.0</td>
+                    </tr>
+                    <tr>
+                        <td>2014-04-19</td>
+                        <td>Code new: Add Maven report plugin.</td>
+                    </tr>
+                    <tr>
+                        <td>2014-04-19</td>
+                        <td>Code new: Add simple Atom feed generator.</td>
+                    </tr>
+                    <tr>
+                        <td>2014-04-17</td>
+                        <td>Release: com.io7m.changelog 2.0.0</td>
+                    </tr>
+                    <tr>
+                        <td>2014-04-17</td>
+                        <td>Code new: Allow for zero or more releases in a file.</td>
+                    </tr>
+                    <tr>
+                        <td>2014-04-17</td>
+                        <td>Code change: Do not allow xml:id on changelogs.</td>
+                    </tr>
+                    <tr>
+                        <td>2014-04-17</td>
+                        <td>Code new: Allow multiple tickets per changelog item.</td>
+                    </tr>
+                    <tr>
+                        <td>2014-04-17</td>
+                        <td>Code change: Redevelop package in Java, eliminate XSLT stylesheets.</td>
+                    </tr>
+                    <tr>
+                        <td>2014-04-17</td>
+                        <td>Code change: Change schema URI and increment version to 2.0.0</td>
+                    </tr>
+                    <tr>
+                        <td>2012-03-15</td>
+                        <td>Release: com.io7m.changelog 1.0.0</td>
+                    </tr>
+                    <tr>
+                        <td>2012-03-15</td>
+                        <td>Code new: Initial release.</td>
+                    </tr>
+                </table>
+            </div>
+            <div id="Sources">
+                <h2>Sources</h2>
+                <p>This project uses <a href="http://www.git-scm.com">Git</a> to manage source code.</p>
+                <p>Repository: <a href="https://github.com/io7m/changelog">https://github.com/io7m/changelog</a>
+                </p>
+                <pre>$ git clone https://github.com/io7m/changelog</pre>
+            </div>
+            <div id="license">
+                <h2>License</h2>
+                <pre>Copyright (c) 2016 &lt;code@io7m.com&gt; http://io7m.com
+
+Permission to use, copy, modify, and/or distribute this software for
+any purpose with or without fee is hereby granted, provided that the
+above copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR
+BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES
+OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
+WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
+ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
+SOFTWARE.
+</pre>
+            </div>
+            <div id="bug-tracker">
+                <h2>Bug Tracker</h2>
+                <p>The project uses <a href="http://github.com/io7m/changelog/issues">GitHub Issues</a> to track issues.</p>
+            </div>
+        </div>
+    </body>
+</html>
