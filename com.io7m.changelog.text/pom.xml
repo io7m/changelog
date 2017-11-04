@@ -8,7 +8,7 @@
   <parent>
     <groupId>com.io7m.changelog</groupId>
     <artifactId>com.io7m.changelog</artifactId>
-    <version>3.1.0</version>
+    <version>4.0.0-beta0001</version>
   </parent>
   <artifactId>com.io7m.changelog.text</artifactId>
 
@@ -25,10 +25,6 @@
   </scm>
 
   <dependencies>
-    <dependency>
-      <groupId>com.io7m.jnull</groupId>
-      <artifactId>com.io7m.jnull.core</artifactId>
-    </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>com.io7m.changelog.core</artifactId>
@@ -57,6 +53,7 @@
         <extensions>true</extensions>
         <configuration>
           <instructions>
+            <Automatic-Module-Name>com.io7m.changelog.text</Automatic-Module-Name>
             <Export-Package>com.io7m.changelog.text</Export-Package>
           </instructions>
         </configuration>

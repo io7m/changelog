@@ -1,8 +1,9 @@
 changelog
 ===
 
-[![Build Status](https://travis-ci.org/io7m/changelog.svg)](https://travis-ci.org/io7m/changelog)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.io7m.changelog/io7m-changelog/badge.png)](https://maven-badges.herokuapp.com/maven-central/com.io7m.changelog/io7m-changelog)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8c6f31d9eb2f4541836b27ad7e95153c)](https://www.codacy.com/app/github_79/changelog?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=io7m/changelog&amp;utm_campaign=Badge_Grade)
+[![Travis](https://img.shields.io/travis/io7m/changelog.svg?style=flat-square)](https://travis-ci.org/io7m/changelog)
+[![Maven Central](https://img.shields.io/maven-central/v/com.io7m.changelog/com.io7m.changelog.svg?style=flat-square)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.io7m.changelog%22)
+[![Codacy grade](https://img.shields.io/codacy/grade/8c6f31d9eb2f4541836b27ad7e95153c.svg?style=flat-square)](https://www.codacy.com/app/github_79/changelog)
+[![Codecov](https://img.shields.io/codecov/c/github/io7m/changelog.svg?style=flat-square)](https://codecov.io/gh/io7m/changelog)
 
-See https://io7m.github.io/changelog/ for more information.
+![changelog](./src/site/resources/changelog.jpg?raw=true)

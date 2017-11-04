@@ -28,8 +28,6 @@ import com.io7m.changelog.text.CChangelogTextWriterConfiguration;
 import com.io7m.changelog.xom.CAtomFeedMeta;
 import com.io7m.changelog.xom.CChangelogAtomWriter;
 import com.io7m.changelog.xom.CChangelogXMLReader;
-import com.io7m.jfunctional.Unit;
-import com.io7m.jnull.NullCheck;
 import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Serializer;
@@ -46,8 +44,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.Callable;
 
 /**
  * Main command line entry point.
@@ -66,9 +64,11 @@ public final class Main implements Runnable
   private final String[] args;
   private int exit_code;
 
-  private Main(final String[] in_args)
+  private Main(
+    final String[] in_args)
   {
-    this.args = NullCheck.notNull(in_args);
+    this.args =
+      Objects.requireNonNull(in_args, "Command line arguments");
 
     final CommandRoot r = new CommandRoot();
     final CommandVersion version = new CommandVersion();
@@ -125,8 +125,7 @@ public final class Main implements Runnable
       }
 
       final CommandType command = this.commands.get(cmd);
-      command.call();
-
+      command.execute();
     } catch (final ParameterException e) {
       final StringBuilder sb = new StringBuilder(128);
       this.commander.usage(sb);
@@ -138,9 +137,10 @@ public final class Main implements Runnable
     }
   }
 
-  private interface CommandType extends Callable<Unit>
+  private interface CommandType
   {
-
+    void execute()
+      throws Exception;
   }
 
   private class CommandRoot implements CommandType
@@ -157,7 +157,7 @@ public final class Main implements Runnable
     }
 
     @Override
-    public Unit call()
+    public void execute()
       throws Exception
     {
       final ch.qos.logback.classic.Logger root =
@@ -165,7 +165,6 @@ public final class Main implements Runnable
           Logger.ROOT_LOGGER_NAME);
       root.setLevel(this.verbose.toLevel());
       LOG.trace("start");
-      return Unit.unit();
     }
   }
 
@@ -178,10 +177,10 @@ public final class Main implements Runnable
     }
 
     @Override
-    public Unit call()
+    public void execute()
       throws Exception
     {
-      super.call();
+      super.execute();
 
       final Package p = this.getClass().getPackage();
       System.out.printf(
@@ -189,8 +188,6 @@ public final class Main implements Runnable
         p.getImplementationVendor(),
         p.getImplementationTitle(),
         p.getImplementationVersion());
-
-      return Unit.unit();
     }
   }
 
@@ -233,13 +230,13 @@ public final class Main implements Runnable
     }
 
     @Override
-    public Unit call()
+    public void execute()
       throws Exception
     {
-      super.call();
+      super.execute();
 
       final Path path = Paths.get(this.file);
-      try (final InputStream stream = Files.newInputStream(path)) {
+      try (InputStream stream = Files.newInputStream(path)) {
         final CChangelog clog =
           CChangelogXMLReader.readFromStream(path.toUri(), stream);
 
@@ -258,8 +255,6 @@ public final class Main implements Runnable
         s.write(new Document(e));
         s.flush();
       }
-
-      return Unit.unit();
     }
   }
 
@@ -288,10 +283,10 @@ public final class Main implements Runnable
     }
 
     @Override
-    public Unit call()
+    public void execute()
       throws Exception
     {
-      super.call();
+      super.execute();
 
       final Optional<CVersionType> version;
       if (this.release != null) {
@@ -301,7 +296,7 @@ public final class Main implements Runnable
       }
 
       final Path path = Paths.get(this.file);
-      try (final InputStream stream = Files.newInputStream(path)) {
+      try (InputStream stream = Files.newInputStream(path)) {
         final CChangelog clog =
           CChangelogXMLReader.readFromStream(path.toUri(), stream);
         final CChangelogTextWriterConfiguration.Builder config_b =
@@ -309,14 +304,12 @@ public final class Main implements Runnable
             .setRelease(version)
             .setShowDates(this.date);
 
-        try (final PrintWriter writer =
+        try (PrintWriter writer =
                new PrintWriter(
                  new OutputStreamWriter(System.out, StandardCharsets.UTF_8))) {
           CChangelogTextWriter.writeChangelog(clog, config_b.build(), writer);
         }
       }
-
-      return Unit.unit();
     }
   }
 }

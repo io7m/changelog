@@ -16,7 +16,7 @@
 
 package com.io7m.changelog.core;
 
-import com.io7m.jnull.NullCheck;
+import java.util.Objects;
 import com.io7m.junreachable.UnreachableCodeException;
 
 /**
@@ -41,7 +41,7 @@ public final class CVersions
   public static CVersionType parse(
     final String version)
   {
-    NullCheck.notNull(version, "Version");
+    Objects.requireNonNull(version, "Version");
 
     String ptr = version;
     int dot = ptr.indexOf('.');
