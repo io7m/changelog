@@ -17,35 +17,13 @@
 package com.io7m.changelog.cmdline;
 
 import com.beust.jcommander.JCommander;
-import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
-import com.beust.jcommander.Parameters;
-import com.io7m.changelog.core.CChangelog;
-import com.io7m.changelog.core.CVersionType;
-import com.io7m.changelog.core.CVersions;
-import com.io7m.changelog.text.CChangelogTextWriter;
-import com.io7m.changelog.text.CChangelogTextWriterConfiguration;
-import com.io7m.changelog.xom.CAtomFeedMeta;
-import com.io7m.changelog.xom.CChangelogAtomWriter;
-import com.io7m.changelog.xom.CChangelogXMLReader;
-import nu.xom.Document;
-import nu.xom.Element;
-import nu.xom.Serializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Main command line entry point.
@@ -59,7 +37,7 @@ public final class Main implements Runnable
     LOG = LoggerFactory.getLogger(Main.class);
   }
 
-  private final Map<String, CommandType> commands;
+  private final Map<String, CLCommandType> commands;
   private final JCommander commander;
   private final String[] args;
   private int exit_code;
@@ -70,10 +48,10 @@ public final class Main implements Runnable
     this.args =
       Objects.requireNonNull(in_args, "Command line arguments");
 
-    final CommandRoot r = new CommandRoot();
-    final CommandVersion version = new CommandVersion();
-    final CommandAtom atom = new CommandAtom();
-    final CommandPlain plain = new CommandPlain();
+    final CLCommandRoot r = new CLCommandRoot();
+    final CLCommandVersion version = new CLCommandVersion();
+    final CLCommandAtom atom = new CLCommandAtom();
+    final CLCommandPlain plain = new CLCommandPlain();
 
     this.commands = new HashMap<>(8);
     this.commands.put("atom", atom);
@@ -124,7 +102,7 @@ public final class Main implements Runnable
         return;
       }
 
-      final CommandType command = this.commands.get(cmd);
+      final CLCommandType command = this.commands.get(cmd);
       command.execute();
     } catch (final ParameterException e) {
       final StringBuilder sb = new StringBuilder(128);
@@ -134,182 +112,6 @@ public final class Main implements Runnable
     } catch (final Exception e) {
       LOG.error("{}", e.getMessage(), e);
       this.exit_code = 1;
-    }
-  }
-
-  private interface CommandType
-  {
-    void execute()
-      throws Exception;
-  }
-
-  private class CommandRoot implements CommandType
-  {
-    @Parameter(
-      names = "-verbose",
-      converter = CLLogLevelConverter.class,
-      description = "Set the minimum logging verbosity level")
-    private CLLogLevel verbose = CLLogLevel.LOG_INFO;
-
-    CommandRoot()
-    {
-
-    }
-
-    @Override
-    public void execute()
-      throws Exception
-    {
-      final ch.qos.logback.classic.Logger root =
-        (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(
-          Logger.ROOT_LOGGER_NAME);
-      root.setLevel(this.verbose.toLevel());
-      LOG.trace("start");
-    }
-  }
-
-  @Parameters(commandDescription = "Retrieve the program version")
-  private final class CommandVersion extends CommandRoot
-  {
-    CommandVersion()
-    {
-
-    }
-
-    @Override
-    public void execute()
-      throws Exception
-    {
-      super.execute();
-
-      final Package p = this.getClass().getPackage();
-      System.out.printf(
-        "%s %s %s\n",
-        p.getImplementationVendor(),
-        p.getImplementationTitle(),
-        p.getImplementationVersion());
-    }
-  }
-
-  @Parameters(commandDescription = "Generate an atom feed")
-  private final class CommandAtom extends CommandRoot
-  {
-    @Parameter(
-      names = "-file",
-      required = true,
-      description = "The changelog file")
-    private String file;
-
-    @Parameter(
-      names = "-author-email",
-      required = true,
-      description = "The author email address")
-    private String author_email;
-
-    @Parameter(
-      names = "-author-name",
-      required = true,
-      description = "The author name")
-    private String author_name;
-
-    @Parameter(
-      names = "-title",
-      required = true,
-      description = "The feed title")
-    private String title;
-
-    @Parameter(
-      names = "-uri",
-      required = true,
-      description = "The feed URI")
-    private URI uri;
-
-    CommandAtom()
-    {
-
-    }
-
-    @Override
-    public void execute()
-      throws Exception
-    {
-      super.execute();
-
-      final Path path = Paths.get(this.file);
-      try (InputStream stream = Files.newInputStream(path)) {
-        final CChangelog clog =
-          CChangelogXMLReader.readFromStream(path.toUri(), stream);
-
-        final CAtomFeedMeta meta =
-          CAtomFeedMeta.builder()
-            .setAuthorEmail(this.author_email)
-            .setAuthorName(this.author_name)
-            .setTitle(this.title)
-            .setUri(this.uri)
-            .build();
-
-        final Element e = CChangelogAtomWriter.writeElement(meta, clog);
-        final Serializer s = new Serializer(System.out, "UTF-8");
-        s.setIndent(2);
-        s.setMaxLength(80);
-        s.write(new Document(e));
-        s.flush();
-      }
-    }
-  }
-
-  @Parameters(commandDescription = "Generate a plain text log")
-  private final class CommandPlain extends CommandRoot
-  {
-    @Parameter(
-      names = "-file",
-      required = true,
-      description = "The changelog file")
-    private String file;
-
-    @Parameter(
-      names = "-release",
-      description = "The release")
-    private String release;
-
-    @Parameter(
-      names = "-show-dates",
-      description = "Show dates")
-    private boolean date;
-
-    CommandPlain()
-    {
-
-    }
-
-    @Override
-    public void execute()
-      throws Exception
-    {
-      super.execute();
-
-      final Optional<CVersionType> version;
-      if (this.release != null) {
-        version = Optional.of(CVersions.parse(this.release));
-      } else {
-        version = Optional.empty();
-      }
-
-      final Path path = Paths.get(this.file);
-      try (InputStream stream = Files.newInputStream(path)) {
-        final CChangelog clog =
-          CChangelogXMLReader.readFromStream(path.toUri(), stream);
-        final CChangelogTextWriterConfiguration.Builder config_b =
-          CChangelogTextWriterConfiguration.builder()
-            .setRelease(version)
-            .setShowDates(this.date);
-
-        try (PrintWriter writer =
-               new PrintWriter(
-                 new OutputStreamWriter(System.out, StandardCharsets.UTF_8))) {
-          CChangelogTextWriter.writeChangelog(clog, config_b.build(), writer);
-        }
-      }
     }
   }
 }
