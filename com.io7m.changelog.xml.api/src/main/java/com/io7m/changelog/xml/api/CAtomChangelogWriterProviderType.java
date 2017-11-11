@@ -22,6 +22,8 @@ import com.io7m.changelog.writer.api.CChangelogWriterType;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 /**
  * The type of Atom writer providers.
@@ -38,6 +40,7 @@ public interface CAtomChangelogWriterProviderType
   {
     return this.createWithConfiguration(
       CAtomChangelogWriterConfiguration.builder()
+        .setUpdated(ZonedDateTime.now(ZoneId.of("UTC")))
         .setAuthorEmail("ABUSE@example.com")
         .setAuthorName("Example Nobody")
         .setTitle("Releases")

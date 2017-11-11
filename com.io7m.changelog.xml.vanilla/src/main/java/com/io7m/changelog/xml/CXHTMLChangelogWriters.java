@@ -99,6 +99,56 @@ public final class CXHTMLChangelogWriters
         CDateFormatters.newDateTerseFormatter();
     }
 
+    private static List<Node> transformTickets(
+      final CChangelog changelog,
+      final Document doc,
+      final CRelease release,
+      final List<String> tickets)
+    {
+      return tickets.map(
+        ticket -> transformTicket(changelog, doc, release, ticket));
+    }
+
+    private static Node transformTicket(
+      final CChangelog changelog,
+      final Document doc,
+      final CRelease release,
+      final String ticket)
+    {
+      final CTicketSystem ticket_system =
+        changelog.ticketSystems().get(release.ticketSystemID()).get();
+      final Element a =
+        doc.createElement("a");
+      final URI target =
+        URI.create(ticket_system.uri().toString() + ticket);
+      a.setAttribute("href", target.toString());
+      a.setTextContent(ticket);
+      return a;
+    }
+
+    private static void row(
+      final Document doc,
+      final Element releases,
+      final String date_text,
+      final List<Node> td_text_nodes)
+    {
+      final Element tr =
+        doc.createElementNS(XHTML_NS, "tr");
+
+      final Element td_date =
+        doc.createElementNS(XHTML_NS, "td");
+      td_date.setTextContent(date_text);
+
+      final Element td_text =
+        doc.createElementNS(XHTML_NS, "td");
+      td_text_nodes.forEach(td_text::appendChild);
+
+      tr.appendChild(td_date);
+      tr.appendChild(td_text);
+
+      releases.appendChild(tr);
+    }
+
     @Override
     public void write(
       final CChangelog changelog)
@@ -180,56 +230,6 @@ public final class CXHTMLChangelogWriters
       }
 
       return nodes;
-    }
-
-    private static List<Node> transformTickets(
-      final CChangelog changelog,
-      final Document doc,
-      final CRelease release,
-      final List<String> tickets)
-    {
-      return tickets.map(
-        ticket -> transformTicket(changelog, doc, release, ticket));
-    }
-
-    private static Node transformTicket(
-      final CChangelog changelog,
-      final Document doc,
-      final CRelease release,
-      final String ticket)
-    {
-      final CTicketSystem ticket_system =
-        changelog.ticketSystems().get(release.ticketSystemID()).get();
-      final Element a =
-        doc.createElement("a");
-      final URI target =
-        URI.create(ticket_system.uri().toString() + ticket);
-      a.setAttribute("href", target.toString());
-      a.setTextContent(ticket);
-      return a;
-    }
-
-    private static void row(
-      final Document doc,
-      final Element releases,
-      final String date_text,
-      final List<Node> td_text_nodes)
-    {
-      final Element tr =
-        doc.createElementNS(XHTML_NS, "tr");
-
-      final Element td_date =
-        doc.createElementNS(XHTML_NS, "td");
-      td_date.setTextContent(date_text);
-
-      final Element td_text =
-        doc.createElementNS(XHTML_NS, "td");
-      td_text_nodes.forEach(td_text::appendChild);
-
-      tr.appendChild(td_date);
-      tr.appendChild(td_text);
-
-      releases.appendChild(tr);
     }
 
     private void serializeDocument(

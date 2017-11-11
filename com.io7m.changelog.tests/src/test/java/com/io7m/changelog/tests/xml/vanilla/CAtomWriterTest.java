@@ -14,54 +14,25 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.changelog.xml.api;
+package com.io7m.changelog.tests.xml.vanilla;
 
-import com.io7m.changelog.core.CImmutableStyleType;
-import org.immutables.value.Value;
+import com.io7m.changelog.tests.xml.api.CAtomWriterContract;
+import com.io7m.changelog.xml.CAtomChangelogWriters;
+import com.io7m.changelog.xml.CXMLChangelogParsers;
+import com.io7m.changelog.xml.api.CAtomChangelogWriterProviderType;
+import com.io7m.changelog.xml.api.CXMLChangelogParserProviderType;
 
-import java.net.URI;
-import java.time.ZonedDateTime;
-
-/**
- * The type of configurations for Atom feed writers.
- */
-
-@CImmutableStyleType
-@Value.Immutable
-public interface CAtomChangelogWriterConfigurationType
+public final class CAtomWriterTest extends CAtomWriterContract
 {
-  /**
-   * @return The updated time for the feed
-   */
+  @Override
+  protected CXMLChangelogParserProviderType parsers()
+  {
+    return new CXMLChangelogParsers();
+  }
 
-  @Value.Parameter
-  ZonedDateTime updated();
-
-  /**
-   * @return The email of the feed author
-   */
-
-  @Value.Parameter
-  String authorEmail();
-
-  /**
-   * @return The name of the feed author
-   */
-
-  @Value.Parameter
-  String authorName();
-
-  /**
-   * @return The feed title
-   */
-
-  @Value.Parameter
-  String title();
-
-  /**
-   * @return The URI of the feed
-   */
-
-  @Value.Parameter
-  URI uri();
+  @Override
+  protected CAtomChangelogWriterProviderType writers()
+  {
+    return new CAtomChangelogWriters();
+  }
 }

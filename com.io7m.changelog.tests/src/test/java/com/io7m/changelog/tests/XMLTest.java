@@ -36,7 +36,10 @@ public final class XMLTest
     final Path path = Paths.get(args[0]);
     try (InputStream stream = Files.newInputStream(path)) {
       final CXMLChangelogParserType parser =
-        parsers.create(path.toUri(), stream, CParseErrorHandlers.loggingHandler(LOG));
+        parsers.create(
+          path.toUri(),
+          stream,
+          CParseErrorHandlers.loggingHandler(LOG));
       final CChangelog c = parser.parse();
       LOG.debug("changelog: {}", c);
 

@@ -17,12 +17,15 @@
 package com.io7m.changelog.tests.xml;
 
 import com.io7m.changelog.core.CChangelog;
+import com.io7m.changelog.parser.api.CParseErrorHandlers;
 import com.io7m.changelog.xml.api.CXMLChangelogParserProviderType;
 import com.io7m.changelog.xml.api.CXMLChangelogParserType;
 import com.io7m.changelog.xml.api.CXMLChangelogWriterProviderType;
 import com.io7m.changelog.xml.api.CXMLChangelogWriterType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -33,6 +36,9 @@ import java.nio.file.Path;
 
 public abstract class CRoundTripContract
 {
+  private static final Logger LOG =
+    LoggerFactory.getLogger(CRoundTripContract.class);
+
   protected abstract CXMLChangelogParserProviderType parsers();
 
   protected abstract CXMLChangelogWriterProviderType writers();
@@ -63,7 +69,10 @@ public abstract class CRoundTripContract
     final CChangelog c0;
     {
       final CXMLChangelogParserType p =
-        pp.create(u.toURI(), u.openStream(), e -> { });
+        pp.create(
+          u.toURI(),
+          u.openStream(),
+          CParseErrorHandlers.loggingHandler(LOG));
       c0 = p.parse();
     }
 
@@ -78,7 +87,10 @@ public abstract class CRoundTripContract
     final CChangelog c1;
     {
       final CXMLChangelogParserType p =
-        pp.create(u.toURI(), u.openStream(), e -> { });
+        pp.create(
+          u.toURI(),
+          u.openStream(),
+          CParseErrorHandlers.loggingHandler(LOG));
       c1 = p.parse();
     }
 

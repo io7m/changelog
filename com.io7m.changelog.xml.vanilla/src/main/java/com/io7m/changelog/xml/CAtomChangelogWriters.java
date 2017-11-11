@@ -37,8 +37,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
@@ -147,8 +145,8 @@ public final class CAtomChangelogWriters
 
         final Element e_updated =
           doc.createElementNS(ATOM_NS, "a:updated");
-        e_updated.setTextContent(this.date_formatter.format(ZonedDateTime.now(
-          ZoneId.of("UTC"))));
+        e_updated.setTextContent(
+          this.date_formatter.format(this.configuration.updated()));
         e_root.appendChild(e_updated);
 
         for (final CRelease r : changelog.releases().values().reverse()) {

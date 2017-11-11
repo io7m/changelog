@@ -33,6 +33,8 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.ServiceLoader;
 
@@ -118,6 +120,7 @@ final class CLCommandAtom extends CLCommandRoot
       final CAtomChangelogWriterType writer =
         writer_provider.createWithConfiguration(
           CAtomChangelogWriterConfiguration.builder()
+            .setUpdated(ZonedDateTime.now(ZoneId.of("UTC")))
             .setUri(this.uri)
             .setTitle(this.title)
             .setAuthorName(this.author_name)
