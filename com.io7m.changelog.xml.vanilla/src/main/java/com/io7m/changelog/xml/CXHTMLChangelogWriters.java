@@ -167,6 +167,7 @@ public final class CXHTMLChangelogWriters
         root.setAttribute(
           "summary",
           "Changes for project " + changelog.project());
+        root.setAttribute("class", "changelog");
 
         for (final CRelease release : changelog.releases().values().reverse()) {
           this.writeRelease(changelog, doc, root, release);
