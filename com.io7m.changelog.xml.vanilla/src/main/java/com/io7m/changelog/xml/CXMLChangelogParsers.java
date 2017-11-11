@@ -356,6 +356,7 @@ public final class CXMLChangelogParsers
 
       this.change_builder.setModule(Optional.empty());
       this.change_builder.setBackwardsCompatible(true);
+      this.change_builder.setTickets(List.empty());
 
       for (int index = 0; index < attributes.getLength(); ++index) {
         switch (attributes.getLocalName(index)) {

@@ -14,30 +14,15 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.changelog.xml;
+package com.io7m.changelog.xml.api;
 
-import com.io7m.junreachable.UnreachableCodeException;
+import com.io7m.changelog.writer.api.CChangelogWriterType;
 
-import java.time.format.DateTimeFormatter;
+/**
+ * The type of XHTML writers.
+ */
 
-final class CDateFormatters
+public interface CXHTMLChangelogWriterType extends CChangelogWriterType
 {
-  private CDateFormatters()
-  {
-    throw new UnreachableCodeException();
-  }
-
-  /**
-   * @return A standard date formatter
-   */
-
-  public static DateTimeFormatter newDateFormatter()
-  {
-    return DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssxxx");
-  }
-
-  public static DateTimeFormatter newDateTerseFormatter()
-  {
-    return DateTimeFormatter.ofPattern("yyyy-MM-dd");
-  }
+  // No extra methods
 }

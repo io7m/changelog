@@ -55,6 +55,7 @@ public final class Main implements Runnable
     final CLCommandInitialize initialize = new CLCommandInitialize();
     final CLCommandAddChange add_change = new CLCommandAddChange();
     final CLCommandAddRelease add_release = new CLCommandAddRelease();
+    final CLCommandXHTML xhtml = new CLCommandXHTML();
 
     this.commands = new HashMap<>(8);
     this.commands.put("atom", atom);
@@ -63,6 +64,7 @@ public final class Main implements Runnable
     this.commands.put("initialize", initialize);
     this.commands.put("add-change", add_change);
     this.commands.put("add-release", add_release);
+    this.commands.put("xhtml", xhtml);
 
     this.commander = new JCommander(r);
     this.commander.setProgramName("changelog");
@@ -71,6 +73,7 @@ public final class Main implements Runnable
     this.commander.addCommand("version", version);
     this.commander.addCommand("add-change", add_change);
     this.commander.addCommand("add-release", add_release);
+    this.commander.addCommand("xhtml", xhtml);
   }
 
   /**
