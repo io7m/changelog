@@ -8,7 +8,7 @@
   <parent>
     <groupId>com.io7m.changelog</groupId>
     <artifactId>com.io7m.changelog</artifactId>
-    <version>4.0.0-beta0002</version>
+    <version>4.0.0-beta0004</version>
   </parent>
   <artifactId>com.io7m.changelog.tests</artifactId>
 
