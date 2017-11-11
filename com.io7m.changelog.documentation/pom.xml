@@ -8,7 +8,7 @@
   <parent>
     <groupId>com.io7m.changelog</groupId>
     <artifactId>com.io7m.changelog</artifactId>
-    <version>4.0.0-beta0001</version>
+    <version>4.0.0-beta0002</version>
   </parent>
   <artifactId>com.io7m.changelog.documentation</artifactId>
 
@@ -29,7 +29,12 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>com.io7m.changelog.text</artifactId>
+      <artifactId>com.io7m.changelog.cmdline</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>com.io7m.changelog.parser.api</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -39,7 +44,27 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>com.io7m.changelog.xom</artifactId>
+      <artifactId>com.io7m.changelog.text.api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>com.io7m.changelog.text.vanilla</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>com.io7m.changelog.writer.api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>com.io7m.changelog.xml.api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>com.io7m.changelog.xml.vanilla</artifactId>
       <version>${project.version}</version>
     </dependency>
 
@@ -50,6 +75,11 @@
     <dependency>
       <groupId>org.immutables</groupId>
       <artifactId>value</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.immutables.vavr</groupId>
+      <artifactId>vavr-encodings</artifactId>
       <scope>provided</scope>
     </dependency>
   </dependencies>

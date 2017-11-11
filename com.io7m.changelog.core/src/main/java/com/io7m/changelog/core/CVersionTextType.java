@@ -19,9 +19,7 @@ package com.io7m.changelog.core;
 import org.immutables.value.Value;
 
 /**
- * <p>
- * The type of arbitrary lexicographically ordered version strings.
- * </p>
+ * <p> The type of arbitrary lexicographically ordered version strings. </p>
  */
 
 @CImmutableStyleType

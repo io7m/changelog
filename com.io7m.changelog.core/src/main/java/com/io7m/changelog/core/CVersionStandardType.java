@@ -19,12 +19,9 @@ package com.io7m.changelog.core;
 import org.immutables.value.Value;
 
 /**
- * <p>
- * The type of standard version numbers of the form {@code M.N.P-S},
- * where {@code M} is the major version, {@code N} is the minor
- * version, {@code P} is the patch number, and {@code S} is an
- * arbitrary qualifier string.
- * </p>
+ * <p> The type of standard version numbers of the form {@code M.N.P-S}, where
+ * {@code M} is the major version, {@code N} is the minor version, {@code P} is
+ * the patch number, and {@code S} is an arbitrary qualifier string. </p>
  */
 
 @CImmutableStyleType

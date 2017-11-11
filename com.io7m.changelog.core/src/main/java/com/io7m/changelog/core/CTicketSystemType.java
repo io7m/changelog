@@ -17,15 +17,16 @@
 package com.io7m.changelog.core;
 
 import org.immutables.value.Value;
+import org.immutables.vavr.encodings.VavrEncodingEnabled;
 
 import java.net.URI;
-import java.util.List;
 
 /**
  * The definition of a ticket system.
  */
 
 @CImmutableStyleType
+@VavrEncodingEnabled
 @Value.Immutable
 public interface CTicketSystemType
 {
@@ -37,9 +38,20 @@ public interface CTicketSystemType
   String id();
 
   /**
-   * @return The list of URIs for the ticket system
+   * @return The URI for the ticket system
    */
 
   @Value.Parameter
-  List<URI> uris();
+  URI uri();
+
+  /**
+   * @return {@code true} if the ticket system is the current default
+   */
+
+  @Value.Default
+  @Value.Parameter
+  default boolean isDefault()
+  {
+    return false;
+  }
 }

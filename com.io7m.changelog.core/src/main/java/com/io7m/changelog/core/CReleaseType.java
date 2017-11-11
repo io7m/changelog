@@ -16,16 +16,18 @@
 
 package com.io7m.changelog.core;
 
+import io.vavr.collection.List;
 import org.immutables.value.Value;
+import org.immutables.vavr.encodings.VavrEncodingEnabled;
 
-import java.time.LocalDate;
-import java.util.List;
+import java.time.ZonedDateTime;
 
 /**
  * A specific release in a changelog.
  */
 
 @CImmutableStyleType
+@VavrEncodingEnabled
 @Value.Immutable
 public interface CReleaseType
 {
@@ -34,14 +36,14 @@ public interface CReleaseType
    */
 
   @Value.Parameter
-  LocalDate date();
+  ZonedDateTime date();
 
   /**
    * @return The list of release changes
    */
 
   @Value.Parameter
-  List<CItem> items();
+  List<CChange> changes();
 
   /**
    * @return The ticket system ID

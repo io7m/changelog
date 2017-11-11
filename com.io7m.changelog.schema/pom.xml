@@ -8,11 +8,11 @@
   <parent>
     <groupId>com.io7m.changelog</groupId>
     <artifactId>com.io7m.changelog</artifactId>
-    <version>4.0.0-beta0001</version>
+    <version>4.0.0-beta0002</version>
   </parent>
   <artifactId>com.io7m.changelog.schema</artifactId>
 
-  <packaging>jar</packaging>
+  <packaging>bundle</packaging>
   <name>com.io7m.changelog.schema</name>
   <description>Software changelogs (XML schema)</description>
   <url>http://io7m.github.io/changelog/</url>
@@ -25,16 +25,16 @@
         <artifactId>maven-checkstyle-plugin</artifactId>
       </plugin>
 
-      <!-- Insert an Automatic-Module-Name entry -->
+      <!-- Produce OSGi bundle -->
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <extensions>true</extensions>
         <configuration>
-          <archive>
-            <manifestEntries>
-              <Automatic-Module-Name>com.io7m.changelog.schema</Automatic-Module-Name>
-            </manifestEntries>
-          </archive>
+          <instructions>
+            <Automatic-Module-Name>com.io7m.changelog.schema</Automatic-Module-Name>
+            <Export-Package>com.io7m.changelog.schema</Export-Package>
+          </instructions>
         </configuration>
       </plugin>
     </plugins>
