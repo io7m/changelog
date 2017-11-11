@@ -69,6 +69,7 @@ public final class Main implements Runnable
     this.commander = new JCommander(r);
     this.commander.setProgramName("changelog");
     this.commander.addCommand("atom", atom);
+    this.commander.addCommand("initialize", initialize);
     this.commander.addCommand("plain", plain);
     this.commander.addCommand("version", version);
     this.commander.addCommand("add-change", add_change);
