@@ -1,0 +1,36 @@
+2017-11-03 Release: com.io7m.changelog 4.0.0
+2017-11-11 Change: (Backwards incompatible) Completely redesign the changelog format and remove the use of XOM
+2017-11-03 Change: (Backwards incompatible) Require JDK 9
+2017-11-03 Change: (Backwards incompatible) Remove the com.io7m.jnull dependency
+2017-11-03 Change: com.io7m.changelog.maven_plugin: (Backwards incompatible) Remove the Maven plugin
+2017-10-15 Release: com.io7m.changelog 3.1.0
+2017-10-15 Change: Rename project. Use the new primogenitor POM and 2017 project conventions.
+2017-01-10 Release: com.io7m.changelog 3.0.3
+2017-01-10 Change: Fix printing of version numbers in report generation.
+2017-01-10 Release: com.io7m.changelog 3.0.2
+2017-01-10 Change: Fix date formatting in report generation.
+2016-12-21 Release: com.io7m.changelog 3.0.1
+2016-12-21 Change: Fix the command line frontend onejar configuration.
+2016-12-21 Release: com.io7m.changelog 3.0.0
+2016-12-21 Change: Add a command-line frontend.
+2016-12-21 Change: (Backwards incompatible) Replace most of the API with Immutables.org generated types.
+2016-12-21 Change: (Backwards incompatible) Consistently use com.io7m.changelog.* everywhere (some packages were rooted at com.io7m.changelogs).
+2016-12-21 Change: The published artifacts are now OSGi bundles.
+2016-12-21 Change: (Backwards incompatible) The package now requires Java 8.
+2016-05-06 Release: com.io7m.changelog 2.1.2
+2016-05-06 Change: Update site links and POM metadata
+2015-08-22 Release: com.io7m.changelog 2.1.1
+2014-12-03 Change: Ensure source jars for unit tests are created.
+2014-12-03 Change: Fix javadoc comments for Java 8's doclint.
+2015-08-22 Change: Migrate to GitHub.
+2014-04-19 Release: com.io7m.changelog 2.1.0
+2014-04-19 Change: Add simple Atom feed generator.
+2014-04-19 Change: Add Maven report plugin.
+2014-04-17 Release: com.io7m.changelog 2.0.0
+2014-04-17 Change: (Backwards incompatible) Change schema URI and increment version to 2.0.0
+2014-04-17 Change: Redevelop package in Java, eliminate XSLT stylesheets.
+2014-04-17 Change: Allow multiple tickets per changelog item.
+2014-04-17 Change: Do not allow xml:id on changelogs.
+2014-04-17 Change: Allow for zero or more releases in a file.
+2012-03-15 Release: com.io7m.changelog 1.0.0
+2012-03-15 Change: Initial release.

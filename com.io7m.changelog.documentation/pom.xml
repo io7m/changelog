@@ -8,7 +8,7 @@
   <parent>
     <groupId>com.io7m.changelog</groupId>
     <artifactId>com.io7m.changelog</artifactId>
-    <version>4.0.0-beta0001</version>
+    <version>4.0.0-beta0002</version>
   </parent>
   <artifactId>com.io7m.changelog.documentation</artifactId>
 
@@ -21,12 +21,6 @@
     <mdep.analyze.skip>true</mdep.analyze.skip>
   </properties>
 
-  <scm>
-    <url>${project.parent.scm.url}</url>
-    <connection>${project.parent.scm.connection}</connection>
-    <developerConnection>${project.parent.scm.developerConnection}</developerConnection>
-  </scm>
-
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
@@ -35,7 +29,12 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>com.io7m.changelog.text</artifactId>
+      <artifactId>com.io7m.changelog.cmdline</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>com.io7m.changelog.parser.api</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -45,7 +44,27 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>com.io7m.changelog.xom</artifactId>
+      <artifactId>com.io7m.changelog.text.api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>com.io7m.changelog.text.vanilla</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>com.io7m.changelog.writer.api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>com.io7m.changelog.xml.api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>com.io7m.changelog.xml.vanilla</artifactId>
       <version>${project.version}</version>
     </dependency>
 
@@ -56,6 +75,11 @@
     <dependency>
       <groupId>org.immutables</groupId>
       <artifactId>value</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.immutables.vavr</groupId>
+      <artifactId>vavr-encodings</artifactId>
       <scope>provided</scope>
     </dependency>
   </dependencies>
@@ -191,7 +215,7 @@
         </executions>
       </plugin>
 
-      <!-- Unpack the documentation archive to the parent's generated site staging directory. -->
+      <!-- Unpack the documentation archive to the parent's generated minisite directory. -->
       <!-- This is arguably abusive, but there appears to be no other way to achieve it. -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -208,7 +232,7 @@
               <verbose>true</verbose>
               <fileset>
                 <directory>${project.build.directory}/${project.name}-${project.version}.zip/${project.name}-${project.version}/</directory>
-                <outputDirectory>${project.parent.build.directory}/staging/documentation/</outputDirectory>
+                <outputDirectory>${project.parent.build.directory}/minisite/documentation/</outputDirectory>
               </fileset>
             </configuration>
           </execution>

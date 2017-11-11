@@ -1,10 +1,10 @@
 /*
  * Copyright © 2016 <code@io7m.com> http://io7m.com
- * 
+ *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
  * copyright notice and this permission notice appear in all copies.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
  * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
  * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
@@ -16,27 +16,58 @@
 
 package com.io7m.changelog.core;
 
+import io.vavr.collection.List;
+import org.immutables.value.Value;
+import org.immutables.vavr.encodings.VavrEncodingEnabled;
+
+import java.time.ZonedDateTime;
+import java.util.Optional;
+
 /**
- * The type of changes.
+ * A change within a specific release.
  */
 
-public enum CChangeType
+@CImmutableStyleType
+@VavrEncodingEnabled
+@Value.Immutable
+public interface CChangeType
 {
   /**
-   * The type of backwards-incompatible code changes.
+   * @return The change date
    */
 
-  CHANGE_TYPE_CODE_CHANGE,
+  @Value.Parameter
+  ZonedDateTime date();
 
   /**
-   * The type of backwards-compatible bug fixes to code.
+   * @return The change summary
    */
 
-  CHANGE_TYPE_CODE_FIX,
+  @Value.Parameter
+  String summary();
 
   /**
-   * The type of backwards-compatible new code.
+   * @return The change tickets
    */
 
-  CHANGE_TYPE_CODE_NEW
+  @Value.Parameter
+  List<String> tickets();
+
+  /**
+   * @return The module that this change affects
+   */
+
+  @Value.Parameter
+  Optional<String> module();
+
+  /**
+   * @return {@code true} iff the change is backwards compatible
+   */
+
+  @Value.Default
+  @Value.Parameter
+  default boolean backwardsCompatible()
+  {
+    return true;
+  }
 }

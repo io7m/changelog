@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<div xmlns="http://www.w3.org/1999/xhtml">
+  <p>
+    <a href="https://travis-ci.org/io7m/changelog">
+      <img src="https://img.shields.io/travis/io7m/changelog.png?style=flat-square" alt="Build status"/>
+    </a>
+    <a href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.io7m.changelog%22">
+      <img src="https://img.shields.io/maven-central/v/com.io7m.changelog/com.io7m.changelog.png?style=flat-square" alt="Maven Central"/>
+    </a>
+    <a href="https://www.codacy.com/app/github_79/changelog">
+      <img src="https://img.shields.io/codacy/grade/8c6f31d9eb2f4541836b27ad7e95153c.png?style=flat-square" alt="Codacy"/>
+    </a>
+    <a href="https://codecov.io/gh/io7m/changelog">
+      <img src="https://img.shields.io/codecov/c/github/io7m/changelog.png?style=flat-square" alt="Codecov"/>
+    </a>
+  </p>
+
+  <p>
+    The changelog package defines a simple schema for software
+    changelogs. It categorizes changes by type. This allows, for
+    example, easy checking for backwards-incompatible changes on
+    each new release of a piece of software. The changelogs can also
+    reference ticketing systems to show that a given change fixes a
+    given ticket.
+  </p>
+  <p>
+    The package also defines a set of Java classes to parse and
+    transform changelogs.
+  </p>
+
+</div>

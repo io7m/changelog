@@ -33,23 +33,9 @@ public final class CSchema
 
   static {
     try {
-      XML_URI = new URI("http://schemas.io7m.com/changelog/2.0.0");
+      XML_URI = new URI("urn:com.io7m.changelog:4.0");
     } catch (final URISyntaxException e) {
       throw new RuntimeException(e);
-    }
-  }
-
-  /**
-   * @return The URI of the RNG schema file.
-   */
-
-  public static URI getURISchemaRNG()
-  {
-    try {
-      return CSchema.class.getResource(
-        "/com/io7m/changelog/schema/schema.rng").toURI();
-    } catch (final URISyntaxException e) {
-      throw new AssertionError(e);
     }
   }
 
@@ -62,21 +48,6 @@ public final class CSchema
     try {
       return CSchema.class.getResource(
         "/com/io7m/changelog/schema/schema.xsd").toURI();
-    } catch (final URISyntaxException e) {
-      throw new AssertionError(e);
-    }
-  }
-
-  /**
-   * @return The URI of the XSD XML schema file.
-   */
-
-  public static URI getURIXMLXSD()
-  {
-    try {
-      return CSchema.class
-        .getResource("/com/io7m/changelog/schema/xml.xsd")
-        .toURI();
     } catch (final URISyntaxException e) {
       throw new AssertionError(e);
     }

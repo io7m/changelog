@@ -17,15 +17,14 @@
 package com.io7m.changelog.tests.schema;
 
 import com.io7m.changelog.schema.CSchema;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class CSchemaTest
 {
-  @SuppressWarnings("static-method") @Test public void testURIs()
+  @Test
+  public void testURIs()
   {
-    Assert.assertNotNull(CSchema.getURISchemaRNG());
-    Assert.assertNotNull(CSchema.getURISchemaXSD());
-    Assert.assertNotNull(CSchema.getURIXMLXSD());
+    Assertions.assertNotNull(CSchema.getURISchemaXSD());
   }
 }

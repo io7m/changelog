@@ -16,17 +16,17 @@
 
 package com.io7m.changelog.core;
 
+import io.vavr.collection.Map;
+import io.vavr.collection.SortedMap;
 import org.immutables.value.Value;
-
-import java.net.URI;
-import java.util.List;
-import java.util.Map;
+import org.immutables.vavr.encodings.VavrEncodingEnabled;
 
 /**
  * The type of changelogs.
  */
 
 @CImmutableStyleType
+@VavrEncodingEnabled
 @Value.Immutable
 public interface CChangelogType
 {
@@ -42,12 +42,12 @@ public interface CChangelogType
    */
 
   @Value.Parameter
-  List<CRelease> releases();
+  SortedMap<CVersionType, CRelease> releases();
 
   /**
    * @return The ticket systems
    */
 
   @Value.Parameter
-  Map<String, URI> ticketSystems();
+  Map<String, CTicketSystem> ticketSystems();
 }

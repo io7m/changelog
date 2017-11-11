@@ -228,12 +228,6 @@
     <property name="max" value="1000"/>
   </module>
 
-  <!-- Check license headers of all Java files -->
-  <module name="Header">
-    <property name="header" value="/*\n * Copyright © 2016 &lt;code@io7m.com&gt; http://io7m.com\n"/>
-    <property name="charset" value="UTF-8"/>
-  </module>
-
   <module name="FileTabCharacter"/>
   <module name="JavadocPackage"/>
   <module name="NewlineAtEndOfFile"/>
