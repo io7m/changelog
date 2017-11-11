@@ -19,24 +19,32 @@ package com.io7m.changelog.cmdline;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.io7m.changelog.core.CChangelog;
+import com.io7m.changelog.core.CChangelogFilters;
 import com.io7m.changelog.core.CVersionType;
 import com.io7m.changelog.core.CVersions;
-import com.io7m.changelog.text.CChangelogTextWriter;
-import com.io7m.changelog.text.CChangelogTextWriterConfiguration;
-import com.io7m.changelog.xom.CChangelogXMLReader;
+import com.io7m.changelog.parser.api.CParseErrorHandlers;
+import com.io7m.changelog.text.api.CPlainChangelogWriterConfiguration;
+import com.io7m.changelog.text.api.CPlainChangelogWriterProviderType;
+import com.io7m.changelog.text.api.CPlainChangelogWriterType;
+import com.io7m.changelog.xml.api.CXMLChangelogParserProviderType;
+import com.io7m.changelog.xml.api.CXMLChangelogParserType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
+import java.util.ServiceLoader;
 
 @Parameters(commandDescription = "Generate a plain text log")
 final class CLCommandPlain extends CLCommandRoot
 {
+  private static final Logger LOG =
+    LoggerFactory.getLogger(CLCommandPlain.class);
+
   @Parameter(
     names = "-file",
     required = false,
@@ -52,6 +60,12 @@ final class CLCommandPlain extends CLCommandRoot
     names = "-show-dates",
     description = "Show dates")
   private boolean date;
+
+  @Parameter(
+    names = "-count",
+    required = false,
+    description = "The total number of releases to display")
+  private int count = 1;
 
   CLCommandPlain()
   {
@@ -73,20 +87,60 @@ final class CLCommandPlain extends CLCommandRoot
       version = Optional.empty();
     }
 
+    final Optional<CXMLChangelogParserProviderType> parser_provider_opt =
+      ServiceLoader.load(CXMLChangelogParserProviderType.class).findFirst();
+
+    if (!parser_provider_opt.isPresent()) {
+      LOG.error("No XML parser providers are available");
+      return Status.FAILURE;
+    }
+
+    final Optional<CPlainChangelogWriterProviderType> writer_provider_opt =
+      ServiceLoader.load(CPlainChangelogWriterProviderType.class).findFirst();
+
+    if (!writer_provider_opt.isPresent()) {
+      LOG.error("No plain-text writer providers are available");
+      return Status.FAILURE;
+    }
+
+    final CXMLChangelogParserProviderType parser_provider =
+      parser_provider_opt.get();
+    final CPlainChangelogWriterProviderType writer_provider =
+      writer_provider_opt.get();
+
     final Path path = Paths.get(this.file);
     try (InputStream stream = Files.newInputStream(path)) {
-      final CChangelog clog =
-        CChangelogXMLReader.readFromStream(path.toUri(), stream);
-      final CChangelogTextWriterConfiguration.Builder config_b =
-        CChangelogTextWriterConfiguration.builder()
-          .setRelease(version)
-          .setShowDates(this.date);
+      final CXMLChangelogParserType parser = parser_provider.create(
+        path.toUri(),
+        stream,
+        CParseErrorHandlers.loggingHandler(LOG));
 
-      try (PrintWriter writer =
-             new PrintWriter(
-               new OutputStreamWriter(System.out, StandardCharsets.UTF_8))) {
-        CChangelogTextWriter.writeChangelog(clog, config_b.build(), writer);
+      final CChangelog changelog = parser.parse();
+      final CChangelog changelog_write;
+      if (version.isPresent()) {
+        final Optional<CChangelog> c_opt =
+          CChangelogFilters.upToAndIncluding(
+            changelog, version.get(), this.count);
+        if (!c_opt.isPresent()) {
+          LOG.error("Changelog does not contain release {}", this.release);
+          return Status.FAILURE;
+        }
+        changelog_write = c_opt.get();
+      } else {
+        changelog_write =
+          changelog.withReleases(changelog.releases().takeRight(this.count));
       }
+
+      final CPlainChangelogWriterConfiguration config =
+        CPlainChangelogWriterConfiguration.builder()
+          .setShowDates(this.date)
+          .build();
+
+      final CPlainChangelogWriterType writer =
+        writer_provider.createWithConfiguration(
+          config, URI.create("urn:stdout"), System.out);
+
+      writer.write(changelog_write);
     }
 
     return Status.SUCCESS;

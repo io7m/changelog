@@ -20,6 +20,9 @@ import com.io7m.junreachable.UnreachableCodeException;
 
 interface CLCommandType
 {
+  Status execute()
+    throws Exception;
+
   enum Status
   {
     SUCCESS,
@@ -36,7 +39,4 @@ interface CLCommandType
       throw new UnreachableCodeException();
     }
   }
-
-  Status execute()
-    throws Exception;
 }

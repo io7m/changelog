@@ -19,22 +19,29 @@ package com.io7m.changelog.cmdline;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.io7m.changelog.core.CChangelog;
-import com.io7m.changelog.xom.CAtomFeedMeta;
-import com.io7m.changelog.xom.CChangelogAtomWriter;
-import com.io7m.changelog.xom.CChangelogXMLReader;
-import nu.xom.Document;
-import nu.xom.Element;
-import nu.xom.Serializer;
+import com.io7m.changelog.parser.api.CParseErrorHandlers;
+import com.io7m.changelog.xml.api.CAtomChangelogWriterConfiguration;
+import com.io7m.changelog.xml.api.CAtomChangelogWriterProviderType;
+import com.io7m.changelog.xml.api.CAtomChangelogWriterType;
+import com.io7m.changelog.xml.api.CXMLChangelogParserProviderType;
+import com.io7m.changelog.xml.api.CXMLChangelogParserType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
+import java.util.ServiceLoader;
 
 @Parameters(commandDescription = "Generate an atom feed")
 final class CLCommandAtom extends CLCommandRoot
 {
+  private static final Logger LOG =
+    LoggerFactory.getLogger(CLCommandAtom.class);
+
   @Parameter(
     names = "-file",
     required = false,
@@ -78,25 +85,48 @@ final class CLCommandAtom extends CLCommandRoot
       return Status.FAILURE;
     }
 
+    final Optional<CXMLChangelogParserProviderType> parser_provider_opt =
+      ServiceLoader.load(CXMLChangelogParserProviderType.class).findFirst();
+
+    if (!parser_provider_opt.isPresent()) {
+      LOG.error("No XML parser providers are available");
+      return Status.FAILURE;
+    }
+
+    final Optional<CAtomChangelogWriterProviderType> writer_provider_opt =
+      ServiceLoader.load(CAtomChangelogWriterProviderType.class).findFirst();
+
+    if (!writer_provider_opt.isPresent()) {
+      LOG.error("No Atom writer providers are available");
+      return Status.FAILURE;
+    }
+
+    final CXMLChangelogParserProviderType parser_provider =
+      parser_provider_opt.get();
+    final CAtomChangelogWriterProviderType writer_provider =
+      writer_provider_opt.get();
+
     final Path path = Paths.get(this.file);
     try (InputStream stream = Files.newInputStream(path)) {
-      final CChangelog clog =
-        CChangelogXMLReader.readFromStream(path.toUri(), stream);
+      final CXMLChangelogParserType parser = parser_provider.create(
+        path.toUri(),
+        stream,
+        CParseErrorHandlers.loggingHandler(LOG));
 
-      final CAtomFeedMeta meta =
-        CAtomFeedMeta.builder()
-          .setAuthorEmail(this.author_email)
-          .setAuthorName(this.author_name)
-          .setTitle(this.title)
-          .setUri(this.uri)
-          .build();
+      final CChangelog changelog = parser.parse();
 
-      final Element e = CChangelogAtomWriter.writeElement(meta, clog);
-      final Serializer s = new Serializer(System.out, "UTF-8");
-      s.setIndent(2);
-      s.setMaxLength(80);
-      s.write(new Document(e));
-      s.flush();
+      final CAtomChangelogWriterType writer =
+        writer_provider.createWithConfiguration(
+          CAtomChangelogWriterConfiguration.builder()
+            .setUri(this.uri)
+            .setTitle(this.title)
+            .setAuthorName(this.author_name)
+            .setAuthorEmail(this.author_email)
+            .build(),
+          this.uri,
+          System.out);
+
+      writer.write(changelog);
     }
 
     return Status.SUCCESS;

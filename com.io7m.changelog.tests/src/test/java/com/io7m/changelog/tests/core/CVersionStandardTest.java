@@ -18,40 +18,44 @@ import com.io7m.changelog.core.CVersionStandard;
 import com.io7m.changelog.core.CVersionText;
 import com.io7m.changelog.core.CVersionType;
 import com.io7m.changelog.core.CVersions;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public final class CVersionStandardTest
 {
-  @Test(
-    expected = IllegalArgumentException.class)
+  @Test
   public void testInvalid_0()
   {
-    CVersionStandard.of(-1, 0, 0, "");
+    Assertions.assertThrows(IllegalArgumentException.class, () -> {
+      CVersionStandard.of(-1, 0, 0, "");
+    });
   }
 
-  @Test(
-    expected = IllegalArgumentException.class)
+  @Test
   public void testInvalid_1()
   {
-    CVersionStandard.of(0, -1, 0, "");
+    Assertions.assertThrows(IllegalArgumentException.class, () -> {
+      CVersionStandard.of(0, -1, 0, "");
+    });
   }
 
-  @Test(
-    expected = IllegalArgumentException.class)
+  @Test
   public void testInvalid_2()
   {
-    CVersionStandard.of(0, 0, -1, "");
+    Assertions.assertThrows(IllegalArgumentException.class, () -> {
+      CVersionStandard.of(0, 0, -1, "");
+    });
   }
 
-  @Test(
-    expected = NullPointerException.class)
+  @Test
   public void testInvalid_3()
   {
-    CVersionStandard.of(0, 0, 0, null);
+    Assertions.assertThrows(NullPointerException.class, () -> {
+      CVersionStandard.of(0, 0, 0, null);
+    });
   }
 
   @Test
@@ -85,32 +89,32 @@ public final class CVersionStandardTest
                              + left.compareTo(right));
 
         if (j == index) {
-          Assert.assertEquals(0L, (long) left.compareTo(right));
+          Assertions.assertEquals(0L, (long) left.compareTo(right));
         }
         if (j < index) {
-          Assert.assertEquals(1L, (long) left.compareTo(right));
-          Assert.assertEquals(-1L, (long) right.compareTo(left));
+          Assertions.assertEquals(1L, (long) left.compareTo(right));
+          Assertions.assertEquals(-1L, (long) right.compareTo(left));
         }
         if (j > index) {
-          Assert.assertEquals(-1L, (long) left.compareTo(right));
-          Assert.assertEquals(1L, (long) right.compareTo(left));
+          Assertions.assertEquals(-1L, (long) left.compareTo(right));
+          Assertions.assertEquals(1L, (long) right.compareTo(left));
         }
       }
     }
 
-    Assert.assertEquals(0L, (long) p000.compareTo(p000));
-    Assert.assertEquals(-1L, (long) p000.compareTo(p100));
-    Assert.assertEquals(1L, (long) p100.compareTo(p000));
+    Assertions.assertEquals(0L, (long) p000.compareTo(p000));
+    Assertions.assertEquals(-1L, (long) p000.compareTo(p100));
+    Assertions.assertEquals(1L, (long) p100.compareTo(p000));
 
-    Assert.assertEquals(0L, (long) p010.compareTo(p010));
-    Assert.assertEquals(-1L, (long) p000.compareTo(p010));
-    Assert.assertEquals(-1L, (long) p010.compareTo(p110));
-    Assert.assertEquals(1L, (long) p010.compareTo(p000));
+    Assertions.assertEquals(0L, (long) p010.compareTo(p010));
+    Assertions.assertEquals(-1L, (long) p000.compareTo(p010));
+    Assertions.assertEquals(-1L, (long) p010.compareTo(p110));
+    Assertions.assertEquals(1L, (long) p010.compareTo(p000));
 
-    Assert.assertEquals(0L, (long) p111.compareTo(p111));
-    Assert.assertEquals(-1L, (long) p011.compareTo(p111));
-    Assert.assertEquals(-1L, (long) p010.compareTo(p110));
-    Assert.assertEquals(1L, (long) p010.compareTo(p000));
+    Assertions.assertEquals(0L, (long) p111.compareTo(p111));
+    Assertions.assertEquals(-1L, (long) p011.compareTo(p111));
+    Assertions.assertEquals(-1L, (long) p010.compareTo(p110));
+    Assertions.assertEquals(1L, (long) p010.compareTo(p000));
   }
 
   @Test
@@ -123,65 +127,66 @@ public final class CVersionStandardTest
     final CVersionType v0 = CVersionStandard.of(mj, mn, mp, "");
     final CVersionType v1 = CVersionStandard.of(mj, mn, mp, "qasdasd");
 
-    Assert.assertTrue(v0.compareTo(v1) > 0);
-    Assert.assertTrue(v1.compareTo(v0) < 0);
+    Assertions.assertTrue(v0.compareTo(v1) > 0);
+    Assertions.assertTrue(v1.compareTo(v0) < 0);
   }
 
-  @Test(
-    expected = NullPointerException.class)
+  @Test
   public void testParseNull()
   {
-    CVersions.parse(null);
+    Assertions.assertThrows(NullPointerException.class, () -> {
+      CVersions.parse(null);
+    });
   }
 
   @Test
   public void testValid_0()
   {
     final CVersionType v = CVersions.parse("1.2.3-xyz");
-    Assert.assertTrue(v instanceof CVersionStandard);
+    Assertions.assertTrue(v instanceof CVersionStandard);
     final CVersionStandard vs = (CVersionStandard) v;
-    Assert.assertEquals(1L, (long) vs.major());
-    Assert.assertEquals(2L, (long) vs.minor());
-    Assert.assertEquals(3L, (long) vs.patch());
-    Assert.assertEquals("xyz", vs.qualifier());
+    Assertions.assertEquals(1L, (long) vs.major());
+    Assertions.assertEquals(2L, (long) vs.minor());
+    Assertions.assertEquals(3L, (long) vs.patch());
+    Assertions.assertEquals("xyz", vs.qualifier());
   }
 
   @Test
   public void testValid_1()
   {
     final CVersionType v = CVersions.parse("1.2.3");
-    Assert.assertTrue(v instanceof CVersionStandard);
+    Assertions.assertTrue(v instanceof CVersionStandard);
     final CVersionStandard vs = (CVersionStandard) v;
-    Assert.assertEquals(1L, (long) vs.major());
-    Assert.assertEquals(2L, (long) vs.minor());
-    Assert.assertEquals(3L, (long) vs.patch());
-    Assert.assertEquals("", vs.qualifier());
+    Assertions.assertEquals(1L, (long) vs.major());
+    Assertions.assertEquals(2L, (long) vs.minor());
+    Assertions.assertEquals(3L, (long) vs.patch());
+    Assertions.assertEquals("", vs.qualifier());
   }
 
   @Test
   public void testValid_2()
   {
     final CVersionType v = CVersions.parse("1");
-    Assert.assertTrue(v instanceof CVersionText);
+    Assertions.assertTrue(v instanceof CVersionText);
     final CVersionText vs = (CVersionText) v;
-    Assert.assertEquals("1", vs.toVersionString());
+    Assertions.assertEquals("1", vs.toVersionString());
   }
 
   @Test
   public void testValid_3()
   {
     final CVersionType v = CVersions.parse("1.2");
-    Assert.assertTrue(v instanceof CVersionText);
+    Assertions.assertTrue(v instanceof CVersionText);
     final CVersionText vs = (CVersionText) v;
-    Assert.assertEquals("1.2", vs.toVersionString());
+    Assertions.assertEquals("1.2", vs.toVersionString());
   }
 
   @Test
   public void testValid_4()
   {
     final CVersionType v = CVersions.parse("1.2.x");
-    Assert.assertTrue(v instanceof CVersionText);
+    Assertions.assertTrue(v instanceof CVersionText);
     final CVersionText vs = (CVersionText) v;
-    Assert.assertEquals("1.2.x", vs.toVersionString());
+    Assertions.assertEquals("1.2.x", vs.toVersionString());
   }
 }
