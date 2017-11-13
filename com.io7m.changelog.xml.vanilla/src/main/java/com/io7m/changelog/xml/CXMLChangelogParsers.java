@@ -99,6 +99,31 @@ public final class CXMLChangelogParsers
       this.parsers.setNamespaceAware(true);
       this.parsers.setSchema(schema);
 
+      this.parsers.setFeature(
+        XMLConstants.FEATURE_SECURE_PROCESSING,
+        true);
+      this.parsers.setFeature(
+        "http://xml.org/sax/features/external-general-entities",
+        false);
+      this.parsers.setFeature(
+        "http://xml.org/sax/features/external-parameter-entities",
+        false);
+      this.parsers.setFeature(
+        "http://apache.org/xml/features/validation/warn-on-duplicate-attdef",
+        true);
+      this.parsers.setFeature(
+        "http://apache.org/xml/features/nonvalidating/load-external-dtd",
+        false);
+      this.parsers.setFeature(
+        "http://apache.org/xml/features/disallow-doctype-decl",
+        true);
+      this.parsers.setFeature(
+        "http://apache.org/xml/features/standard-uri-conformant",
+        true);
+      this.parsers.setFeature(
+        "http://apache.org/xml/features/xinclude",
+        false);
+
       final SAXParser parser = this.parsers.newSAXParser();
       return new Parser(uri, stream, receiver, parser);
     } catch (final ParserConfigurationException | SAXException e) {
