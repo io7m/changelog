@@ -186,7 +186,7 @@ public final class CAtomChangelogWriters
 
       final String text =
         new StringBuilder(64)
-          .append(changelog.project())
+          .append(changelog.project().value())
           .append(" ")
           .append(r.version().toVersionString())
           .append(" released")

@@ -18,7 +18,10 @@ package com.io7m.changelog.xml;
 
 import com.io7m.changelog.core.CChange;
 import com.io7m.changelog.core.CChangelog;
+import com.io7m.changelog.core.CModuleName;
+import com.io7m.changelog.core.CProjectName;
 import com.io7m.changelog.core.CRelease;
+import com.io7m.changelog.core.CTicketID;
 import com.io7m.changelog.core.CTicketSystem;
 import com.io7m.changelog.core.CVersions;
 import com.io7m.changelog.parser.api.CParseError;
@@ -98,6 +101,31 @@ public final class CXMLChangelogParsers
 
       this.parsers.setNamespaceAware(true);
       this.parsers.setSchema(schema);
+
+      this.parsers.setFeature(
+        XMLConstants.FEATURE_SECURE_PROCESSING,
+        true);
+      this.parsers.setFeature(
+        "http://xml.org/sax/features/external-general-entities",
+        false);
+      this.parsers.setFeature(
+        "http://xml.org/sax/features/external-parameter-entities",
+        false);
+      this.parsers.setFeature(
+        "http://apache.org/xml/features/validation/warn-on-duplicate-attdef",
+        true);
+      this.parsers.setFeature(
+        "http://apache.org/xml/features/nonvalidating/load-external-dtd",
+        false);
+      this.parsers.setFeature(
+        "http://apache.org/xml/features/disallow-doctype-decl",
+        true);
+      this.parsers.setFeature(
+        "http://apache.org/xml/features/standard-uri-conformant",
+        true);
+      this.parsers.setFeature(
+        "http://apache.org/xml/features/xinclude",
+        false);
 
       final SAXParser parser = this.parsers.newSAXParser();
       return new Parser(uri, stream, receiver, parser);
@@ -333,7 +361,8 @@ public final class CXMLChangelogParsers
       for (int index = 0; index < attributes.getLength(); ++index) {
         switch (attributes.getLocalName(index)) {
           case "id": {
-            this.change_builder.addTickets(attributes.getValue(index));
+            this.change_builder.addTickets(
+              CTicketID.of(attributes.getValue(index)));
             break;
           }
           default: {
@@ -361,7 +390,8 @@ public final class CXMLChangelogParsers
       for (int index = 0; index < attributes.getLength(); ++index) {
         switch (attributes.getLocalName(index)) {
           case "module": {
-            this.change_builder.setModule(attributes.getValue(index));
+            this.change_builder.setModule(
+              CModuleName.of(attributes.getValue(index)));
             break;
           }
           case "date": {
@@ -441,7 +471,8 @@ public final class CXMLChangelogParsers
       for (int index = 0; index < attributes.getLength(); ++index) {
         switch (attributes.getLocalName(index)) {
           case "project": {
-            this.changelog_builder.setProject(attributes.getValue(index));
+            this.changelog_builder.setProject(
+              CProjectName.of(attributes.getValue(index)));
             break;
           }
           default: {

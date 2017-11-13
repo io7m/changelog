@@ -19,6 +19,7 @@ package com.io7m.changelog.xml;
 import com.io7m.changelog.core.CChange;
 import com.io7m.changelog.core.CChangelog;
 import com.io7m.changelog.core.CRelease;
+import com.io7m.changelog.core.CTicketID;
 import com.io7m.changelog.core.CTicketSystem;
 import com.io7m.changelog.xml.api.CXHTMLChangelogWriterProviderType;
 import com.io7m.changelog.xml.api.CXHTMLChangelogWriterType;
@@ -103,7 +104,7 @@ public final class CXHTMLChangelogWriters
       final CChangelog changelog,
       final Document doc,
       final CRelease release,
-      final List<String> tickets)
+      final List<CTicketID> tickets)
     {
       return tickets.map(
         ticket -> transformTicket(changelog, doc, release, ticket));
@@ -113,7 +114,7 @@ public final class CXHTMLChangelogWriters
       final CChangelog changelog,
       final Document doc,
       final CRelease release,
-      final String ticket)
+      final CTicketID ticket)
     {
       final CTicketSystem ticket_system =
         changelog.ticketSystems().get(release.ticketSystemID()).get();
@@ -122,7 +123,7 @@ public final class CXHTMLChangelogWriters
       final URI target =
         URI.create(ticket_system.uri().toString() + ticket);
       a.setAttribute("href", target.toString());
-      a.setTextContent(ticket);
+      a.setTextContent(ticket.value());
       return a;
     }
 

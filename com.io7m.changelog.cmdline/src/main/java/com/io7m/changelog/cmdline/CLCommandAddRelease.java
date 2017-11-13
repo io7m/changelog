@@ -52,7 +52,7 @@ final class CLCommandAddRelease extends CLCommandRoot
     names = "-file",
     required = false,
     description = "The changelog file")
-  private String file = "README-CHANGES.xml";
+  private Path path = Paths.get("README-CHANGES.xml");
 
   @Parameter(
     names = "-version",
@@ -101,12 +101,11 @@ final class CLCommandAddRelease extends CLCommandRoot
     final CXMLChangelogWriterProviderType writer_provider =
       writer_provider_opt.get();
 
-    final Path path = Paths.get(this.file);
-    final Path path_tmp = Paths.get(this.file + ".tmp");
+    final Path path_tmp = Paths.get(this.path + ".tmp");
 
-    try (InputStream stream = Files.newInputStream(path)) {
+    try (InputStream stream = Files.newInputStream(this.path)) {
       final CXMLChangelogParserType parser = parser_provider.create(
-        path.toUri(),
+        this.path.toUri(),
         stream,
         CParseErrorHandlers.loggingHandler(LOG));
 
@@ -141,11 +140,11 @@ final class CLCommandAddRelease extends CLCommandRoot
 
       try (OutputStream output = Files.newOutputStream(path_tmp)) {
         final CXMLChangelogWriterType writer =
-          writer_provider.create(path.toUri(), output);
+          writer_provider.create(this.path.toUri(), output);
         writer.write(changelog_write);
       }
 
-      Files.move(path_tmp, path, StandardCopyOption.ATOMIC_MOVE);
+      Files.move(path_tmp, this.path, StandardCopyOption.ATOMIC_MOVE);
     }
 
     return Status.SUCCESS;

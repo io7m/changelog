@@ -16,6 +16,7 @@
 
 package com.io7m.changelog.core;
 
+import com.io7m.jaffirm.core.Preconditions;
 import io.vavr.collection.Map;
 import io.vavr.collection.SortedMap;
 import org.immutables.value.Value;
@@ -35,7 +36,7 @@ public interface CChangelogType
    */
 
   @Value.Parameter
-  String project();
+  CProjectName project();
 
   /**
    * @return The list of releases
@@ -50,4 +51,24 @@ public interface CChangelogType
 
   @Value.Parameter
   Map<String, CTicketSystem> ticketSystems();
+
+  /**
+   * Check preconditions for the type.
+   */
+
+  @Value.Check
+  default void checkPreconditions()
+  {
+    this.releases().forEach(
+      (version, release) ->
+        Preconditions.checkPrecondition(
+          release.ticketSystemID(),
+          this.ticketSystems().containsKey(release.ticketSystemID()),
+          s -> "Release must refer to a defined ticket system"));
+
+    Preconditions.checkPrecondition(
+      this.ticketSystems(),
+      this.ticketSystems().values().filter(CTicketSystem::isDefault).size() <= 1,
+      x -> "At most one ticket system may be declared as being the default");
+  }
 }
