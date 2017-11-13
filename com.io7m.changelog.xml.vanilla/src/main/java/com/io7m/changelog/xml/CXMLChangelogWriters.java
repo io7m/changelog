@@ -134,7 +134,7 @@ public final class CXMLChangelogWriters
 
         doc.appendChild(root);
 
-        root.setAttribute("project", changelog.project());
+        root.setAttribute("project", changelog.project().value());
 
         final Element releases =
           doc.createElementNS(this.schema_uri, "c:releases");
@@ -222,7 +222,7 @@ public final class CXMLChangelogWriters
         change.summary());
 
       change.module().ifPresent(
-        module -> e_change.setAttribute("module", module));
+        module -> e_change.setAttribute("module", module.value()));
 
       if (!change.backwardsCompatible()) {
         e_change.setAttribute("compatible", "false");
@@ -235,7 +235,7 @@ public final class CXMLChangelogWriters
         change.tickets().forEach(ticket -> {
           final Element e_ticket =
             doc.createElementNS(this.schema_uri, "c:ticket");
-          e_ticket.setAttribute("id", ticket);
+          e_ticket.setAttribute("id", ticket.value());
           tickets.appendChild(e_ticket);
         });
 

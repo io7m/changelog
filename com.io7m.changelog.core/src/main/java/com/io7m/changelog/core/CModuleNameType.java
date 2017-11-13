@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016 <code@io7m.com> http://io7m.com
+ * Copyright © 2017 <code@io7m.com> http://io7m.com
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -16,60 +16,42 @@
 
 package com.io7m.changelog.core;
 
-import io.vavr.collection.List;
+import com.io7m.jaffirm.core.Preconditions;
 import org.immutables.value.Value;
 import org.immutables.vavr.encodings.VavrEncodingEnabled;
 
-import java.time.ZonedDateTime;
-import java.util.Optional;
-
 /**
- * A change within a specific release.
+ * The type of module names.
  */
 
 @CImmutableStyleType
 @VavrEncodingEnabled
 @Value.Immutable
-public interface CChangeType
+public interface CModuleNameType
 {
   /**
-   * @return The change date
+   * @return The module name value
    */
 
   @Value.Parameter
-  ZonedDateTime date();
+  String value();
 
   /**
-   * @return The change summary
+   * Check preconditions for the type.
    */
 
-  @Value.Parameter
-  String summary();
-
-  /**
-   * @return The change tickets
-   */
-
-  @Value.Parameter
-  List<CTicketID> tickets();
-
-  /**
-   * @return The module that this change affects
-   */
-
-  @Value.Parameter
-  Optional<CModuleName> module();
-
-  /**
-   * @return {@code true} iff the change is backwards compatible
-   */
-
-  @Value.Default
-  @Value.Parameter
-  default boolean backwardsCompatible()
+  @Value.Check
+  default void checkPreconditions()
   {
-    return true;
+    Preconditions.checkPrecondition(
+      this.value(),
+      CModuleNames.isValid(this.value()),
+      x -> new StringBuilder(64)
+        .append("Name must match the pattern ")
+        .append(CModuleNames.VALID_NAMES.pattern())
+        .append(" and <= ")
+        .append(CModuleNames.VALID_NAME_LENGTH)
+        .append(" characters long")
+        .toString());
   }
-
-
 }

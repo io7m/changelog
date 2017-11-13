@@ -48,7 +48,7 @@ final class CLCommandXHTML extends CLCommandRoot
     names = "-file",
     required = false,
     description = "The changelog file")
-  private String file = "README-CHANGES.xml";
+  private Path path = Paths.get("README-CHANGES.xml");
 
   @Parameter(
     names = "-release",
@@ -102,10 +102,9 @@ final class CLCommandXHTML extends CLCommandRoot
     final CXHTMLChangelogWriterProviderType writer_provider =
       writer_provider_opt.get();
 
-    final Path path = Paths.get(this.file);
-    try (InputStream stream = Files.newInputStream(path)) {
+    try (InputStream stream = Files.newInputStream(this.path)) {
       final CXMLChangelogParserType parser = parser_provider.create(
-        path.toUri(),
+        this.path.toUri(),
         stream,
         CParseErrorHandlers.loggingHandler(LOG));
 

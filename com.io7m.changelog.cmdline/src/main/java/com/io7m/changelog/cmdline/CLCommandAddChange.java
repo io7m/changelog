@@ -20,7 +20,9 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.io7m.changelog.core.CChange;
 import com.io7m.changelog.core.CChangelog;
+import com.io7m.changelog.core.CModuleName;
 import com.io7m.changelog.core.CRelease;
+import com.io7m.changelog.core.CTicketID;
 import com.io7m.changelog.core.CVersionType;
 import com.io7m.changelog.parser.api.CParseErrorHandlers;
 import com.io7m.changelog.xml.api.CXMLChangelogParserProviderType;
@@ -54,7 +56,7 @@ final class CLCommandAddChange extends CLCommandRoot
     names = "-file",
     required = false,
     description = "The changelog file")
-  private String file = "README-CHANGES.xml";
+  private Path path = Paths.get("README-CHANGES.xml");
 
   @Parameter(
     names = "-summary",
@@ -66,13 +68,14 @@ final class CLCommandAddChange extends CLCommandRoot
     names = "-module",
     required = false,
     description = "The affected module")
-  private String module;
+  private CModuleName module;
 
   @Parameter(
     names = "-tickets",
     required = false,
+    converter = CTicketIDConverter.class,
     description = "The list of tickets")
-  private List<String> tickets = new ArrayList<>();
+  private List<CTicketID> tickets = new ArrayList<>();
 
   @Parameter(
     names = "-incompatible",
@@ -114,12 +117,11 @@ final class CLCommandAddChange extends CLCommandRoot
     final CXMLChangelogWriterProviderType writer_provider =
       writer_provider_opt.get();
 
-    final Path path = Paths.get(this.file);
-    final Path path_tmp = Paths.get(this.file + ".tmp");
+    final Path path_tmp = Paths.get(this.path + ".tmp");
 
-    try (InputStream stream = Files.newInputStream(path)) {
+    try (InputStream stream = Files.newInputStream(this.path)) {
       final CXMLChangelogParserType parser = parser_provider.create(
-        path.toUri(),
+        this.path.toUri(),
         stream,
         CParseErrorHandlers.loggingHandler(LOG));
 
@@ -156,12 +158,12 @@ final class CLCommandAddChange extends CLCommandRoot
 
       try (OutputStream output = Files.newOutputStream(path_tmp)) {
         final CXMLChangelogWriterType writer =
-          writer_provider.create(path.toUri(), output);
+          writer_provider.create(this.path.toUri(), output);
 
         writer.write(changelog_write);
       }
 
-      Files.move(path_tmp, path, StandardCopyOption.ATOMIC_MOVE);
+      Files.move(path_tmp, this.path, StandardCopyOption.ATOMIC_MOVE);
     }
 
     return Status.SUCCESS;

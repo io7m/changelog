@@ -120,7 +120,7 @@ public final class CPlainChangelogWriters
       }
 
       this.writer.append("Release: ");
-      this.writer.append(changelog.project());
+      this.writer.append(changelog.project().value());
       this.writer.append(" ");
       this.writer.append(release.version().toVersionString());
       this.writer.newLine();
@@ -135,7 +135,7 @@ public final class CPlainChangelogWriters
           this.writer.append("Change: ");
           change.module().ifPresent(module -> {
             try {
-              this.writer.append(module);
+              this.writer.append(module.value());
               this.writer.append(": ");
             } catch (final IOException e) {
               throw new UncheckedIOException(e);

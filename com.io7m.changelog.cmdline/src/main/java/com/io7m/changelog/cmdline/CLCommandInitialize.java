@@ -19,6 +19,7 @@ package com.io7m.changelog.cmdline;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.io7m.changelog.core.CChangelog;
+import com.io7m.changelog.core.CProjectName;
 import com.io7m.changelog.core.CTicketSystem;
 import com.io7m.changelog.xml.api.CXMLChangelogWriterProviderType;
 import com.io7m.changelog.xml.api.CXMLChangelogWriterType;
@@ -44,13 +45,14 @@ final class CLCommandInitialize extends CLCommandRoot
     names = "-file",
     required = false,
     description = "The changelog file")
-  private String file = "README-CHANGES.xml";
+  private Path path = Paths.get("README-CHANGES.xml");
 
   @Parameter(
     names = "-project",
     required = true,
-    description = "The project name")
-  private String project;
+    description = "The project name",
+    converter = CProjectNameConverter.class)
+  private CProjectName project;
 
   @Parameter(
     names = "-ticket-system-name",
@@ -88,13 +90,12 @@ final class CLCommandInitialize extends CLCommandRoot
     final CXMLChangelogWriterProviderType writer_provider =
       writer_provider_opt.get();
 
-    final Path path = Paths.get(this.file);
-    if (Files.exists(path)) {
-      LOG.error("File {} already exists", this.file);
+    if (Files.exists(this.path)) {
+      LOG.error("File {} already exists", this.path);
       return Status.FAILURE;
     }
 
-    final Path path_tmp = Paths.get(this.file + ".tmp");
+    final Path path_tmp = Paths.get(this.path + ".tmp");
     try (OutputStream stream = Files.newOutputStream(path_tmp)) {
       final CTicketSystem ticket_system =
         CTicketSystem.of(
@@ -109,11 +110,11 @@ final class CLCommandInitialize extends CLCommandRoot
           .build();
 
       final CXMLChangelogWriterType writer =
-        writer_provider.create(path.toUri(), stream);
+        writer_provider.create(this.path.toUri(), stream);
       writer.write(changelog);
     }
 
-    Files.move(path_tmp, path, StandardCopyOption.ATOMIC_MOVE);
+    Files.move(path_tmp, this.path, StandardCopyOption.ATOMIC_MOVE);
     return Status.SUCCESS;
   }
 }
