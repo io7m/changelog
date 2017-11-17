@@ -167,7 +167,7 @@ public final class CXHTMLChangelogWriters
           doc.createElementNS(XHTML_NS, "table");
         root.setAttribute(
           "summary",
-          "Changes for project " + changelog.project());
+          "Changes for project " + changelog.project().value());
         root.setAttribute("class", "changelog");
 
         for (final CRelease release : changelog.releases().values().reverse()) {
@@ -192,7 +192,13 @@ public final class CXHTMLChangelogWriters
         doc,
         releases,
         this.date_terse_formatter.format(release.date().toLocalDate()),
-        List.of(doc.createTextNode("Release: " + changelog.project() + " " + release.version().toVersionString())));
+        List.of(doc.createTextNode(
+          new StringBuilder()
+            .append("Release: ")
+            .append(changelog.project().value())
+            .append(" ")
+            .append(release.version().toVersionString())
+            .toString())));
 
       for (final CChange change : release.changes()) {
         row(
