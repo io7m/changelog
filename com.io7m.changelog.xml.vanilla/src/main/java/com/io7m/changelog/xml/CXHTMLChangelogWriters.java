@@ -121,7 +121,7 @@ public final class CXHTMLChangelogWriters
       final Element a =
         doc.createElement("a");
       final URI target =
-        URI.create(ticket_system.uri().toString() + ticket);
+        URI.create(ticket_system.uri().toString() + ticket.value());
       a.setAttribute("href", target.toString());
       a.setTextContent(ticket.value());
       return a;
