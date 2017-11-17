@@ -36,9 +36,10 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * A provider for Atom feed writers.
@@ -216,10 +217,18 @@ public final class CAtomChangelogWriters
         final Transformer transformer =
           transformer_factory.newTransformer();
 
+        this.stream.write(
+          "<?xml version=\"1.0\" encoding=\"UTF-8\"?>".getBytes(UTF_8));
+        this.stream.write(System.lineSeparator().getBytes(UTF_8));
+        this.stream.flush();
+
+        transformer.setOutputProperty(
+          OutputKeys.OMIT_XML_DECLARATION,
+          "yes");
         transformer.setOutputProperty(
           OutputKeys.INDENT, "yes");
         transformer.setOutputProperty(
-          OutputKeys.ENCODING, StandardCharsets.UTF_8.name());
+          OutputKeys.ENCODING, UTF_8.name());
         transformer.setOutputProperty(
           "{http://xml.apache.org/xslt}indent-amount",
           "2");
