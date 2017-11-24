@@ -33,6 +33,7 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * A provider of plain-text changelog writers.
@@ -147,6 +148,21 @@ public final class CPlainChangelogWriters
           }
 
           this.writer.append(change.summary());
+
+          if (!change.tickets().isEmpty()) {
+            if (change.tickets().size() == 1) {
+              this.writer.append(" (Ticket: ");
+            } else {
+              this.writer.append(" (Tickets: ");
+            }
+
+            this.writer.append(
+              change.tickets()
+                .map(t -> "#" + t.value())
+                .collect(Collectors.joining(", ")));
+            this.writer.append(")");
+          }
+
           this.writer.newLine();
         } catch (final IOException e) {
           throw new UncheckedIOException(e);
