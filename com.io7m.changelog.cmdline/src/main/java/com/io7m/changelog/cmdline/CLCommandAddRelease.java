@@ -153,12 +153,28 @@ final class CLCommandAddRelease extends CLCommandRoot
   private Optional<String> findTicketSystem(
     final CChangelog changelog)
   {
+    /*
+     * If there's an explicitly defined ticket system, use that.
+     */
+
     if (this.ticket_system != null) {
       return changelog.ticketSystems()
         .get(this.ticket_system)
         .toJavaOptional()
         .map(CTicketSystem::id);
     }
+
+    /*
+     * Otherwise, if there's only one defined, use that.
+     */
+
+    if (changelog.ticketSystems().size() == 1) {
+      return Optional.of(changelog.ticketSystems().keySet().get());
+    }
+
+    /*
+     * Otherwise, try to find the default.
+     */
 
     return changelog.ticketSystems()
       .find(p -> p._2.isDefault())
