@@ -119,11 +119,6 @@
         <element ref="c:ticket-system"/>
       </sequence>
     </complexType>
-
-    <unique name="ticketSystemsOnlyOneCanBeDefault">
-      <selector xpath="c:ticket-system"/>
-      <field xpath="@default"/>
-    </unique>
   </element>
 
   <element name="changelog">
