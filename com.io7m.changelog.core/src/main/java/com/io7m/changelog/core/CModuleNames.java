@@ -43,7 +43,8 @@ public final class CModuleNames
   static {
     VALID_NAME_LENGTH = 128;
     VALID_NAMES = Pattern.compile(
-      "([\\p{Ll}][\\p{Ll}\\p{Nd}_]*)(\\.[\\p{Ll}][\\p{Ll}\\p{Nd}_]*)*");
+      "[\\p{Ll}][\\p{Ll}\\p{Nd}_]*(?>\\.[\\p{Ll}][\\p{Ll}\\p{Nd}_]*)*",
+      Pattern.UNICODE_CHARACTER_CLASS);
   }
 
   private CModuleNames()

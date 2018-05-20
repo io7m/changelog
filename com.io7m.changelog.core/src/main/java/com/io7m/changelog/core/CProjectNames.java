@@ -42,8 +42,10 @@ public final class CProjectNames
 
   static {
     VALID_NAME_LENGTH = 128;
-    VALID_NAMES = Pattern.compile(
-      "([\\p{Ll}\\p{Lu}][\\p{Ll}\\p{Lu}\\p{Nd}_\\-]*)(\\.[\\p{Ll}\\p{Lu}][\\p{Ll}\\p{Lu}\\p{Nd}_\\-]*)*");
+    VALID_NAMES =
+      Pattern.compile(
+        "[\\p{Ll}\\p{Lu}][\\p{Ll}\\p{Lu}\\p{Nd}_\\-]*(\\.[\\p{Ll}\\p{Lu}][\\p{Ll}\\p{Lu}\\p{Nd}_\\-]*)*",
+        Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS);
   }
 
   private CProjectNames()

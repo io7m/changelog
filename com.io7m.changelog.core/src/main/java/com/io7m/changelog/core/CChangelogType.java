@@ -59,16 +59,21 @@ public interface CChangelogType
   @Value.Check
   default void checkPreconditions()
   {
+    final Map<String, CTicketSystem> systems = this.ticketSystems();
+
     this.releases().forEach(
       (version, release) ->
+      {
+        final String system_id = release.ticketSystemID();
         Preconditions.checkPrecondition(
-          release.ticketSystemID(),
-          this.ticketSystems().containsKey(release.ticketSystemID()),
-          s -> "Release must refer to a defined ticket system"));
+          system_id,
+          systems.containsKey(system_id),
+          s -> "Release must refer to a defined ticket system");
+      });
 
     Preconditions.checkPrecondition(
-      this.ticketSystems(),
-      this.ticketSystems().values().filter(CTicketSystem::isDefault).size() <= 1,
+      systems,
+      systems.values().filter(CTicketSystem::isDefault).size() <= 1,
       x -> "At most one ticket system may be declared as being the default");
   }
 }

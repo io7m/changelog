@@ -50,7 +50,7 @@ public interface CProjectNameType
         .append("Name must match the pattern ")
         .append(CProjectNames.VALID_NAMES.pattern())
         .append(" and <= ")
-        .append(CProjectNames.VALID_NAMES)
+        .append(CProjectNames.VALID_NAME_LENGTH)
         .append(" characters long")
         .toString());
   }

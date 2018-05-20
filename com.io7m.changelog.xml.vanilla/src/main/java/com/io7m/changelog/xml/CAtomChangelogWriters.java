@@ -74,12 +74,11 @@ public final class CAtomChangelogWriters
     Objects.requireNonNull(in_stream, "Stream");
 
     this.doc_factory.setNamespaceAware(true);
-    return new Writer(this.doc_factory, in_configuration, in_uri, in_stream);
+    return new Writer(this.doc_factory, in_configuration, in_stream);
   }
 
   private static final class Writer implements CAtomChangelogWriterType
   {
-    private final URI uri;
     private final OutputStream stream;
     private final DocumentBuilderFactory doc_factory;
     private final DateTimeFormatter date_formatter;
@@ -88,15 +87,12 @@ public final class CAtomChangelogWriters
     Writer(
       final DocumentBuilderFactory in_doc_factory,
       final CAtomChangelogWriterConfiguration in_configuration,
-      final URI in_uri,
       final OutputStream in_stream)
     {
       this.doc_factory =
         Objects.requireNonNull(in_doc_factory, "Document Factory");
       this.configuration =
         Objects.requireNonNull(in_configuration, "Configuration");
-      this.uri =
-        Objects.requireNonNull(in_uri, "URI");
       this.stream =
         Objects.requireNonNull(in_stream, "Stream");
       this.date_formatter =
@@ -202,6 +198,7 @@ public final class CAtomChangelogWriters
 
       e_release.appendChild(e_id);
       e_release.appendChild(e_updated);
+      e_release.appendChild(e_published);
       e_release.appendChild(e_title);
       e_release.appendChild(e_content);
       e_root.appendChild(e_release);

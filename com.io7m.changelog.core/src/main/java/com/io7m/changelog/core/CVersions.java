@@ -65,7 +65,7 @@ public final class CVersions
       return CVersionStandard.builder()
         .setMajor(mj.intValue())
         .setMinor(mn.intValue())
-        .setPatch(Integer.valueOf(ptr).intValue())
+        .setPatch(Integer.parseInt(ptr))
         .setQualifier("")
         .build();
     }

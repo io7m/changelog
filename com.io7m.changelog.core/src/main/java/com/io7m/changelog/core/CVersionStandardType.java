@@ -43,13 +43,16 @@ public interface CVersionStandardType extends CVersionType
   default void checkPreconditions()
   {
     if (this.major() < 0) {
-      throw new IllegalArgumentException("Major version must be positive");
+      throw new IllegalArgumentException(
+        "Major version must be positive (received" + this.major() + ")");
     }
     if (this.minor() < 0) {
-      throw new IllegalArgumentException("Minor version must be positive");
+      throw new IllegalArgumentException(
+        "Minor version must be positive (received" + this.minor() + ")");
     }
     if (this.patch() < 0) {
-      throw new IllegalArgumentException("Patch version must be positive");
+      throw new IllegalArgumentException(
+        "Patch version must be positive (received" + this.patch() + ")");
     }
   }
 
@@ -58,53 +61,7 @@ public interface CVersionStandardType extends CVersionType
     final CVersionType o)
   {
     try {
-      return o.versionAccept(new CVersionVisitorType<Integer>()
-      {
-        @SuppressWarnings({"synthetic-access", "boxing"})
-        @Override
-        public Integer
-        standard(
-          final CVersionStandardType other)
-          throws Exception
-        {
-          if (CVersionStandardType.this.major() < other.major()) {
-            return -1;
-          }
-          if (CVersionStandardType.this.major() > other.major()) {
-            return 1;
-          }
-
-          assert CVersionStandardType.this.major() == other.major();
-
-          if (CVersionStandardType.this.minor() < other.minor()) {
-            return -1;
-          }
-          if (CVersionStandardType.this.minor() > other.minor()) {
-            return 1;
-          }
-
-          assert CVersionStandardType.this.minor() == other.minor();
-
-          if (CVersionStandardType.this.patch() < other.patch()) {
-            return -1;
-          }
-          if (CVersionStandardType.this.patch() > other.patch()) {
-            return 1;
-          }
-
-          assert CVersionStandardType.this.patch() == other.patch();
-          return -CVersionStandardType.this.qualifier().compareTo(other.qualifier());
-        }
-
-        @SuppressWarnings("boxing")
-        @Override
-        public Integer text(
-          final CVersionTextType s)
-          throws Exception
-        {
-          return this.toString().compareTo(s.text());
-        }
-      }).intValue();
+      return o.versionAccept(new CVersionStandardComparator(this)).intValue();
     } catch (final Exception e) {
       throw new AssertionError(e);
     }
@@ -143,14 +100,15 @@ public interface CVersionStandardType extends CVersionType
   {
     final StringBuilder builder = new StringBuilder(64);
     builder.append(this.major());
-    builder.append(".");
+    builder.append('.');
     builder.append(this.minor());
-    builder.append(".");
+    builder.append('.');
     builder.append(this.patch());
     if (!this.qualifier().isEmpty()) {
-      builder.append("-");
+      builder.append('-');
       builder.append(this.qualifier());
     }
     return builder.toString();
   }
+
 }

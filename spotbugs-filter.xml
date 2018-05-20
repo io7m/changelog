@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0">
+
+  <Match>
+    <Or>
+      <Class name="~com\.io7m\.changelog\..+\$Builder"/>
+      <Class name="com.io7m.changelog.core.CChange"/>
+      <Class name="com.io7m.changelog.core.CChangelog"/>
+      <Class name="com.io7m.changelog.core.CModuleName"/>
+      <Class name="com.io7m.changelog.core.CProjectName"/>
+      <Class name="com.io7m.changelog.core.CRelease"/>
+      <Class name="com.io7m.changelog.core.CTicketID"/>
+      <Class name="com.io7m.changelog.core.CTicketSystem"/>
+      <Class name="com.io7m.changelog.core.CVersionStandard"/>
+      <Class name="com.io7m.changelog.core.CVersionText"/>
+      <Class name="~com\.io7m\.changelog\..+\$InitShim"/>
+      <Class name="com.io7m.changelog.parser.api.CParseError"/>
+    </Or>
+  </Match>
+
+  <Match>
+    <Class name="com.io7m.changelog.core.CVersions"/>
+    <Bug pattern="CE_CLASS_ENVY"/>
+  </Match>
+
+  <Match>
+    <Class name="com.io7m.changelog.xml.CXMLChangelogWriters$Writer"/>
+    <Bug pattern="STT_TOSTRING_STORED_IN_FIELD"/>
+  </Match>
+
+  <!-- Parser uses jxe and is not vulnerable to entity expansion attacks -->
+  <Match>
+    <Class name="com.io7m.changelog.xml.CXMLChangelogParsers$Parser"/>
+    <Bug pattern="XXE_XMLREADER"/>
+  </Match>
+
+  <!-- UncheckedIOException -->
+  <Match>
+    <Class name="com.io7m.changelog.text.vanilla.CPlainChangelogWriters$Writer"/>
+    <Method name="write"/>
+    <Bug pattern="LEST_LOST_EXCEPTION_STACK_TRACE"/>
+  </Match>
+
+  <Match>
+    <Or>
+      <Bug pattern="IMC_IMMATURE_CLASS_NO_TOSTRING"/>
+      <Bug pattern="OPM_OVERLY_PERMISSIVE_METHOD"/>
+      <Bug pattern="OCP_OVERLY_CONCRETE_PARAMETER"/>
+      <Bug pattern="CRLF_INJECTION_LOGS"/>
+      <Bug pattern="AI_ANNOTATION_ISSUES_NEEDS_NULLABLE"/>
+    </Or>
+  </Match>
+
+</FindBugsFilter>
