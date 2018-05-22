@@ -20,11 +20,6 @@
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>com.io7m.changelog.core</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
       <artifactId>com.io7m.changelog.writer.api</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -32,6 +27,11 @@
     <dependency>
       <groupId>org.immutables</groupId>
       <artifactId>value</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.io7m.immutables.style</groupId>
+      <artifactId>com.io7m.immutables.style</artifactId>
       <scope>provided</scope>
     </dependency>
   </dependencies>

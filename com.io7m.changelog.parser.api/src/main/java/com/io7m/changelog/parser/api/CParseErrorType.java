@@ -16,19 +16,21 @@
 
 package com.io7m.changelog.parser.api;
 
-import com.io7m.changelog.core.CImmutableStyleType;
+import com.io7m.immutables.styles.ImmutablesStyleType;
 import com.io7m.jlexing.core.LexicalPosition;
 import org.immutables.value.Value;
 
 import java.net.URI;
 import java.util.Optional;
 
+import static org.immutables.value.Value.Immutable;
+
 /**
  * The type of parse errors.
  */
 
-@CImmutableStyleType
-@Value.Immutable
+@ImmutablesStyleType
+@Immutable
 public interface CParseErrorType
 {
   /**

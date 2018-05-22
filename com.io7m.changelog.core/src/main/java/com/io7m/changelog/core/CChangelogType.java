@@ -16,19 +16,22 @@
 
 package com.io7m.changelog.core;
 
+import com.io7m.immutables.styles.ImmutablesStyleType;
 import com.io7m.jaffirm.core.Preconditions;
 import io.vavr.collection.Map;
 import io.vavr.collection.SortedMap;
 import org.immutables.value.Value;
 import org.immutables.vavr.encodings.VavrEncodingEnabled;
 
+import static org.immutables.value.Value.Immutable;
+
 /**
  * The type of changelogs.
  */
 
-@CImmutableStyleType
+@ImmutablesStyleType
 @VavrEncodingEnabled
-@Value.Immutable
+@Immutable
 public interface CChangelogType
 {
   /**

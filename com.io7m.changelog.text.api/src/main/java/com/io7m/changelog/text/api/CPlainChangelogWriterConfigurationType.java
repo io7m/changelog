@@ -16,15 +16,17 @@
 
 package com.io7m.changelog.text.api;
 
-import com.io7m.changelog.core.CImmutableStyleType;
+import com.io7m.immutables.styles.ImmutablesStyleType;
 import org.immutables.value.Value;
+
+import static org.immutables.value.Value.Immutable;
 
 /**
  * The type of configurations for plain text writers.
  */
 
-@CImmutableStyleType
-@Value.Immutable
+@ImmutablesStyleType
+@Immutable
 public interface CPlainChangelogWriterConfigurationType
 {
   /**

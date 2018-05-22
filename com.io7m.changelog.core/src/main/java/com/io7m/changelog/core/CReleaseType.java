@@ -16,19 +16,22 @@
 
 package com.io7m.changelog.core;
 
+import com.io7m.immutables.styles.ImmutablesStyleType;
 import io.vavr.collection.List;
 import org.immutables.value.Value;
 import org.immutables.vavr.encodings.VavrEncodingEnabled;
 
 import java.time.ZonedDateTime;
 
+import static org.immutables.value.Value.Immutable;
+
 /**
  * A specific release in a changelog.
  */
 
-@CImmutableStyleType
+@ImmutablesStyleType
 @VavrEncodingEnabled
-@Value.Immutable
+@Immutable
 public interface CReleaseType
 {
   /**

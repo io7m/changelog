@@ -16,7 +16,10 @@
 
 package com.io7m.changelog.core;
 
+import com.io7m.immutables.styles.ImmutablesStyleType;
 import org.immutables.value.Value;
+
+import static org.immutables.value.Value.Immutable;
 
 /**
  * <p> The type of standard version numbers of the form {@code M.N.P-S}, where
@@ -24,8 +27,8 @@ import org.immutables.value.Value;
  * the patch number, and {@code S} is an arbitrary qualifier string. </p>
  */
 
-@CImmutableStyleType
-@Value.Immutable
+@ImmutablesStyleType
+@Immutable
 public interface CVersionStandardType extends CVersionType
 {
   @Override
