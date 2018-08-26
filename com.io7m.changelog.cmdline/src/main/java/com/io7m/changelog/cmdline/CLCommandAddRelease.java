@@ -112,7 +112,7 @@ final class CLCommandAddRelease extends CLCommandRoot
       final CChangelog changelog = parser.parse();
 
       if (changelog.releases().containsKey(version)) {
-        LOG.error("Release {} already exists", version);
+        LOG.error("Release {} already exists", version.toVersionString());
         return Status.FAILURE;
       }
 
