@@ -30,6 +30,10 @@ import com.io7m.changelog.schema.CSchema;
 import com.io7m.changelog.xml.api.CXMLChangelogParserProviderType;
 import com.io7m.changelog.xml.api.CXMLChangelogParserType;
 import com.io7m.jlexing.core.LexicalPosition;
+import com.io7m.jxe.core.JXEHardenedSAXParsers;
+import com.io7m.jxe.core.JXESchemaDefinition;
+import com.io7m.jxe.core.JXESchemaResolutionMappings;
+import com.io7m.jxe.core.JXEXInclude;
 import io.vavr.collection.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,16 +42,13 @@ import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
-import javax.xml.XMLConstants;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -69,8 +70,8 @@ public final class CXMLChangelogParsers
   private static final Logger LOG =
     LoggerFactory.getLogger(CXMLChangelogParsers.class);
 
-  private final SAXParserFactory parsers;
-  private final SchemaFactory schema_factory;
+  private final JXEHardenedSAXParsers parsers;
+  private final JXESchemaResolutionMappings schemas;
 
   /**
    * Instantiate a parser provider.
@@ -78,10 +79,22 @@ public final class CXMLChangelogParsers
 
   public CXMLChangelogParsers()
   {
-    this.parsers =
-      SAXParserFactory.newInstance();
-    this.schema_factory =
-      SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+    final JXESchemaDefinition schema;
+    try {
+      schema = JXESchemaDefinition.of(
+        CSchema.XML_URI,
+        "changelog-4.0.xsd",
+        CSchema.getURISchemaXSD().toURL());
+    } catch (MalformedURLException e) {
+      throw new IllegalStateException(e);
+    }
+
+    this.schemas =
+      JXESchemaResolutionMappings.builder()
+        .putMappings(CSchema.XML_URI, schema)
+        .build();
+
+    this.parsers = new JXEHardenedSAXParsers();
   }
 
   @Override
@@ -96,38 +109,11 @@ public final class CXMLChangelogParsers
     Objects.requireNonNull(receiver, "Receiver");
 
     try {
-      final Schema schema =
-        this.schema_factory.newSchema(CSchema.getURISchemaXSD().toURL());
-
-      this.parsers.setNamespaceAware(true);
-      this.parsers.setSchema(schema);
-
-      this.parsers.setFeature(
-        XMLConstants.FEATURE_SECURE_PROCESSING,
-        true);
-      this.parsers.setFeature(
-        "http://xml.org/sax/features/external-general-entities",
-        false);
-      this.parsers.setFeature(
-        "http://xml.org/sax/features/external-parameter-entities",
-        false);
-      this.parsers.setFeature(
-        "http://apache.org/xml/features/validation/warn-on-duplicate-attdef",
-        true);
-      this.parsers.setFeature(
-        "http://apache.org/xml/features/nonvalidating/load-external-dtd",
-        false);
-      this.parsers.setFeature(
-        "http://apache.org/xml/features/disallow-doctype-decl",
-        true);
-      this.parsers.setFeature(
-        "http://apache.org/xml/features/standard-uri-conformant",
-        true);
-      this.parsers.setFeature(
-        "http://apache.org/xml/features/xinclude",
-        false);
-
-      final SAXParser parser = this.parsers.newSAXParser();
+      final XMLReader parser =
+        this.parsers.createXMLReader(
+          Optional.empty(),
+          JXEXInclude.XINCLUDE_DISABLED,
+          this.schemas);
       return new Parser(uri, stream, receiver, parser);
     } catch (final ParserConfigurationException | SAXException e) {
       throw new IOException(e);
@@ -137,7 +123,7 @@ public final class CXMLChangelogParsers
   private static final class Parser
     extends DefaultHandler implements CXMLChangelogParserType
   {
-    private final SAXParser parser;
+    private final XMLReader parser;
     private final URI uri;
     private final InputStream stream;
     private final CChangelog.Builder changelog_builder;
@@ -154,7 +140,7 @@ public final class CXMLChangelogParsers
       final URI in_uri,
       final InputStream in_stream,
       final Consumer<CParseError> in_receiver,
-      final SAXParser in_parser)
+      final XMLReader in_parser)
     {
       this.uri =
         Objects.requireNonNull(in_uri, "URI");
@@ -188,7 +174,6 @@ public final class CXMLChangelogParsers
       final String in_name,
       final String in_public_id,
       final String in_system_id)
-      throws SAXException
     {
       LOG.trace("notationDecl: {} {} {}", in_name, in_public_id, in_system_id);
     }
@@ -199,7 +184,6 @@ public final class CXMLChangelogParsers
       final String in_public_id,
       final String in_system_id,
       final String in_notation)
-      throws SAXException
     {
       LOG.trace(
         "unparsedEntityDecl: {} {} {} {}",
@@ -219,14 +203,12 @@ public final class CXMLChangelogParsers
 
     @Override
     public void startDocument()
-      throws SAXException
     {
       LOG.trace("startDocument");
     }
 
     @Override
     public void endDocument()
-      throws SAXException
     {
       LOG.trace("endDocument");
     }
@@ -241,16 +223,17 @@ public final class CXMLChangelogParsers
 
       final String uri_expected = CSchema.XML_URI.toString();
       if (!Objects.equals(in_uri, uri_expected)) {
+        final String separator = System.lineSeparator();
         throw new SAXParseException(
           new StringBuilder(64)
             .append("Unexpected document type.")
-            .append(System.lineSeparator())
+            .append(separator)
             .append("  Expected: ")
             .append(uri_expected)
-            .append(System.lineSeparator())
+            .append(separator)
             .append("  Received: ")
             .append(in_uri)
-            .append(System.lineSeparator())
+            .append(separator)
             .toString(),
           this.locator);
       }
@@ -259,7 +242,6 @@ public final class CXMLChangelogParsers
     @Override
     public void endPrefixMapping(
       final String prefix)
-      throws SAXException
     {
       LOG.trace("endPrefixMapping: {}", prefix);
     }
@@ -270,7 +252,6 @@ public final class CXMLChangelogParsers
       final String in_local_name,
       final String in_q_name,
       final Attributes attributes)
-      throws SAXException
     {
       LOG.trace("startElement: {} {} {} {}",
                 in_uri, in_local_name, in_q_name, attributes);
@@ -281,7 +262,7 @@ public final class CXMLChangelogParsers
           break;
         }
         case "changes": {
-          this.onStartChanges(attributes);
+          this.onStartChanges();
           break;
         }
         case "change": {
@@ -289,7 +270,7 @@ public final class CXMLChangelogParsers
           break;
         }
         case "releases": {
-          this.onStartReleases(attributes);
+          this.onStartReleases();
           break;
         }
         case "release": {
@@ -297,7 +278,7 @@ public final class CXMLChangelogParsers
           break;
         }
         case "ticket-systems": {
-          this.onStartTicketSystems(attributes);
+          this.onStartTicketSystems();
           break;
         }
         case "ticket-system": {
@@ -305,7 +286,7 @@ public final class CXMLChangelogParsers
           break;
         }
         case "tickets": {
-          this.onStartTickets(attributes);
+          this.onStartTickets();
           break;
         }
         case "ticket": {
@@ -332,7 +313,7 @@ public final class CXMLChangelogParsers
           }
           case "default": {
             this.ticket_system_builder.setDefault(
-              Boolean.valueOf(attributes.getValue(index)).booleanValue());
+              Boolean.parseBoolean(attributes.getValue(index)));
             break;
           }
           case "url": {
@@ -347,8 +328,7 @@ public final class CXMLChangelogParsers
       }
     }
 
-    private void onStartTicketSystems(
-      final Attributes attributes)
+    private void onStartTicketSystems()
     {
       this.elements.push(CurrentElement.TICKET_SYSTEMS);
     }
@@ -372,8 +352,7 @@ public final class CXMLChangelogParsers
       }
     }
 
-    private void onStartTickets(
-      final Attributes attributes)
+    private void onStartTickets()
     {
       this.elements.push(CurrentElement.TICKETS);
     }
@@ -408,7 +387,7 @@ public final class CXMLChangelogParsers
           }
           case "compatible": {
             this.change_builder.setBackwardsCompatible(
-              Boolean.valueOf(attributes.getValue(index)).booleanValue());
+              Boolean.parseBoolean(attributes.getValue(index)));
             break;
           }
           default: {
@@ -418,8 +397,7 @@ public final class CXMLChangelogParsers
       }
     }
 
-    private void onStartChanges(
-      final Attributes attributes)
+    private void onStartChanges()
     {
       this.elements.push(CurrentElement.CHANGES);
     }
@@ -457,8 +435,7 @@ public final class CXMLChangelogParsers
       }
     }
 
-    private void onStartReleases(
-      final Attributes attributes)
+    private void onStartReleases()
     {
       this.elements.push(CurrentElement.RELEASES);
     }
@@ -487,7 +464,6 @@ public final class CXMLChangelogParsers
       final String in_uri,
       final String in_local_name,
       final String in_qname)
-      throws SAXException
     {
       LOG.trace("endElement: {} {} {}", in_uri, in_local_name, in_qname);
 
@@ -554,7 +530,6 @@ public final class CXMLChangelogParsers
       final char[] ch,
       final int start,
       final int length)
-      throws SAXException
     {
       LOG.trace(
         "characters: {} {}",
@@ -567,7 +542,6 @@ public final class CXMLChangelogParsers
       final char[] ch,
       final int start,
       final int length)
-      throws SAXException
     {
       LOG.trace(
         "ignorableWhitespace: {} {}",
@@ -579,7 +553,6 @@ public final class CXMLChangelogParsers
     public void processingInstruction(
       final String target,
       final String data)
-      throws SAXException
     {
       LOG.trace("processingInstruction: {} {}", target, data);
     }
@@ -587,7 +560,6 @@ public final class CXMLChangelogParsers
     @Override
     public void skippedEntity(
       final String name)
-      throws SAXException
     {
       LOG.trace("skippedEntity: {}", name);
     }
@@ -595,7 +567,6 @@ public final class CXMLChangelogParsers
     @Override
     public void warning(
       final SAXParseException e)
-      throws SAXException
     {
       this.receiver.accept(
         CParseError.builder()
@@ -613,7 +584,6 @@ public final class CXMLChangelogParsers
     @Override
     public void error(
       final SAXParseException e)
-      throws SAXException
     {
       this.receiver.accept(
         CParseError.builder()
@@ -656,10 +626,13 @@ public final class CXMLChangelogParsers
       throws IOException
     {
       try {
-        this.parser.parse(this.stream, this);
+        this.parser.setContentHandler(this);
+        this.parser.setErrorHandler(this);
+        this.parser.parse(new InputSource(this.stream));
+
         if (this.failed) {
           throw new IOException(
-            "At least one error was encountered during parsing and/or validation");
+            this.uri + " - At least one error was encountered during parsing and/or validation");
         }
         return this.changelog_builder.build();
       } catch (final SAXException e) {

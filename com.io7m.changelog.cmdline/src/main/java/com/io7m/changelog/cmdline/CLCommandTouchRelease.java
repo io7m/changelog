@@ -18,18 +18,15 @@ package com.io7m.changelog.cmdline;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
-import com.io7m.changelog.core.CChange;
 import com.io7m.changelog.core.CChangelog;
-import com.io7m.changelog.core.CModuleName;
 import com.io7m.changelog.core.CRelease;
-import com.io7m.changelog.core.CTicketID;
 import com.io7m.changelog.core.CVersionType;
 import com.io7m.changelog.parser.api.CParseErrorHandlers;
 import com.io7m.changelog.xml.api.CXMLChangelogParserProviderType;
 import com.io7m.changelog.xml.api.CXMLChangelogParserType;
 import com.io7m.changelog.xml.api.CXMLChangelogWriterProviderType;
 import com.io7m.changelog.xml.api.CXMLChangelogWriterType;
-import io.vavr.collection.SortedMap;
+import io.vavr.Tuple2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,16 +38,14 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.ServiceLoader;
 
-@Parameters(commandDescription = "Add a change to the current release")
-final class CLCommandAddChange extends CLCommandRoot
+@Parameters(commandDescription = "Update the date of the latest release")
+final class CLCommandTouchRelease extends CLCommandRoot
 {
   private static final Logger LOG =
-    LoggerFactory.getLogger(CLCommandAddChange.class);
+    LoggerFactory.getLogger(CLCommandTouchRelease.class);
 
   @Parameter(
     names = "-file",
@@ -58,33 +53,7 @@ final class CLCommandAddChange extends CLCommandRoot
     description = "The changelog file")
   private Path path = Paths.get("README-CHANGES.xml");
 
-  @Parameter(
-    names = "-summary",
-    required = true,
-    description = "The change summary")
-  private String summary;
-
-  @Parameter(
-    names = "-module",
-    required = false,
-    converter = CModuleNameConverter.class,
-    description = "The affected module")
-  private CModuleName module;
-
-  @Parameter(
-    names = "-tickets",
-    required = false,
-    converter = CTicketIDConverter.class,
-    description = "The list of tickets")
-  private List<CTicketID> tickets = new ArrayList<>();
-
-  @Parameter(
-    names = "-incompatible",
-    required = false,
-    description = "Indicates that the change is backwards incompatible")
-  private boolean incompatible;
-
-  CLCommandAddChange()
+  CLCommandTouchRelease()
   {
 
   }
@@ -128,39 +97,18 @@ final class CLCommandAddChange extends CLCommandRoot
 
       final CChangelog changelog = parser.parse();
 
-      final SortedMap<CVersionType, CRelease> latest =
-        changelog.releases().takeRight(1);
+      final Tuple2<CVersionType, CRelease> release = changelog.releases().last();
 
-      if (latest.isEmpty()) {
-        LOG.error("No current release exists");
-        return Status.FAILURE;
-      }
-
-      final ZonedDateTime now =
-        ZonedDateTime.now(ZoneId.of("UTC"));
-
-      final CChange change =
-        CChange.builder()
-          .setModule(Optional.ofNullable(this.module))
-          .setBackwardsCompatible(!this.incompatible)
-          .setDate(now)
-          .setSummary(this.summary)
-          .setTickets(io.vavr.collection.List.ofAll(this.tickets))
-          .build();
-
-      final CRelease release = latest.get()._2;
-      final CRelease release_write = release
-        .withChanges(release.changes().append(change))
-        .withDate(now);
+      final ZonedDateTime date = ZonedDateTime.now(ZoneId.of("UTC"));
 
       final CChangelog changelog_write =
         changelog.withReleases(
-          changelog.releases().put(release_write.version(), release_write));
+          changelog.releases()
+            .put(release._1, release._2.withDate(date)));
 
       try (OutputStream output = Files.newOutputStream(path_tmp)) {
         final CXMLChangelogWriterType writer =
           writer_provider.create(this.path.toUri(), output);
-
         writer.write(changelog_write);
       }
 

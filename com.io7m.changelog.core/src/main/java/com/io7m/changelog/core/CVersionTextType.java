@@ -16,14 +16,17 @@
 
 package com.io7m.changelog.core;
 
+import com.io7m.immutables.styles.ImmutablesStyleType;
 import org.immutables.value.Value;
+
+import static org.immutables.value.Value.Immutable;
 
 /**
  * <p> The type of arbitrary lexicographically ordered version strings. </p>
  */
 
-@CImmutableStyleType
-@Value.Immutable
+@ImmutablesStyleType
+@Immutable
 public interface CVersionTextType extends CVersionType
 {
   @Override

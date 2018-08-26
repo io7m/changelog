@@ -16,18 +16,21 @@
 
 package com.io7m.changelog.core;
 
+import com.io7m.immutables.styles.ImmutablesStyleType;
 import org.immutables.value.Value;
 import org.immutables.vavr.encodings.VavrEncodingEnabled;
 
 import java.net.URI;
 
+import static org.immutables.value.Value.Immutable;
+
 /**
  * The definition of a ticket system.
  */
 
-@CImmutableStyleType
+@ImmutablesStyleType
 @VavrEncodingEnabled
-@Value.Immutable
+@Immutable
 public interface CTicketSystemType
 {
   /**

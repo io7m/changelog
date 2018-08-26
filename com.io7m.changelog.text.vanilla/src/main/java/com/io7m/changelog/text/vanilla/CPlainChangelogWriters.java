@@ -23,6 +23,7 @@ import com.io7m.changelog.text.api.CPlainChangelogWriterConfiguration;
 import com.io7m.changelog.text.api.CPlainChangelogWriterProviderType;
 import com.io7m.changelog.text.api.CPlainChangelogWriterType;
 import io.vavr.collection.List;
+import io.vavr.collection.SortedMap;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -56,34 +57,25 @@ public final class CPlainChangelogWriters
     final CPlainChangelogWriterConfiguration config,
     final URI uri,
     final OutputStream stream)
-    throws IOException
   {
     Objects.requireNonNull(config, "Configuration");
     Objects.requireNonNull(uri, "URI");
     Objects.requireNonNull(stream, "Stream");
-    return new Writer(config, uri, stream);
+    return new Writer(config, stream);
   }
 
   private static final class Writer implements CPlainChangelogWriterType
   {
-    private final URI uri;
-    private final OutputStream stream;
     private final BufferedWriter writer;
     private final DateTimeFormatter date_formatter;
     private final CPlainChangelogWriterConfiguration config;
 
     Writer(
       final CPlainChangelogWriterConfiguration in_config,
-      final URI in_uri,
       final OutputStream in_stream)
     {
       this.config =
         Objects.requireNonNull(in_config, "Config");
-      this.uri =
-        Objects.requireNonNull(in_uri, "URI");
-      this.stream =
-        Objects.requireNonNull(in_stream, "Stream");
-
       this.writer = new BufferedWriter(
         new OutputStreamWriter(in_stream, StandardCharsets.UTF_8));
       this.date_formatter =
@@ -96,11 +88,12 @@ public final class CPlainChangelogWriters
       throws IOException
     {
       try {
+        final SortedMap<CVersionType, CRelease> releases = changelog.releases();
         final List<CVersionType> versions =
-          changelog.releases().keySet().toList().reverse();
+          releases.keySet().toList().reverse();
 
         for (final CVersionType v : versions) {
-          final CRelease release = changelog.releases().get(v).get();
+          final CRelease release = releases.get(v).get();
           this.writeRelease(changelog, release);
         }
 

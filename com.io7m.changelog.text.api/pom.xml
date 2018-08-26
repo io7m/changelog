@@ -8,11 +8,11 @@
   <parent>
     <groupId>com.io7m.changelog</groupId>
     <artifactId>com.io7m.changelog</artifactId>
-    <version>4.0.0-beta0009</version>
+    <version>4.0.0-beta0011</version>
   </parent>
   <artifactId>com.io7m.changelog.text.api</artifactId>
 
-  <packaging>bundle</packaging>
+  <packaging>jar</packaging>
   <name>com.io7m.changelog.text.api</name>
   <description>Software changelogs (Text API)</description>
   <url>http://io7m.github.io/changelog/</url>
@@ -20,23 +20,18 @@
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>com.io7m.changelog.core</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
       <artifactId>com.io7m.changelog.writer.api</artifactId>
       <version>${project.version}</version>
     </dependency>
 
     <dependency>
-      <groupId>org.immutables.vavr</groupId>
-      <artifactId>vavr-encodings</artifactId>
+      <groupId>org.immutables</groupId>
+      <artifactId>value</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.immutables</groupId>
-      <artifactId>value</artifactId>
+      <groupId>com.io7m.immutables.style</groupId>
+      <artifactId>com.io7m.immutables.style</artifactId>
       <scope>provided</scope>
     </dependency>
   </dependencies>
@@ -49,31 +44,27 @@
         <artifactId>maven-checkstyle-plugin</artifactId>
       </plugin>
 
-      <!-- Process annotations -->
+      <!-- Analyze semantic versioning -->
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <annotationProcessorPaths>
-            <dependency>
-              <groupId>org.immutables</groupId>
-              <artifactId>value</artifactId>
-              <version>${io7m.org.immutables.version}</version>
-            </dependency>
-          </annotationProcessorPaths>
-        </configuration>
+        <groupId>biz.aQute.bnd</groupId>
+        <artifactId>bnd-baseline-maven-plugin</artifactId>
       </plugin>
 
-      <!-- Produce OSGi bundle -->
+      <!-- Spot bugs -->
       <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <extensions>true</extensions>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+      </plugin>
+
+      <!-- Produce OSGi manifest -->
+      <plugin>
+        <groupId>biz.aQute.bnd</groupId>
+        <artifactId>bnd-maven-plugin</artifactId>
         <configuration>
-          <instructions>
-            <Automatic-Module-Name>com.io7m.changelog.text.api</Automatic-Module-Name>
-            <Export-Package>com.io7m.changelog.text.api</Export-Package>
-          </instructions>
+          <bnd><![CDATA[
+            Automatic-Module-Name: com.io7m.changelog.text.api
+            Export-Package: com.io7m.changelog.text.api
+]]></bnd>
         </configuration>
       </plugin>
     </plugins>

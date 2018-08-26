@@ -16,17 +16,20 @@
 
 package com.io7m.changelog.core;
 
+import com.io7m.immutables.styles.ImmutablesStyleType;
 import com.io7m.jaffirm.core.Preconditions;
 import org.immutables.value.Value;
 import org.immutables.vavr.encodings.VavrEncodingEnabled;
+
+import static org.immutables.value.Value.Immutable;
 
 /**
  * The type of ticket IDs.
  */
 
-@CImmutableStyleType
+@ImmutablesStyleType
 @VavrEncodingEnabled
-@Value.Immutable
+@Immutable
 public interface CTicketIDType
 {
   /**

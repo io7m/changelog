@@ -19,11 +19,13 @@ package com.io7m.changelog.xml;
 import com.io7m.changelog.core.CChange;
 import com.io7m.changelog.core.CChangelog;
 import com.io7m.changelog.core.CRelease;
+import com.io7m.changelog.core.CTicketID;
 import com.io7m.changelog.core.CTicketSystem;
 import com.io7m.changelog.core.CVersionType;
 import com.io7m.changelog.schema.CSchema;
 import com.io7m.changelog.xml.api.CXMLChangelogWriterProviderType;
 import com.io7m.changelog.xml.api.CXMLChangelogWriterType;
+import io.vavr.collection.List;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -85,7 +87,7 @@ public final class CXMLChangelogWriters
       this.doc_factory.setNamespaceAware(true);
       this.doc_factory.setSchema(schema);
 
-      return new Writer(this.doc_factory, in_uri, in_stream);
+      return new Writer(this.doc_factory, in_stream);
     } catch (final SAXException e) {
       throw new IOException(e);
     }
@@ -93,7 +95,6 @@ public final class CXMLChangelogWriters
 
   private static final class Writer implements CXMLChangelogWriterType
   {
-    private final URI uri;
     private final OutputStream stream;
     private final DocumentBuilderFactory doc_factory;
     private final String schema_uri;
@@ -101,13 +102,10 @@ public final class CXMLChangelogWriters
 
     Writer(
       final DocumentBuilderFactory in_doc_factory,
-      final URI in_uri,
       final OutputStream in_stream)
     {
       this.doc_factory =
         Objects.requireNonNull(in_doc_factory, "Document Factory");
-      this.uri =
-        Objects.requireNonNull(in_uri, "URI");
       this.stream =
         Objects.requireNonNull(in_stream, "Stream");
       this.schema_uri =
@@ -228,11 +226,12 @@ public final class CXMLChangelogWriters
         e_change.setAttribute("compatible", "false");
       }
 
-      if (!change.tickets().isEmpty()) {
+      final List<CTicketID> change_tickets = change.tickets();
+      if (!change_tickets.isEmpty()) {
         final Element tickets =
           doc.createElementNS(this.schema_uri, "c:tickets");
 
-        change.tickets().forEach(ticket -> {
+        change_tickets.forEach(ticket -> {
           final Element e_ticket =
             doc.createElementNS(this.schema_uri, "c:ticket");
           e_ticket.setAttribute("id", ticket.value());

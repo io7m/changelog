@@ -16,6 +16,7 @@
 
 package com.io7m.changelog.parser.api;
 
+import com.io7m.jlexing.core.LexicalPosition;
 import com.io7m.junreachable.UnreachableCodeException;
 import org.slf4j.Logger;
 
@@ -75,36 +76,39 @@ public final class CParseErrorHandlers
     final Optional<URI> file_opt,
     final Optional<Exception> ex_opt)
   {
+    final LexicalPosition<URI> lexical = error.lexical();
     if (file_opt.isPresent()) {
       if (ex_opt.isPresent()) {
+        final Exception exception = ex_opt.get();
         logger.warn(
           "{}:{}:{}: {}: ",
           file_opt.get(),
-          Integer.valueOf(error.lexical().line()),
-          Integer.valueOf(error.lexical().column()),
+          Integer.valueOf(lexical.line()),
+          Integer.valueOf(lexical.column()),
           error.message(),
-          ex_opt.get());
+          exception);
       } else {
         logger.warn(
           "{}:{}:{}: {}",
           file_opt.get(),
-          Integer.valueOf(error.lexical().line()),
-          Integer.valueOf(error.lexical().column()),
+          Integer.valueOf(lexical.line()),
+          Integer.valueOf(lexical.column()),
           error.message());
       }
     } else {
       if (ex_opt.isPresent()) {
+        final Exception exception = ex_opt.get();
         logger.warn(
           "{}:{}: {}: ",
-          Integer.valueOf(error.lexical().line()),
-          Integer.valueOf(error.lexical().column()),
+          Integer.valueOf(lexical.line()),
+          Integer.valueOf(lexical.column()),
           error.message(),
-          ex_opt.get());
+          exception);
       } else {
         logger.warn(
           "{}:{}: {}",
-          Integer.valueOf(error.lexical().line()),
-          Integer.valueOf(error.lexical().column()),
+          Integer.valueOf(lexical.line()),
+          Integer.valueOf(lexical.column()),
           error.message());
       }
     }
@@ -116,36 +120,39 @@ public final class CParseErrorHandlers
     final Optional<URI> file_opt,
     final Optional<Exception> ex_opt)
   {
+    final LexicalPosition<URI> lexical = error.lexical();
     if (file_opt.isPresent()) {
       if (ex_opt.isPresent()) {
+        final Exception exception = ex_opt.get();
         logger.error(
           "{}:{}:{}: {}: ",
           file_opt.get(),
-          Integer.valueOf(error.lexical().line()),
-          Integer.valueOf(error.lexical().column()),
+          Integer.valueOf(lexical.line()),
+          Integer.valueOf(lexical.column()),
           error.message(),
-          ex_opt.get());
+          exception);
       } else {
         logger.error(
           "{}:{}:{}: {}",
           file_opt.get(),
-          Integer.valueOf(error.lexical().line()),
-          Integer.valueOf(error.lexical().column()),
+          Integer.valueOf(lexical.line()),
+          Integer.valueOf(lexical.column()),
           error.message());
       }
     } else {
       if (ex_opt.isPresent()) {
+        final Exception exception = ex_opt.get();
         logger.error(
           "{}:{}: {}: ",
-          Integer.valueOf(error.lexical().line()),
-          Integer.valueOf(error.lexical().column()),
+          Integer.valueOf(lexical.line()),
+          Integer.valueOf(lexical.column()),
           error.message(),
-          ex_opt.get());
+          exception);
       } else {
         logger.error(
           "{}:{}: {}",
-          Integer.valueOf(error.lexical().line()),
-          Integer.valueOf(error.lexical().column()),
+          Integer.valueOf(lexical.line()),
+          Integer.valueOf(lexical.column()),
           error.message());
       }
     }

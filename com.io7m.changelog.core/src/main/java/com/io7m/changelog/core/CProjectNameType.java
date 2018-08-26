@@ -16,17 +16,20 @@
 
 package com.io7m.changelog.core;
 
+import com.io7m.immutables.styles.ImmutablesStyleType;
 import com.io7m.jaffirm.core.Preconditions;
 import org.immutables.value.Value;
 import org.immutables.vavr.encodings.VavrEncodingEnabled;
+
+import static org.immutables.value.Value.Immutable;
 
 /**
  * The type of project names.
  */
 
-@CImmutableStyleType
+@ImmutablesStyleType
 @VavrEncodingEnabled
-@Value.Immutable
+@Immutable
 public interface CProjectNameType
 {
   /**
@@ -50,7 +53,7 @@ public interface CProjectNameType
         .append("Name must match the pattern ")
         .append(CProjectNames.VALID_NAMES.pattern())
         .append(" and <= ")
-        .append(CProjectNames.VALID_NAMES)
+        .append(CProjectNames.VALID_NAME_LENGTH)
         .append(" characters long")
         .toString());
   }

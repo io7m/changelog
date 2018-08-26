@@ -8,7 +8,7 @@
   <parent>
     <groupId>com.io7m.changelog</groupId>
     <artifactId>com.io7m.changelog</artifactId>
-    <version>4.0.0-beta0009</version>
+    <version>4.0.0-beta0011</version>
   </parent>
   <artifactId>com.io7m.changelog.cmdline</artifactId>
 
@@ -48,6 +48,11 @@
       <artifactId>com.io7m.changelog.text.vanilla</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>com.io7m.changelog.parser.api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
 
     <dependency>
       <groupId>com.io7m.junreachable</groupId>
@@ -65,6 +70,10 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.vavr</groupId>
+      <artifactId>vavr</artifactId>
     </dependency>
   </dependencies>
 
@@ -97,6 +106,8 @@
           <failOnWarning>true</failOnWarning>
           <ignoredUnusedDeclaredDependencies>
             <ignoredUnusedDeclaredDependency>com.io7m.changelog:com.io7m.changelog.schema:*</ignoredUnusedDeclaredDependency>
+            <ignoredUnusedDeclaredDependency>com.io7m.changelog:com.io7m.changelog.xml.vanilla:*</ignoredUnusedDeclaredDependency>
+            <ignoredUnusedDeclaredDependency>com.io7m.changelog:com.io7m.changelog.text.vanilla:*</ignoredUnusedDeclaredDependency>
           </ignoredUnusedDeclaredDependencies>
         </configuration>
       </plugin>

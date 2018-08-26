@@ -73,27 +73,23 @@ public final class CXHTMLChangelogWriters
     Objects.requireNonNull(in_stream, "Stream");
 
     this.doc_factory.setNamespaceAware(true);
-    return new Writer(this.doc_factory, in_uri, in_stream);
+    return new Writer(this.doc_factory, in_stream);
   }
 
   private static final class Writer implements CXHTMLChangelogWriterType
   {
     private static final String XHTML_NS = "http://www.w3.org/1999/xhtml";
 
-    private final URI uri;
     private final OutputStream stream;
     private final DocumentBuilderFactory doc_factory;
     private final DateTimeFormatter date_terse_formatter;
 
     Writer(
       final DocumentBuilderFactory in_doc_factory,
-      final URI in_uri,
       final OutputStream in_stream)
     {
       this.doc_factory =
         Objects.requireNonNull(in_doc_factory, "Document Factory");
-      this.uri =
-        Objects.requireNonNull(in_uri, "URI");
       this.stream =
         Objects.requireNonNull(in_stream, "Stream");
       this.date_terse_formatter =
@@ -120,10 +116,11 @@ public final class CXHTMLChangelogWriters
         changelog.ticketSystems().get(release.ticketSystemID()).get();
       final Element a =
         doc.createElement("a");
+      final String ticket_val = ticket.value();
       final URI target =
-        URI.create(ticket_system.uri().toString() + ticket.value());
+        URI.create(ticket_system.uri().toString() + ticket_val);
       a.setAttribute("href", target.toString());
-      a.setTextContent(ticket.value());
+      a.setTextContent(ticket_val);
       return a;
     }
 
@@ -230,10 +227,11 @@ public final class CXHTMLChangelogWriters
       sb.append(change.summary());
       nodes = nodes.append(doc.createTextNode(sb.toString()));
 
-      if (!change.tickets().isEmpty()) {
+      final List<CTicketID> tickets = change.tickets();
+      if (!tickets.isEmpty()) {
         nodes = nodes.append(doc.createTextNode(" (tickets: "));
         nodes = nodes.appendAll(
-          transformTickets(changelog, doc, release, change.tickets()));
+          transformTickets(changelog, doc, release, tickets));
         nodes = nodes.append(doc.createTextNode(")"));
       }
 
