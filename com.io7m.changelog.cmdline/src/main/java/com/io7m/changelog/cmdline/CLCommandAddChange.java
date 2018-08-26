@@ -67,6 +67,7 @@ final class CLCommandAddChange extends CLCommandRoot
   @Parameter(
     names = "-module",
     required = false,
+    converter = CModuleNameConverter.class,
     description = "The affected module")
   private CModuleName module;
 
