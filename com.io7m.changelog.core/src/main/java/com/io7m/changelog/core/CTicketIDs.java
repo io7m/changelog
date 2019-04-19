@@ -43,7 +43,7 @@ public final class CTicketIDs
   static {
     VALID_NAME_LENGTH = 128;
     VALID_NAMES = Pattern.compile(
-      "[\\p{Ll}\\p{Nd}_\\-]+");
+      "[\\p{Ll}\\p{Lu}\\p{Nd}_\\-]+");
   }
 
   private CTicketIDs()
