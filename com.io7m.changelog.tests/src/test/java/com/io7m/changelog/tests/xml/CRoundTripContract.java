@@ -57,6 +57,13 @@ public abstract class CRoundTripContract
     this.runRoundTrip("/com/io7m/changelog/tests/xml/full.xml");
   }
 
+  @Test
+  public final void testRoundTrip2()
+    throws Exception
+  {
+    this.runRoundTrip("/com/io7m/changelog/tests/xml/audiobook.xml");
+  }
+
   private void runRoundTrip(
     final String name)
     throws IOException, URISyntaxException
