@@ -43,7 +43,7 @@
 
   <simpleType name="ticketIDType">
     <restriction base="string">
-      <pattern value="[\p{Ll}\p{Nd}_\-]+"/>
+      <pattern value="[\p{Ll}\p{Lu}\p{Nd}_\-]+"/>
       <maxLength value="128"/>
     </restriction>
   </simpleType>
