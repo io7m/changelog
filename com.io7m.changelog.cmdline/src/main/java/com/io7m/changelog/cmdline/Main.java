@@ -121,9 +121,7 @@ public final class Main implements Runnable
       final CLCommandType.Status status = command.execute();
       this.exit_code = status.exitCode();
     } catch (final ParameterException e) {
-      final StringBuilder sb = new StringBuilder(128);
-      this.commander.usage(sb);
-      LOG.error("{}\n{}", e.getMessage(), sb.toString());
+      LOG.error("{}", e.getMessage());
       this.exit_code = 1;
     } catch (final Exception e) {
       LOG.error("{}", e.getMessage(), e);

@@ -6,12 +6,12 @@
   <parent>
     <groupId>com.io7m.primogenitor</groupId>
     <artifactId>com.io7m.primogenitor</artifactId>
-    <version>3.0.0-beta0008</version>
+    <version>3.0.0-beta0020</version>
   </parent>
 
   <groupId>com.io7m.changelog</groupId>
   <artifactId>com.io7m.changelog</artifactId>
-  <version>4.0.0-beta0011</version>
+  <version>4.0.0-beta0012</version>
 
   <packaging>pom</packaging>
   <name>com.io7m.changelog</name>
