@@ -15,7 +15,7 @@
   <packaging>jar</packaging>
   <name>com.io7m.changelog.documentation</name>
   <description>Software changelogs (Documentation)</description>
-  <url>http://io7m.github.io/changelog/</url>
+  <url>https://www.io7m.com/software/changelog/</url>
 
   <properties>
     <mdep.analyze.skip>true</mdep.analyze.skip>
@@ -162,7 +162,7 @@
               <goal>jar</goal>
             </goals>
             <configuration>
-              <bottom><![CDATA[Copyright &#169; {currentYear} &lt;code@io7m.com&gt; http://io7m.com]]></bottom>
+              <bottom><![CDATA[Copyright &#169; {currentYear} &lt;code@io7m.com&gt; https://io7m.com]]></bottom>
               <archive>
                 <manifestEntries>
                   <Specification-Title>${project.name}</Specification-Title>
@@ -185,7 +185,7 @@
               <goal>javadoc-no-fork</goal>
             </goals>
             <configuration>
-              <bottom><![CDATA[Copyright &#169; {currentYear} &lt;code@io7m.com&gt; http://io7m.com]]></bottom>
+              <bottom><![CDATA[Copyright &#169; {currentYear} &lt;code@io7m.com&gt; https://io7m.com]]></bottom>
               <outputDirectory>${project.build.directory}/apidocs</outputDirectory>
               <includeDependencySources>true</includeDependencySources>
               <includeTransitiveDependencySources>true</includeTransitiveDependencySources>

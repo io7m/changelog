@@ -15,7 +15,7 @@
   <packaging>jar</packaging>
   <name>com.io7m.changelog.tests</name>
   <description>Software changelogs (Unit tests)</description>
-  <url>http://io7m.github.io/changelog/</url>
+  <url>https://www.io7m.com/software/changelog/</url>
 
   <properties>
     <mdep.analyze.skip>true</mdep.analyze.skip>
