@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.io7m.primogenitor</groupId>
     <artifactId>com.io7m.primogenitor.lite</artifactId>
-    <version>3.2.0</version>
+    <version>3.3.0-SNAPSHOT</version>
   </parent>
 
   <groupId>com.io7m.changelog</groupId>
@@ -128,6 +128,11 @@
         <version>0.6.0</version>
       </dependency>
 
+      <dependency>
+        <groupId>com.io7m.primogenitor</groupId>
+        <artifactId>com.io7m.primogenitor.support</artifactId>
+        <version>3.3.0</version>
+      </dependency>
       <dependency>
         <groupId>com.beust</groupId>
         <artifactId>jcommander</artifactId>
