@@ -22,6 +22,6 @@ module com.io7m.changelog.cmdline {
   requires com.io7m.changelog.xml.api;
   requires com.io7m.junreachable.core;
   requires io.vavr;
-  requires jcommander;
+  requires com.beust.jcommander;
   requires org.slf4j;
 }

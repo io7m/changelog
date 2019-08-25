@@ -19,7 +19,7 @@ module com.io7m.changelog.core
 {
   requires static com.io7m.immutables.style;
   requires static org.immutables.value;
-  requires static vavr.encodings;
+  requires static org.immutables.vavr.encodings;
 
   requires com.io7m.jaffirm.core;
   requires com.io7m.junreachable.core;
