@@ -201,7 +201,7 @@
               <arguments>
                 <argument>${project.build.directory}/javadoc-sources</argument>
                 <argument>${project.build.directory}/javadoc-classpath</argument>
-                <argument>${project.build.directory}/apidocs</argument>
+                <argument>${project.build.directory}/documentation/apidocs</argument>
                 <argument>${project.build.directory}/javadoc-log.txt</argument>
                 <argument>${project.build.directory}/javadoc-options</argument>
               </arguments>
