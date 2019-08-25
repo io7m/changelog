@@ -8,14 +8,14 @@
   <parent>
     <groupId>com.io7m.changelog</groupId>
     <artifactId>com.io7m.changelog</artifactId>
-    <version>4.0.0-beta0013</version>
+    <version>4.0.0-beta0014</version>
   </parent>
   <artifactId>com.io7m.changelog.cmdline</artifactId>
 
   <packaging>jar</packaging>
   <name>com.io7m.changelog.cmdline</name>
   <description>Software changelogs (Command line frontend)</description>
-  <url>http://io7m.github.io/changelog/</url>
+  <url>https://www.io7m.com/software/changelog/</url>
 
   <dependencies>
     <dependency>
@@ -83,19 +83,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-      </plugin>
-
-      <!-- Insert an Automatic-Module-Name entry -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifestEntries>
-              <Automatic-Module-Name>com.io7m.changelog.cmdline</Automatic-Module-Name>
-            </manifestEntries>
-          </archive>
-        </configuration>
       </plugin>
 
       <!-- Ignore dependencies that bytecode analysis misses. -->

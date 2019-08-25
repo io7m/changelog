@@ -18,6 +18,7 @@ package com.io7m.changelog.cmdline;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
+import com.beust.jcommander.internal.Console;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -110,9 +111,10 @@ public final class Main implements Runnable
 
       final String cmd = this.commander.getParsedCommand();
       if (cmd == null) {
-        final StringBuilder sb = new StringBuilder(128);
-        this.commander.usage(sb);
-        LOG.info("Arguments required.\n{}", sb.toString());
+        final var console = new StringBuilderConsole();
+        this.commander.setConsole(console);
+        this.commander.usage();
+        LOG.info("Arguments required.\n{}", console.builder.toString());
         this.exit_code = 1;
         return;
       }
@@ -126,6 +128,35 @@ public final class Main implements Runnable
     } catch (final Exception e) {
       LOG.error("{}", e.getMessage(), e);
       this.exit_code = 1;
+    }
+  }
+
+  private static final class StringBuilderConsole implements Console
+  {
+    private final StringBuilder builder;
+
+    StringBuilderConsole()
+    {
+      this.builder = new StringBuilder(128);
+    }
+
+    @Override
+    public void print(final String s)
+    {
+      this.builder.append(s);
+    }
+
+    @Override
+    public void println(final String s)
+    {
+      this.builder.append(s);
+      this.builder.append('\n');
+    }
+
+    @Override
+    public char[] readPassword(final boolean b)
+    {
+      return new char[0];
     }
   }
 }
