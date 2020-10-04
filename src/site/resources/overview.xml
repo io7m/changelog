@@ -8,10 +8,6 @@
          <img src="https://img.shields.io/maven-central/v/com.io7m.changelog/com.io7m.changelog.png?style=flat-square"
               alt="Maven Central"/>
       </a>
-      <a href="https://www.codacy.com/app/github_79/changelog">
-         <img src="https://img.shields.io/codacy/grade/8c6f31d9eb2f4541836b27ad7e95153c.png?style=flat-square"
-              alt="Codacy"/>
-      </a>
       <a href="https://codecov.io/gh/io7m/changelog">
          <img src="https://img.shields.io/codecov/c/github/io7m/changelog.png?style=flat-square"
               alt="Codecov"/>
