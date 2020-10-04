@@ -41,6 +41,12 @@
     <Bug pattern="LEST_LOST_EXCEPTION_STACK_TRACE"/>
   </Match>
 
+  <!-- Static initializer -->
+  <Match>
+    <Class name="com.io7m.changelog.schema.CSchema"/>
+    <Bug pattern="EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS"/>
+  </Match>
+
   <Match>
     <Or>
       <Bug pattern="IMC_IMMATURE_CLASS_NO_TOSTRING"/>
