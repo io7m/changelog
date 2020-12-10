@@ -15,13 +15,15 @@
  */
 
 /**
- * Changelog core types.
+ * Software changelogs (Core)
  */
 
 module com.io7m.changelog.core
 {
   requires static com.io7m.immutables.style;
   requires static org.immutables.value;
+  requires static org.osgi.annotation.bundle;
+  requires static org.osgi.annotation.versioning;
 
   requires com.io7m.jaffirm.core;
   requires com.io7m.junreachable.core;

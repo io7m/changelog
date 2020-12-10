@@ -14,12 +14,20 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+/**
+ * Software changelogs (XML)
+ */
+
 module com.io7m.changelog.xml.vanilla
 {
+  requires static org.osgi.annotation.bundle;
+  requires static org.osgi.annotation.versioning;
+
   requires com.io7m.changelog.core;
   requires com.io7m.changelog.parser.api;
   requires com.io7m.changelog.schema;
   requires com.io7m.changelog.xml.api;
+
   requires com.io7m.jlexing.core;
   requires com.io7m.junreachable.core;
   requires com.io7m.jxe.core;

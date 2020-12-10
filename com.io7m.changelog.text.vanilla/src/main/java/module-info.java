@@ -14,9 +14,15 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+/**
+ * Software changelogs (Default text implementation)
+ */
 
 module com.io7m.changelog.text.vanilla
 {
+  requires static org.osgi.annotation.bundle;
+  requires static org.osgi.annotation.versioning;
+
   requires com.io7m.changelog.core;
   requires com.io7m.changelog.text.api;
 

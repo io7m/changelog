@@ -14,16 +14,21 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+/**
+ * Software changelogs (Parser API)
+ */
 
 module com.io7m.changelog.parser.api
 {
   requires static com.io7m.immutables.style;
   requires static org.immutables.value;
+  requires static org.osgi.annotation.bundle;
+  requires static org.osgi.annotation.versioning;
 
+  requires com.io7m.changelog.core;
   requires com.io7m.jlexing.core;
   requires com.io7m.junreachable.core;
   requires org.slf4j;
-  requires com.io7m.changelog.core;
 
   exports com.io7m.changelog.parser.api;
 }

@@ -14,13 +14,22 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-module com.io7m.changelog.cmdline {
-  requires ch.qos.logback.classic;
-  requires jcommander;
+/**
+ * Software changelogs (Command line frontend)
+ */
+
+module com.io7m.changelog.cmdline
+{
+  requires static org.osgi.annotation.bundle;
+  requires static org.osgi.annotation.versioning;
+
   requires com.io7m.changelog.core;
   requires com.io7m.changelog.parser.api;
   requires com.io7m.changelog.text.api;
   requires com.io7m.changelog.xml.api;
+
+  requires ch.qos.logback.classic;
   requires com.io7m.junreachable.core;
+  requires jcommander;
   requires org.slf4j;
 }

@@ -37,19 +37,20 @@ final class CTicketIDConverter implements IStringConverter<CTicketID>
     Objects.requireNonNull(value, "Value");
 
     if (!CTicketIDs.isValid(value)) {
+      final var lineSeparator = System.lineSeparator();
       throw new ParameterException(
         new StringBuilder(128)
           .append("Ticket ID is not valid.")
-          .append(System.lineSeparator())
+          .append(lineSeparator)
           .append("  Received: ")
           .append(value)
-          .append(System.lineSeparator())
+          .append(lineSeparator)
           .append("  Expected: ")
           .append(CTicketIDs.VALID_NAMES.pattern())
           .append(" <= ")
           .append(CTicketIDs.VALID_NAME_LENGTH)
           .append(" characters")
-          .append(System.lineSeparator())
+          .append(lineSeparator)
           .toString());
     }
 

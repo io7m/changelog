@@ -36,7 +36,7 @@ final class CLCommandVersion extends CLCommandRoot
 
     final Package p = this.getClass().getPackage();
     System.out.printf(
-      "%s %s %s\n",
+      "%s %s %s%n",
       p.getImplementationVendor(),
       p.getImplementationTitle(),
       p.getImplementationVersion());

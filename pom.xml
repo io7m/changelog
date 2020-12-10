@@ -125,6 +125,16 @@
       </dependency>
 
       <dependency>
+        <groupId>org.osgi</groupId>
+        <artifactId>org.osgi.annotation.bundle</artifactId>
+        <version>1.0.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.osgi</groupId>
+        <artifactId>org.osgi.annotation.versioning</artifactId>
+        <version>1.1.0</version>
+      </dependency>
+      <dependency>
         <groupId>com.io7m.primogenitor</groupId>
         <artifactId>com.io7m.primogenitor.support</artifactId>
         <version>6.0.0</version>
@@ -193,6 +203,14 @@
         </plugin>
       </plugins>
     </pluginManagement>
+
+    <plugins>
+      <!-- Spot bugs -->
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
   </build>
 
 </project>

@@ -58,12 +58,39 @@
   </Match>
 
   <Match>
+    <Class name="com.io7m.changelog.documentation.CDocumentation"/>
+    <Method name="getDocumentationXMLLocation"/>
+    <Bug pattern="EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS"/>
+  </Match>
+
+  <!-- The command line interface paths are user provided! -->
+  <Match>
+    <Class name="~com\.io7m\.changelog\.cmdline\..+"/>
+    <Bug pattern="PATH_TRAVERSAL_IN"/>
+  </Match>
+
+  <!-- Temporary cmdline issues. -->
+  <Match>
+    <Class name="com.io7m.changelog.cmdline.CLCommandRoot"/>
+    <Bug pattern="LO_SUSPECT_LOG_CLASS"/>
+  </Match>
+  <Match>
+    <Class name="com.io7m.changelog.cmdline.Main"/>
+    <Bug pattern="LO_TOSTRING_PARAMETER"/>
+  </Match>
+  <Match>
+    <Class name="com.io7m.changelog.cmdline.Main"/>
+    <Bug pattern="UVA_USE_VAR_ARGS"/>
+  </Match>
+
+  <Match>
     <Or>
-      <Bug pattern="IMC_IMMATURE_CLASS_NO_TOSTRING"/>
-      <Bug pattern="OPM_OVERLY_PERMISSIVE_METHOD"/>
-      <Bug pattern="OCP_OVERLY_CONCRETE_PARAMETER"/>
-      <Bug pattern="CRLF_INJECTION_LOGS"/>
       <Bug pattern="AI_ANNOTATION_ISSUES_NEEDS_NULLABLE"/>
+      <Bug pattern="CRLF_INJECTION_LOGS"/>
+      <Bug pattern="IMC_IMMATURE_CLASS_NO_TOSTRING"/>
+      <Bug pattern="OCP_OVERLY_CONCRETE_PARAMETER"/>
+      <Bug pattern="OPM_OVERLY_PERMISSIVE_METHOD"/>
+      <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
     </Or>
   </Match>
 

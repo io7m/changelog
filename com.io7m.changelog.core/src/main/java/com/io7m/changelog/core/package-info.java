@@ -15,8 +15,12 @@
  */
 
 /**
- * Core types.
+ * Software changelogs (Core)
  */
 
+@Export
+@Version("4.0.0")
 package com.io7m.changelog.core;
 
+import org.osgi.annotation.bundle.Export;
+import org.osgi.annotation.versioning.Version;

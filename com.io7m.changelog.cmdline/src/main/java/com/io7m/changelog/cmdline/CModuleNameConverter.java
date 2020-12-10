@@ -37,19 +37,20 @@ final class CModuleNameConverter implements IStringConverter<CModuleName>
     Objects.requireNonNull(value, "Value");
 
     if (!CModuleNames.isValid(value)) {
+      final var lineSeparator = System.lineSeparator();
       throw new ParameterException(
         new StringBuilder(128)
           .append("Module name is not valid.")
-          .append(System.lineSeparator())
+          .append(lineSeparator)
           .append("  Received: ")
           .append(value)
-          .append(System.lineSeparator())
+          .append(lineSeparator)
           .append("  Expected: ")
           .append(CModuleNames.VALID_NAMES.pattern())
           .append(" <= ")
           .append(CModuleNames.VALID_NAME_LENGTH)
           .append(" characters")
-          .append(System.lineSeparator())
+          .append(lineSeparator)
           .toString());
     }
 
