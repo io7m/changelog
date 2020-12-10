@@ -19,7 +19,7 @@ package com.io7m.changelog.text.vanilla;
 import com.io7m.changelog.core.CChange;
 import com.io7m.changelog.core.CChangelog;
 import com.io7m.changelog.core.CRelease;
-import com.io7m.changelog.core.CVersionType;
+import com.io7m.changelog.core.CVersion;
 import com.io7m.changelog.text.api.CPlainChangelogWriterConfiguration;
 import com.io7m.changelog.text.api.CPlainChangelogWriterProviderType;
 import com.io7m.changelog.text.api.CPlainChangelogWriterType;
@@ -90,14 +90,14 @@ public final class CPlainChangelogWriters
       throws IOException
     {
       try {
-        final Map<CVersionType, CRelease> releases = changelog.releases();
-        final List<CVersionType> versions =
+        final Map<CVersion, CRelease> releases = changelog.releases();
+        final List<CVersion> versions =
           releases.keySet()
             .stream()
             .sorted(Comparator.reverseOrder())
             .collect(Collectors.toList());
 
-        for (final CVersionType v : versions) {
+        for (final CVersion v : versions) {
           final CRelease release = releases.get(v);
           this.writeRelease(changelog, release);
         }
@@ -121,7 +121,7 @@ public final class CPlainChangelogWriters
       this.writer.append("Release: ");
       this.writer.append(changelog.project().value());
       this.writer.append(" ");
-      this.writer.append(release.version().toVersionString());
+      this.writer.append(String.format("%s", release.version()));
       this.writer.newLine();
 
       final var changes =

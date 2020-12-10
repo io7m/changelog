@@ -19,31 +19,28 @@ package com.io7m.changelog.cmdline.internal;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.io7m.changelog.core.CChangelog;
+import com.io7m.changelog.core.CRelease;
+import com.io7m.changelog.core.CVersions;
 import com.io7m.changelog.parser.api.CParseErrorHandlers;
 import com.io7m.changelog.xml.api.CXMLChangelogParserProviderType;
-import com.io7m.changelog.xml.api.CXMLChangelogParserType;
 import com.io7m.changelog.xml.api.CXMLChangelogWriterProviderType;
-import com.io7m.changelog.xml.api.CXMLChangelogWriterType;
 import com.io7m.claypot.core.CLPCommandContextType;
+import com.io7m.jaffirm.core.Invariants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.time.ZoneId;
+import java.time.Clock;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.ServiceLoader;
 
-@Parameters(commandDescription = "Update the date of the latest release")
-public final class CLCommandTouchRelease extends CLAbstractCommand
+@Parameters(commandDescription = "Finish a release.")
+public final class CLCommandReleaseFinish extends CLAbstractCommand
 {
   private static final Logger LOG =
-    LoggerFactory.getLogger(CLCommandTouchRelease.class);
+    LoggerFactory.getLogger(CLCommandReleaseFinish.class);
 
   @Parameter(
     names = "--file",
@@ -51,85 +48,95 @@ public final class CLCommandTouchRelease extends CLAbstractCommand
     description = "The changelog file")
   private Path path = Paths.get("README-CHANGES.xml");
 
+  @Parameter(
+    names = "--version",
+    required = false,
+    description = "The target release version")
+  private String versionText;
+
   /**
    * Construct a command.
    *
    * @param inContext The command context
    */
 
-  public CLCommandTouchRelease(
+  public CLCommandReleaseFinish(
     final CLPCommandContextType inContext)
   {
     super(LOG, inContext);
   }
 
   @Override
-  public String name()
-  {
-    return "touch-release";
-  }
-
-  @Override
   public Status executeActual()
     throws Exception
   {
-    final Optional<CXMLChangelogParserProviderType> parser_provider_opt =
+    final var parsersOpt =
       ServiceLoader.load(CXMLChangelogParserProviderType.class).findFirst();
 
-    if (!parser_provider_opt.isPresent()) {
+    if (parsersOpt.isEmpty()) {
       LOG.error("No XML parser providers are available");
       return Status.FAILURE;
     }
 
-    final Optional<CXMLChangelogWriterProviderType> writer_provider_opt =
+    final var writersOpt =
       ServiceLoader.load(CXMLChangelogWriterProviderType.class).findFirst();
 
-    if (!writer_provider_opt.isPresent()) {
+    if (writersOpt.isEmpty()) {
       LOG.error("No XML writer providers are available");
       return Status.FAILURE;
     }
 
-    final CXMLChangelogParserProviderType parser_provider =
-      parser_provider_opt.get();
-    final CXMLChangelogWriterProviderType writer_provider =
-      writer_provider_opt.get();
+    final var parsers =
+      parsersOpt.get();
+    final var writers =
+      writersOpt.get();
 
-    final Path path_tmp = Paths.get(this.path + ".tmp");
+    final var pathTemp =
+      Paths.get(this.path + ".tmp");
+    final var changelog =
+      parsers.parse(this.path, CParseErrorHandlers.loggingHandler(LOG));
 
-    try (InputStream stream = Files.newInputStream(this.path)) {
-      final CXMLChangelogParserType parser = parser_provider.create(
-        this.path.toUri(),
-        stream,
-        CParseErrorHandlers.loggingHandler(LOG));
+    final var targetVersionOpt =
+      Optional.ofNullable(this.versionText)
+        .map(CVersions::parse);
 
-      final CChangelog changelog = parser.parse();
+    final var targetReleaseOpt =
+      changelog.findTargetReleaseOrLatestOpen(targetVersionOpt);
 
-      final var latestReleaseOpt = changelog.latestRelease();
-      if (latestReleaseOpt.isEmpty()) {
-        LOG.error("There is no current release!");
-        return Status.FAILURE;
-      }
-
-      final var latestRelease =
-        latestReleaseOpt.get();
-      final ZonedDateTime date =
-        ZonedDateTime.now(ZoneId.of("UTC"));
-
-      final CChangelog changelog_write =
-        CChangelog.builder()
-          .from(changelog)
-          .putReleases(latestRelease.version(), latestRelease.withDate(date))
-          .build();
-
-      try (OutputStream output = Files.newOutputStream(path_tmp)) {
-        final CXMLChangelogWriterType writer =
-          writer_provider.create(this.path.toUri(), output);
-        writer.write(changelog_write);
-      }
-
-      Files.move(path_tmp, this.path, StandardCopyOption.ATOMIC_MOVE);
+    if (targetReleaseOpt.isEmpty()) {
+      LOG.error("No release is currently open");
+      return Status.FAILURE;
     }
 
+    final var targetRelease = targetReleaseOpt.get();
+    Invariants.checkInvariant(targetRelease.isOpen(), "Release must be open");
+
+    final var closedRelease =
+      CRelease.builder()
+        .from(targetRelease)
+        .setOpen(false)
+        .setDate(ZonedDateTime.now(Clock.systemUTC()))
+        .build();
+
+    final var newChangelog =
+      CChangelog.builder()
+        .from(changelog)
+        .putReleases(closedRelease.version(), closedRelease)
+        .build();
+
+    writers.write(this.path, pathTemp, newChangelog);
     return Status.SUCCESS;
+  }
+
+  @Override
+  public String name()
+  {
+    return "release-finish";
+  }
+
+  @Override
+  public String extendedHelp()
+  {
+    return this.messages().format("helpReleaseFinish");
   }
 }

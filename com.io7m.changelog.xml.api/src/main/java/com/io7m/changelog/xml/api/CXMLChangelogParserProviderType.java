@@ -16,12 +16,15 @@
 
 package com.io7m.changelog.xml.api;
 
+import com.io7m.changelog.core.CChangelog;
 import com.io7m.changelog.parser.api.CChangelogParserProviderType;
 import com.io7m.changelog.parser.api.CParseError;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.function.Consumer;
 
 /**
@@ -37,4 +40,27 @@ public interface CXMLChangelogParserProviderType
     InputStream stream,
     Consumer<CParseError> receiver)
     throws IOException;
+
+  /**
+   * Parse a changelog from the given file.
+   *
+   * @param file     The file
+   * @param receiver An error receiver
+   *
+   * @return A parsed changelog
+   *
+   * @throws IOException On I/O errors
+   */
+
+  default CChangelog parse(
+    final Path file,
+    final Consumer<CParseError> receiver)
+    throws IOException
+  {
+    try (var stream = Files.newInputStream(file)) {
+      final var parser =
+        this.create(file.toUri(), stream, receiver);
+      return parser.parse();
+    }
+  }
 }

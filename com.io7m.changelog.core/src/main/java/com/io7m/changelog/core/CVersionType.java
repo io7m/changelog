@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016 <code@io7m.com> http://io7m.com
+ * Copyright © 2020 Mark Raynsford <code@io7m.com> http://io7m.com
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -16,30 +16,59 @@
 
 package com.io7m.changelog.core;
 
-/**
- * The type of version numbers.
- */
+import com.io7m.immutables.styles.ImmutablesStyleType;
+import com.io7m.jaffirm.core.Preconditions;
+import org.immutables.value.Value;
 
-public interface CVersionType extends Comparable<CVersionType>
+import java.math.BigInteger;
+import java.util.Comparator;
+import java.util.Formattable;
+import java.util.Formatter;
+
+@Value.Immutable
+@ImmutablesStyleType
+public interface CVersionType extends Comparable<CVersionType>, Formattable
 {
-  /**
-   * Accept a generic visitor.
-   *
-   * @param <A> The type of returned values
-   * @param v   The visitor
-   *
-   * @return The value returned by the visitor
-   *
-   * @throws Exception If the visitor raises {@link Exception}
-   */
+  @Value.Parameter
+  BigInteger major();
 
-  <A> A versionAccept(
-    CVersionVisitorType<A> v)
-    throws Exception;
+  @Value.Parameter
+  BigInteger minor();
 
-  /**
-   * @return The version number in canonical format
-   */
+  @Value.Parameter
+  BigInteger patch();
 
-  String toVersionString();
+  @Override
+  default int compareTo(
+    final CVersionType other)
+  {
+    return Comparator.comparing(CVersionType::major)
+      .thenComparing(CVersionType::minor)
+      .thenComparing(CVersionType::patch)
+      .compare(this, other);
+  }
+
+  @Value.Check
+  default void checkPreconditions()
+  {
+    Preconditions.checkPreconditionV(
+      this.major().compareTo(BigInteger.ZERO) >= 0,
+      "Major version must be non-negative");
+    Preconditions.checkPreconditionV(
+      this.minor().compareTo(BigInteger.ZERO) >= 0,
+      "Minor version must be non-negative");
+    Preconditions.checkPreconditionV(
+      this.patch().compareTo(BigInteger.ZERO) >= 0,
+      "Patch version must be non-negative");
+  }
+
+  @Override
+  default void formatTo(
+    final Formatter formatter,
+    final int flags,
+    final int width,
+    final int precision)
+  {
+    formatter.format("%s.%s.%s", this.major(), this.minor(), this.patch());
+  }
 }

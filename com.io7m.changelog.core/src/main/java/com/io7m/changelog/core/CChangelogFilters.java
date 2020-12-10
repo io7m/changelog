@@ -48,7 +48,7 @@ public final class CChangelogFilters
 
   public static Optional<CChangelog> upToAndIncluding(
     final CChangelog changelog,
-    final CVersionType version,
+    final CVersion version,
     final int count)
   {
     Objects.requireNonNull(changelog, "Changelog");
@@ -67,7 +67,7 @@ public final class CChangelogFilters
         .collect(Collectors.toList());
 
     final var releasesFiltered =
-      new HashMap<CVersionType, CRelease>(versions.size());
+      new HashMap<CVersion, CRelease>(versions.size());
     for (final var currentVersion : versions) {
       releasesFiltered.put(currentVersion, releases.get(version));
     }

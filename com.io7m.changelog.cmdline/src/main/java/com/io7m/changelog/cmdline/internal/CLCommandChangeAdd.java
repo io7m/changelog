@@ -25,19 +25,13 @@ import com.io7m.changelog.core.CRelease;
 import com.io7m.changelog.core.CTicketID;
 import com.io7m.changelog.parser.api.CParseErrorHandlers;
 import com.io7m.changelog.xml.api.CXMLChangelogParserProviderType;
-import com.io7m.changelog.xml.api.CXMLChangelogParserType;
 import com.io7m.changelog.xml.api.CXMLChangelogWriterProviderType;
-import com.io7m.changelog.xml.api.CXMLChangelogWriterType;
 import com.io7m.claypot.core.CLPCommandContextType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -46,10 +40,10 @@ import java.util.Optional;
 import java.util.ServiceLoader;
 
 @Parameters(commandDescription = "Add a change to the current release")
-public final class CLCommandAddChange extends CLAbstractCommand
+public final class CLCommandChangeAdd extends CLAbstractCommand
 {
   private static final Logger LOG =
-    LoggerFactory.getLogger(CLCommandAddChange.class);
+    LoggerFactory.getLogger(CLCommandChangeAdd.class);
 
   @Parameter(
     names = "--file",
@@ -89,7 +83,7 @@ public final class CLCommandAddChange extends CLAbstractCommand
    * @param inContext The command context
    */
 
-  public CLCommandAddChange(
+  public CLCommandChangeAdd(
     final CLPCommandContextType inContext)
   {
     super(LOG, inContext);
@@ -98,94 +92,82 @@ public final class CLCommandAddChange extends CLAbstractCommand
   @Override
   public String name()
   {
-    return "add-change";
+    return "change-add";
   }
 
   @Override
   public String extendedHelp()
   {
-    return this.messages().format("helpAddChange");
+    return this.messages().format("helpChangeAdd");
   }
 
   @Override
   public Status executeActual()
     throws Exception
   {
-    final Optional<CXMLChangelogParserProviderType> parser_provider_opt =
+    final var parsersOpt =
       ServiceLoader.load(CXMLChangelogParserProviderType.class).findFirst();
 
-    if (!parser_provider_opt.isPresent()) {
+    if (parsersOpt.isEmpty()) {
       LOG.error("No XML parser providers are available");
       return Status.FAILURE;
     }
 
-    final Optional<CXMLChangelogWriterProviderType> writer_provider_opt =
+    final var writersOpt =
       ServiceLoader.load(CXMLChangelogWriterProviderType.class).findFirst();
 
-    if (!writer_provider_opt.isPresent()) {
+    if (writersOpt.isEmpty()) {
       LOG.error("No XML writer providers are available");
       return Status.FAILURE;
     }
 
-    final CXMLChangelogParserProviderType parser_provider =
-      parser_provider_opt.get();
-    final CXMLChangelogWriterProviderType writer_provider =
-      writer_provider_opt.get();
+    final var parsers = parsersOpt.get();
+    final var writers = writersOpt.get();
 
-    final Path path_tmp = Paths.get(this.path + ".tmp");
+    final var changelog =
+      parsers.parse(this.path, CParseErrorHandlers.loggingHandler(LOG));
 
-    try (InputStream stream = Files.newInputStream(this.path)) {
-      final CXMLChangelogParserType parser = parser_provider.create(
-        this.path.toUri(),
-        stream,
-        CParseErrorHandlers.loggingHandler(LOG));
+    final var latest =
+      changelog.latestRelease();
 
-      final CChangelog changelog = parser.parse();
-
-      final Optional<CRelease> latest =
-        changelog.latestRelease();
-
-      if (latest.isEmpty()) {
-        LOG.error("No current release exists");
-        return Status.FAILURE;
-      }
-
-      final ZonedDateTime now =
-        ZonedDateTime.now(ZoneId.of("UTC"));
-
-      final CChange change =
-        CChange.builder()
-          .setModule(Optional.ofNullable(this.module))
-          .setBackwardsCompatible(!this.incompatible)
-          .setDate(now)
-          .setSummary(this.summary)
-          .setTickets(List.copyOf(this.tickets))
-          .build();
-
-      final CRelease release = latest.get();
-      final CRelease release_write =
-        CRelease.builder()
-          .from(release)
-          .addChanges(change)
-          .setDate(now)
-          .build();
-
-      final CChangelog changelog_write =
-        CChangelog.builder()
-          .from(changelog)
-          .putReleases(release_write.version(), release_write)
-          .build();
-
-      try (OutputStream output = Files.newOutputStream(path_tmp)) {
-        final CXMLChangelogWriterType writer =
-          writer_provider.create(this.path.toUri(), output);
-
-        writer.write(changelog_write);
-      }
-
-      Files.move(path_tmp, this.path, StandardCopyOption.ATOMIC_MOVE);
+    if (latest.isEmpty()) {
+      LOG.error("No current release exists.");
+      return Status.FAILURE;
     }
 
+    final var now =
+      ZonedDateTime.now(ZoneId.of("UTC"));
+
+    final var change =
+      CChange.builder()
+        .setModule(Optional.ofNullable(this.module))
+        .setBackwardsCompatible(!this.incompatible)
+        .setDate(now)
+        .setSummary(this.summary)
+        .setTickets(List.copyOf(this.tickets))
+        .build();
+
+    final var release = latest.get();
+    if (!release.isOpen()) {
+      LOG.error("The current release is not open for modification.");
+      return Status.FAILURE;
+    }
+
+    final var releaseWrite =
+      CRelease.builder()
+        .from(release)
+        .addChanges(change)
+        .setDate(now)
+        .build();
+
+    final var changelogWrite =
+      CChangelog.builder()
+        .from(changelog)
+        .putReleases(releaseWrite.version(), releaseWrite)
+        .build();
+
+    final var pathTemp = Paths.get(this.path + ".tmp");
+    writers.write(this.path, pathTemp, changelogWrite);
     return Status.SUCCESS;
   }
 }

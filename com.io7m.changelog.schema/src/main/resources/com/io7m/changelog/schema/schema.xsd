@@ -90,6 +90,7 @@
       <attribute name="date" type="dateTime" use="required"/>
       <attribute name="version" type="c:versionType" use="required"/>
       <attribute name="ticket-system" type="NCName" use="required"/>
+      <attribute name="is-open" type="boolean" use="optional" default="false"/>
     </complexType>
   </element>
 

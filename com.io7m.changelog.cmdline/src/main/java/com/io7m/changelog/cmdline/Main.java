@@ -16,14 +16,15 @@
 
 package com.io7m.changelog.cmdline;
 
-import com.io7m.changelog.cmdline.internal.CLCommandAddChange;
-import com.io7m.changelog.cmdline.internal.CLCommandAddRelease;
-import com.io7m.changelog.cmdline.internal.CLCommandAtom;
+import com.io7m.changelog.cmdline.internal.CLCommandChangeAdd;
+import com.io7m.changelog.cmdline.internal.CLCommandReleaseSetVersion;
+import com.io7m.changelog.cmdline.internal.CLCommandWriteAtom;
 import com.io7m.changelog.cmdline.internal.CLCommandInitialize;
-import com.io7m.changelog.cmdline.internal.CLCommandPlain;
-import com.io7m.changelog.cmdline.internal.CLCommandTouchRelease;
+import com.io7m.changelog.cmdline.internal.CLCommandWritePlain;
+import com.io7m.changelog.cmdline.internal.CLCommandReleaseBegin;
+import com.io7m.changelog.cmdline.internal.CLCommandReleaseFinish;
 import com.io7m.changelog.cmdline.internal.CLCommandVersion;
-import com.io7m.changelog.cmdline.internal.CLCommandXHTML;
+import com.io7m.changelog.cmdline.internal.CLCommandWriteXHTML;
 import com.io7m.claypot.core.CLPApplicationConfiguration;
 import com.io7m.claypot.core.CLPCommandConstructorType;
 import com.io7m.claypot.core.CLPCommandType;
@@ -59,14 +60,15 @@ public final class Main implements Runnable
 
     final List<CLPCommandConstructorType> commands =
       List.of(
-        CLCommandAddChange::new,
-        CLCommandAddRelease::new,
-        CLCommandAtom::new,
+        CLCommandChangeAdd::new,
         CLCommandInitialize::new,
-        CLCommandPlain::new,
-        CLCommandTouchRelease::new,
+        CLCommandReleaseBegin::new,
+        CLCommandReleaseFinish::new,
+        CLCommandReleaseSetVersion::new,
         CLCommandVersion::new,
-        CLCommandXHTML::new
+        CLCommandWriteAtom::new,
+        CLCommandWritePlain::new,
+        CLCommandWriteXHTML::new
       );
 
     final var configuration =

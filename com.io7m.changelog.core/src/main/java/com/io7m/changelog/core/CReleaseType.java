@@ -53,5 +53,11 @@ public interface CReleaseType
    * @return The version number
    */
 
-  CVersionType version();
+  CVersion version();
+
+  /**
+   * @return {@code true} if the release is open for modifications
+   */
+
+  boolean isOpen();
 }

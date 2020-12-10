@@ -18,7 +18,9 @@ package com.io7m.changelog.core;
 
 import com.io7m.junreachable.UnreachableCodeException;
 
+import java.math.BigInteger;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 /**
  * Functions for parsing and processing versions.
@@ -26,6 +28,9 @@ import java.util.Objects;
 
 public final class CVersions
 {
+  private static Pattern VALID_VERSION =
+    Pattern.compile("(\\p{Nd}+)\\.(\\p{Nd}+)\\.(\\p{Nd}+)");
+
   private CVersions()
   {
     throw new UnreachableCodeException();
@@ -39,50 +44,22 @@ public final class CVersions
    * @return A new version number
    */
 
-  public static CVersionType parse(
+  public static CVersion parse(
     final String version)
   {
     Objects.requireNonNull(version, "Version");
 
-    String ptr = version;
-    int dot = ptr.indexOf('.');
-    if (dot == -1) {
-      return CVersionText.of(version);
+    final var matcher = VALID_VERSION.matcher(version);
+    if (matcher.matches()) {
+      final var major = new BigInteger(matcher.group(1));
+      final var minor = new BigInteger(matcher.group(2));
+      final var patch = new BigInteger(matcher.group(3));
+      return CVersion.of(major, minor, patch);
     }
 
-    final Integer mj = Integer.valueOf(ptr.substring(0, dot));
-    ptr = version.substring(dot + 1);
-
-    dot = ptr.indexOf('.');
-    if (dot == -1) {
-      return CVersionText.of(version);
-    }
-
-    final Integer mn = Integer.valueOf(ptr.substring(0, dot));
-    ptr = ptr.substring(dot + 1);
-
-    if (ptr.matches("[0-9]+")) {
-      return CVersionStandard.builder()
-        .setMajor(mj.intValue())
-        .setMinor(mn.intValue())
-        .setPatch(Integer.parseInt(ptr))
-        .setQualifier("")
-        .build();
-    }
-
-    dot = ptr.indexOf('-');
-    if (dot == -1) {
-      return CVersionText.of(version);
-    }
-
-    final Integer mp = Integer.valueOf(ptr.substring(0, dot));
-    ptr = ptr.substring(dot + 1);
-
-    return CVersionStandard.builder()
-      .setMajor(mj.intValue())
-      .setMinor(mn.intValue())
-      .setPatch(mp.intValue())
-      .setQualifier(ptr)
-      .build();
+    throw new IllegalArgumentException(String.format(
+      "Expected a version number matching '%s'",
+      VALID_VERSION)
+    );
   }
 }

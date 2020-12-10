@@ -19,12 +19,10 @@ package com.io7m.changelog.tests.cmdline;
 import com.io7m.changelog.cmdline.MainExitless;
 import com.io7m.changelog.core.CChangelog;
 import com.io7m.changelog.core.CRelease;
-import com.io7m.changelog.parser.api.CParseError;
+import com.io7m.changelog.core.CVersion;
 import com.io7m.changelog.parser.api.CParseErrorHandlers;
 import com.io7m.changelog.tests.CLTestDirectories;
 import com.io7m.changelog.xml.CXMLChangelogParsers;
-import com.io7m.changelog.xml.api.CXMLChangelogParserType;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -32,15 +30,15 @@ import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.UncheckedIOException;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.function.Consumer;
 
+import static java.math.BigInteger.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -150,13 +148,13 @@ public final class CLCommandLineTest
 
     MainExitless.main(new String[]{
       "help",
-      "add-change"
+      "change-add"
     });
 
     this.flush();
     final var text = this.output.toString();
-    assertTrue(text.contains("Usage: add-change"));
-    assertTrue(text.contains("The add-change command"));
+    assertTrue(text.contains("Usage: change-add"));
+    assertTrue(text.contains("The change-add command"));
     LOG.debug("{}", text);
   }
 
@@ -176,6 +174,108 @@ public final class CLCommandLineTest
     final var text = this.output.toString();
     assertTrue(text.contains("Usage: initialize"));
     assertTrue(text.contains("The initialize command"));
+    LOG.debug("{}", text);
+  }
+
+  @Test
+  public void testHelpWritePlain()
+    throws IOException
+  {
+    System.setOut(this.outputPrint);
+    System.setErr(this.outputPrint);
+
+    MainExitless.main(new String[]{
+      "help", "write-plain"
+    });
+
+    this.flush();
+    final var text = this.output.toString();
+    assertTrue(text.contains("Usage: write-plain"));
+    LOG.debug("{}", text);
+  }
+
+  @Test
+  public void testHelpWriteXHTML()
+    throws IOException
+  {
+    System.setOut(this.outputPrint);
+    System.setErr(this.outputPrint);
+
+    MainExitless.main(new String[]{
+      "help", "write-xhtml"
+    });
+
+    this.flush();
+    final var text = this.output.toString();
+    assertTrue(text.contains("Usage: write-xhtml"));
+    LOG.debug("{}", text);
+  }
+
+  @Test
+  public void testHelpWriteAtom()
+    throws IOException
+  {
+    System.setOut(this.outputPrint);
+    System.setErr(this.outputPrint);
+
+    MainExitless.main(new String[]{
+      "help", "write-atom"
+    });
+
+    this.flush();
+    final var text = this.output.toString();
+    assertTrue(text.contains("Usage: write-atom"));
+    LOG.debug("{}", text);
+  }
+
+  @Test
+  public void testHelpReleaseBegin()
+    throws IOException
+  {
+    System.setOut(this.outputPrint);
+    System.setErr(this.outputPrint);
+
+    MainExitless.main(new String[]{
+      "help", "release-begin"
+    });
+
+    this.flush();
+    final var text = this.output.toString();
+    assertTrue(text.contains("Usage: release-begin"));
+    LOG.debug("{}", text);
+  }
+
+  @Test
+  public void testHelpReleaseFinish()
+    throws IOException
+  {
+    System.setOut(this.outputPrint);
+    System.setErr(this.outputPrint);
+
+    MainExitless.main(new String[]{
+      "help", "release-finish"
+    });
+
+    this.flush();
+    final var text = this.output.toString();
+    assertTrue(text.contains("Usage: release-finish"));
+    LOG.debug("{}", text);
+  }
+
+  @Test
+  public void testHelpReleaseSetVersion()
+    throws IOException
+  {
+    System.setOut(this.outputPrint);
+    System.setErr(this.outputPrint);
+
+    MainExitless.main(new String[]{
+      "help", "release-set-version"
+    });
+
+    this.flush();
+    final var text = this.output.toString();
+    assertTrue(text.contains("Usage: release-set-version"));
     LOG.debug("{}", text);
   }
 
@@ -330,57 +430,13 @@ public final class CLCommandLineTest
 
     assertThrows(IOException.class, () -> {
       MainExitless.main(new String[]{
-        "add-change",
+        "change-add",
         "--file",
         this.outputPath.toString(),
         "--summary",
         "Some text"
       });
     });
-  }
-
-  @Test
-  public void testAddRelease()
-    throws IOException
-  {
-    System.setOut(this.outputPrint);
-    System.setErr(this.outputPrint);
-
-    Files.deleteIfExists(this.outputPath);
-
-    MainExitless.main(new String[]{
-      "initialize",
-      "--file",
-      this.outputPath.toString(),
-      "--ticket-system-name",
-      "com.github.io7m.changelog.test",
-      "--ticket-system-uri",
-      "https://www.github.com/io7m/changelog/issues/",
-      "--project",
-      "com.io7m.changelog.test"
-    });
-
-    MainExitless.main(new String[]{
-      "add-release",
-      "--file",
-      this.outputPath.toString(),
-      "--version",
-      "1.0.0"
-    });
-
-    final var changelog = parse(this.outputPath);
-    assertEquals(
-      "com.io7m.changelog.test",
-      changelog.project().value()
-    );
-    assertEquals(
-      "com.github.io7m.changelog.test",
-      changelog.ticketSystems().keySet().iterator().next()
-    );
-    assertEquals(
-      "https://www.github.com/io7m/changelog/issues/",
-      changelog.ticketSystems().values().iterator().next().uri().toString()
-    );
   }
 
   @Test
@@ -405,7 +461,7 @@ public final class CLCommandLineTest
     });
 
     MainExitless.main(new String[]{
-      "add-release",
+      "release-begin",
       "--file",
       this.outputPath.toString(),
       "--version",
@@ -413,7 +469,7 @@ public final class CLCommandLineTest
     });
 
     MainExitless.main(new String[]{
-      "add-change",
+      "change-add",
       "--file",
       this.outputPath.toString(),
       "--summary",
@@ -430,7 +486,7 @@ public final class CLCommandLineTest
 
     final var changelog = parse(this.outputPath);
     final var release = changelog.latestRelease().get();
-    assertEquals("1.0.0", release.version().toVersionString());
+    assertEquals("1.0.0", String.format("%s", release.version()));
     final var change = release.changes().get(0);
     assertEquals("Some text", change.summary());
     assertEquals("1", change.tickets().get(0).value());
@@ -461,7 +517,7 @@ public final class CLCommandLineTest
     });
 
     MainExitless.main(new String[]{
-      "add-release",
+      "release-begin",
       "--file",
       this.outputPath.toString(),
       "--version",
@@ -470,7 +526,7 @@ public final class CLCommandLineTest
 
     assertThrows(IOException.class, () -> {
       MainExitless.main(new String[]{
-        "add-change",
+        "change-add",
         "--file",
         this.outputPath.toString(),
         "--summary",
@@ -482,7 +538,7 @@ public final class CLCommandLineTest
 
     final var changelog = parse(this.outputPath);
     final var release = changelog.latestRelease().get();
-    assertEquals("1.0.0", release.version().toVersionString());
+    assertEquals("1.0.0", String.format("%s", release.version()));
     assertEquals(0, release.changes().size());
   }
 
@@ -508,7 +564,7 @@ public final class CLCommandLineTest
     });
 
     MainExitless.main(new String[]{
-      "add-release",
+      "release-begin",
       "--file",
       this.outputPath.toString(),
       "--version",
@@ -517,7 +573,7 @@ public final class CLCommandLineTest
 
     assertThrows(IOException.class, () -> {
       MainExitless.main(new String[]{
-        "add-change",
+        "change-add",
         "--file",
         this.outputPath.toString(),
         "--summary",
@@ -529,7 +585,7 @@ public final class CLCommandLineTest
 
     final var changelog = parse(this.outputPath);
     final var release = changelog.latestRelease().get();
-    assertEquals("1.0.0", release.version().toVersionString());
+    assertEquals("1.0.0", String.format("%s", release.version()));
     assertEquals(0, release.changes().size());
   }
 
@@ -555,7 +611,7 @@ public final class CLCommandLineTest
     });
 
     MainExitless.main(new String[]{
-      "add-release",
+      "release-begin",
       "--file",
       this.outputPath.toString(),
       "--version",
@@ -564,77 +620,11 @@ public final class CLCommandLineTest
 
     assertThrows(IOException.class, () -> {
       MainExitless.main(new String[]{
-        "add-release",
+        "release-begin",
         "--file",
         this.outputPath.toString(),
         "--version",
         "1.0.0"
-      });
-    });
-  }
-
-  @Test
-  public void testTouchAddRelease()
-    throws IOException
-  {
-    System.setOut(this.outputPrint);
-    System.setErr(this.outputPrint);
-
-    Files.deleteIfExists(this.outputPath);
-
-    MainExitless.main(new String[]{
-      "initialize",
-      "--file",
-      this.outputPath.toString(),
-      "--ticket-system-name",
-      "com.github.io7m.changelog.test",
-      "--ticket-system-uri",
-      "https://www.github.com/io7m/changelog/issues/",
-      "--project",
-      "com.io7m.changelog.test"
-    });
-
-    MainExitless.main(new String[]{
-      "add-release",
-      "--file",
-      this.outputPath.toString(),
-      "--version",
-      "1.0.0"
-    });
-
-    MainExitless.main(new String[]{
-      "touch-release",
-      "--file",
-      this.outputPath.toString()
-    });
-  }
-
-  @Test
-  public void testTouchReleaseNoRelease()
-    throws IOException
-  {
-    System.setOut(this.outputPrint);
-    System.setErr(this.outputPrint);
-
-    Files.deleteIfExists(this.outputPath);
-
-    MainExitless.main(new String[]{
-      "initialize",
-      "--file",
-      this.outputPath.toString(),
-      "--ticket-system-name",
-      "com.github.io7m.changelog.test",
-      "--ticket-system-uri",
-      "https://www.github.com/io7m/changelog/issues/",
-      "--project",
-      "com.io7m.changelog.test"
-    });
-
-    assertThrows(IOException.class, () -> {
-      MainExitless.main(new String[]{
-        "touch-release",
-        "--file",
-        this.outputPath.toString()
       });
     });
   }
@@ -661,7 +651,7 @@ public final class CLCommandLineTest
     });
 
     MainExitless.main(new String[]{
-      "add-release",
+      "release-begin",
       "--file",
       this.outputPath.toString(),
       "--version",
@@ -669,7 +659,7 @@ public final class CLCommandLineTest
     });
 
     MainExitless.main(new String[]{
-      "add-change",
+      "change-add",
       "--file",
       this.outputPath.toString(),
       "--summary",
@@ -685,7 +675,7 @@ public final class CLCommandLineTest
     });
 
     MainExitless.main(new String[]{
-      "atom",
+      "write-atom",
       "--file",
       this.outputPath.toString(),
       "--title",
@@ -721,7 +711,7 @@ public final class CLCommandLineTest
     });
 
     MainExitless.main(new String[]{
-      "add-release",
+      "release-begin",
       "--file",
       this.outputPath.toString(),
       "--version",
@@ -729,7 +719,7 @@ public final class CLCommandLineTest
     });
 
     MainExitless.main(new String[]{
-      "add-change",
+      "change-add",
       "--file",
       this.outputPath.toString(),
       "--summary",
@@ -745,7 +735,7 @@ public final class CLCommandLineTest
     });
 
     MainExitless.main(new String[]{
-      "plain",
+      "write-plain",
       "--file",
       this.outputPath.toString()
     });
@@ -773,7 +763,7 @@ public final class CLCommandLineTest
     });
 
     MainExitless.main(new String[]{
-      "add-release",
+      "release-begin",
       "--file",
       this.outputPath.toString(),
       "--version",
@@ -781,7 +771,7 @@ public final class CLCommandLineTest
     });
 
     MainExitless.main(new String[]{
-      "add-change",
+      "change-add",
       "--file",
       this.outputPath.toString(),
       "--summary",
@@ -797,7 +787,7 @@ public final class CLCommandLineTest
     });
 
     MainExitless.main(new String[]{
-      "xhtml",
+      "write-xhtml",
       "--file",
       this.outputPath.toString()
     });
@@ -825,7 +815,7 @@ public final class CLCommandLineTest
     });
 
     MainExitless.main(new String[]{
-      "add-release",
+      "release-begin",
       "--file",
       this.outputPath.toString(),
       "--version",
@@ -833,7 +823,7 @@ public final class CLCommandLineTest
     });
 
     MainExitless.main(new String[]{
-      "add-change",
+      "change-add",
       "--file",
       this.outputPath.toString(),
       "--summary",
@@ -850,7 +840,7 @@ public final class CLCommandLineTest
 
     assertThrows(IOException.class, () -> {
       MainExitless.main(new String[]{
-        "xhtml",
+        "write-xhtml",
         "--file",
         this.outputPath.toString(),
         "--release",
@@ -881,7 +871,7 @@ public final class CLCommandLineTest
     });
 
     MainExitless.main(new String[]{
-      "add-release",
+      "release-begin",
       "--file",
       this.outputPath.toString(),
       "--version",
@@ -889,7 +879,7 @@ public final class CLCommandLineTest
     });
 
     MainExitless.main(new String[]{
-      "add-change",
+      "change-add",
       "--file",
       this.outputPath.toString(),
       "--summary",
@@ -906,11 +896,284 @@ public final class CLCommandLineTest
 
     assertThrows(IOException.class, () -> {
       MainExitless.main(new String[]{
-        "plain",
+        "write-plain",
         "--file",
         this.outputPath.toString(),
         "--release",
         "2.0.0"
+      });
+    });
+  }
+
+  @Test
+  public void testReleaseBegin()
+    throws IOException
+  {
+    System.setOut(this.outputPrint);
+    System.setErr(this.outputPrint);
+
+    Files.deleteIfExists(this.outputPath);
+
+    MainExitless.main(new String[]{
+      "initialize",
+      "--file",
+      this.outputPath.toString(),
+      "--ticket-system-name",
+      "com.github.io7m.changelog.test",
+      "--ticket-system-uri",
+      "https://www.github.com/io7m/changelog/issues/",
+      "--project",
+      "com.io7m.changelog.test"
+    });
+
+    MainExitless.main(new String[]{
+      "release-begin",
+      "--file",
+      this.outputPath.toString()
+    });
+
+    final var changelog = parse(this.outputPath);
+    final var release = changelog.latestRelease().get();
+    assertEquals("1.0.0", String.format("%s", release.version()));
+    assertEquals(0, release.changes().size());
+    assertTrue(release.isOpen());
+  }
+
+  @Test
+  public void testReleaseBeginNext()
+    throws IOException
+  {
+    System.setOut(this.outputPrint);
+    System.setErr(this.outputPrint);
+
+    Files.deleteIfExists(this.outputPath);
+
+    MainExitless.main(new String[]{
+      "initialize",
+      "--file",
+      this.outputPath.toString(),
+      "--ticket-system-name",
+      "com.github.io7m.changelog.test",
+      "--ticket-system-uri",
+      "https://www.github.com/io7m/changelog/issues/",
+      "--project",
+      "com.io7m.changelog.test"
+    });
+
+    MainExitless.main(new String[]{
+      "release-begin",
+      "--file",
+      this.outputPath.toString(),
+      "--version",
+      "1.0.0"
+    });
+
+    MainExitless.main(new String[]{
+      "release-finish",
+      "--file",
+      this.outputPath.toString()
+    });
+
+    MainExitless.main(new String[]{
+      "release-begin",
+      "--file",
+      this.outputPath.toString()
+    });
+
+    final var changelog = parse(this.outputPath);
+    final var release = changelog.latestRelease().get();
+    assertEquals("1.1.0", String.format("%s", release.version()));
+    assertEquals(0, release.changes().size());
+    assertTrue(release.isOpen());
+  }
+
+  @Test
+  public void testReleaseFinish()
+    throws IOException
+  {
+    System.setOut(this.outputPrint);
+    System.setErr(this.outputPrint);
+
+    Files.deleteIfExists(this.outputPath);
+
+    MainExitless.main(new String[]{
+      "initialize",
+      "--file",
+      this.outputPath.toString(),
+      "--ticket-system-name",
+      "com.github.io7m.changelog.test",
+      "--ticket-system-uri",
+      "https://www.github.com/io7m/changelog/issues/",
+      "--project",
+      "com.io7m.changelog.test"
+    });
+
+    MainExitless.main(new String[]{
+      "release-begin",
+      "--file",
+      this.outputPath.toString()
+    });
+
+    MainExitless.main(new String[]{
+      "release-finish",
+      "--file",
+      this.outputPath.toString()
+    });
+
+    final var changelog = parse(this.outputPath);
+    final var release = changelog.latestRelease().get();
+    assertEquals("1.0.0", String.format("%s", release.version()));
+    assertEquals(0, release.changes().size());
+    assertFalse(release.isOpen());
+  }
+
+  @Test
+  public void testReleaseSetVersion()
+    throws IOException
+  {
+    System.setOut(this.outputPrint);
+    System.setErr(this.outputPrint);
+
+    Files.deleteIfExists(this.outputPath);
+
+    MainExitless.main(new String[]{
+      "initialize",
+      "--file",
+      this.outputPath.toString(),
+      "--ticket-system-name",
+      "com.github.io7m.changelog.test",
+      "--ticket-system-uri",
+      "https://www.github.com/io7m/changelog/issues/",
+      "--project",
+      "com.io7m.changelog.test"
+    });
+
+    MainExitless.main(new String[]{
+      "release-begin",
+      "--file",
+      this.outputPath.toString()
+    });
+
+    MainExitless.main(new String[]{
+      "release-finish",
+      "--file",
+      this.outputPath.toString()
+    });
+
+    MainExitless.main(new String[]{
+      "release-begin",
+      "--file",
+      this.outputPath.toString()
+    });
+
+    MainExitless.main(new String[]{
+      "release-set-version",
+      "--file",
+      this.outputPath.toString(),
+      "--version",
+      "2.0.0"
+    });
+
+    final var changelog = parse(this.outputPath);
+
+    final var release0 =
+      changelog.releases()
+        .get(CVersion.of(ONE, ZERO, ZERO));
+
+    assertEquals(2, changelog.releases().size());
+    assertEquals("1.0.0", String.format("%s", release0.version()));
+    assertFalse(release0.isOpen());
+
+    final var release1 = changelog.latestRelease().get();
+    assertEquals("2.0.0", String.format("%s", release1.version()));
+    assertEquals(0, release1.changes().size());
+    assertTrue(release1.isOpen());
+  }
+
+  @Test
+  public void testReleaseSetVersionClosed()
+    throws IOException
+  {
+    System.setOut(this.outputPrint);
+    System.setErr(this.outputPrint);
+
+    Files.deleteIfExists(this.outputPath);
+
+    MainExitless.main(new String[]{
+      "initialize",
+      "--file",
+      this.outputPath.toString(),
+      "--ticket-system-name",
+      "com.github.io7m.changelog.test",
+      "--ticket-system-uri",
+      "https://www.github.com/io7m/changelog/issues/",
+      "--project",
+      "com.io7m.changelog.test"
+    });
+
+    MainExitless.main(new String[]{
+      "release-begin",
+      "--file",
+      this.outputPath.toString()
+    });
+
+    MainExitless.main(new String[]{
+      "release-finish",
+      "--file",
+      this.outputPath.toString()
+    });
+
+    MainExitless.main(new String[]{
+      "release-begin",
+      "--file",
+      this.outputPath.toString()
+    });
+
+    MainExitless.main(new String[]{
+      "release-finish",
+      "--file",
+      this.outputPath.toString()
+    });
+
+    assertThrows(IOException.class, () -> {
+      MainExitless.main(new String[]{
+        "release-set-version",
+        "--file",
+        this.outputPath.toString(),
+        "--version",
+        "2.0.1"
+      });
+    });
+  }
+
+  @Test
+  public void testReleaseSetVersionEmpty()
+    throws IOException
+  {
+    System.setOut(this.outputPrint);
+    System.setErr(this.outputPrint);
+
+    Files.deleteIfExists(this.outputPath);
+
+    MainExitless.main(new String[]{
+      "initialize",
+      "--file",
+      this.outputPath.toString(),
+      "--ticket-system-name",
+      "com.github.io7m.changelog.test",
+      "--ticket-system-uri",
+      "https://www.github.com/io7m/changelog/issues/",
+      "--project",
+      "com.io7m.changelog.test"
+    });
+
+    assertThrows(IOException.class, () -> {
+      MainExitless.main(new String[]{
+        "release-set-version",
+        "--file",
+        this.outputPath.toString(),
+        "--version",
+        "2.0.1"
       });
     });
   }

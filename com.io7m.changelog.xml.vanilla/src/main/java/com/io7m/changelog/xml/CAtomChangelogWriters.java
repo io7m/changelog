@@ -176,7 +176,7 @@ public final class CAtomChangelogWriters
 
       final Element e_id =
         doc.createElementNS(ATOM_NS, "a:id");
-      e_id.setTextContent(r.version().toVersionString());
+      e_id.setTextContent(String.format("%s", r.version()));
 
       final Element e_updated =
         doc.createElementNS(ATOM_NS, "a:updated");
@@ -194,7 +194,7 @@ public final class CAtomChangelogWriters
         new StringBuilder(64)
           .append(changelog.project().value())
           .append(" ")
-          .append(r.version().toVersionString())
+          .append(String.format("%s", r.version()))
           .append(" released")
           .toString();
 

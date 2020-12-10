@@ -135,6 +135,7 @@ public final class CXMLChangelogParsers
     private final Consumer<CParseError> receiver;
     private Locator locator;
     private boolean failed;
+    private int openCount;
 
     Parser(
       final URI in_uri,
@@ -407,6 +408,7 @@ public final class CXMLChangelogParsers
     {
       this.elements.push(CurrentElement.RELEASE);
       this.release_builder.setChanges(List.of());
+      this.release_builder.setOpen(false);
 
       for (int index = 0; index < attributes.getLength(); ++index) {
         switch (attributes.getLocalName(index)) {
@@ -416,6 +418,22 @@ public final class CXMLChangelogParsers
                 LocalDate.parse(attributes.getValue(index), this.date_format),
                 LocalTime.MIDNIGHT,
                 ZoneId.of("UTC")));
+            break;
+          }
+          case "is-open": {
+            final var isOpen =
+              Boolean.parseBoolean(attributes.getValue(index));
+            this.release_builder.setOpen(isOpen);
+
+            if (isOpen) {
+              ++this.openCount;
+              if (this.openCount > 1) {
+                this.error(new SAXParseException(
+                  "At most one release is allowed to be open at any given time.",
+                  this.locator
+                ));
+              }
+            }
             break;
           }
           case "version": {

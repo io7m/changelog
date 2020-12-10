@@ -207,8 +207,9 @@ public final class CXHTMLChangelogWriters
             .append("Release: ")
             .append(changelog.project().value())
             .append(" ")
-            .append(release.version().toVersionString())
-            .toString())));
+            .append(String.format("%s", release.version()))
+            .toString()))
+      );
 
       for (final CChange change : release.changes()) {
         row(

@@ -11,8 +11,7 @@
       <Class name="com.io7m.changelog.core.CRelease"/>
       <Class name="com.io7m.changelog.core.CTicketID"/>
       <Class name="com.io7m.changelog.core.CTicketSystem"/>
-      <Class name="com.io7m.changelog.core.CVersionStandard"/>
-      <Class name="com.io7m.changelog.core.CVersionText"/>
+      <Class name="com.io7m.changelog.core.CVersion"/>
       <Class name="~com\.io7m\.changelog\..+\$InitShim"/>
       <Class name="com.io7m.changelog.parser.api.CParseError"/>
     </Or>
@@ -86,6 +85,7 @@
     <Or>
       <Bug pattern="AI_ANNOTATION_ISSUES_NEEDS_NULLABLE"/>
       <Bug pattern="CRLF_INJECTION_LOGS"/>
+      <Bug pattern="DRE_DECLARED_RUNTIME_EXCEPTION"/>
       <Bug pattern="IMC_IMMATURE_CLASS_NO_TOSTRING"/>
       <Bug pattern="OCP_OVERLY_CONCRETE_PARAMETER"/>
       <Bug pattern="OPM_OVERLY_PERMISSIVE_METHOD"/>

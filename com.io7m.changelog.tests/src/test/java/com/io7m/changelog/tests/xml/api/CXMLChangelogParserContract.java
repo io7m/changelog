@@ -63,6 +63,15 @@ public abstract class CXMLChangelogParserContract
       () -> this.parse("/com/io7m/changelog/tests/xml/invalid1.xml"));
   }
 
+  @Test
+  public final void testInvalid2()
+    throws Exception
+  {
+    Assertions.assertThrows(
+      IOException.class,
+      () -> this.parse("/com/io7m/changelog/tests/xml/basicTooManyOpen.xml"));
+  }
+
   private CChangelog parse(
     final String name)
     throws IOException, URISyntaxException

@@ -20,6 +20,7 @@ import com.io7m.immutables.styles.ImmutablesStyleType;
 import com.io7m.jaffirm.core.Preconditions;
 import org.immutables.value.Value;
 
+import java.math.BigInteger;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +47,7 @@ public interface CChangelogType
    * @return The list of releases
    */
 
-  Map<CVersionType, CRelease> releases();
+  Map<CVersion, CRelease> releases();
 
   /**
    * @return The ticket systems
@@ -58,7 +59,7 @@ public interface CChangelogType
    * @return The list of available versions in ascending order
    */
 
-  default List<CVersionType> releaseVersions()
+  default List<CVersion> releaseVersions()
   {
     return this.releases()
       .keySet()
@@ -79,6 +80,80 @@ public interface CChangelogType
       .limit(1L)
       .findFirst()
       .flatMap(v -> Optional.ofNullable(this.releases().get(v)));
+  }
+
+  /**
+   * Suggest a new version number for the next release.
+   *
+   * @return A new version greater than any existing version
+   *
+   * @throws IllegalArgumentException If a version cannot be determined
+   */
+
+  default CVersion suggestNextRelease()
+    throws IllegalArgumentException
+  {
+    final var latestOpt = this.latestRelease();
+    if (latestOpt.isEmpty()) {
+      return CVersion.of(BigInteger.ONE, BigInteger.ZERO, BigInteger.ZERO);
+    }
+
+    final var latest = latestOpt.get().version();
+    return CVersion.of(
+      latest.major(),
+      latest.minor().add(BigInteger.ONE),
+      BigInteger.ZERO
+    );
+  }
+
+  /**
+   * Find the target release if one is specified, or return the current release
+   * otherwise, but only if either of those releases are open.
+   *
+   * @param version The release version
+   *
+   * @return The target release
+   */
+
+  default Optional<CRelease> findTargetReleaseOrLatestOpen(
+    final Optional<CVersion> version)
+  {
+    return this.findTargetReleaseOrLatest(version)
+      .flatMap(release -> {
+        if (release.isOpen()) {
+          return Optional.of(release);
+        }
+        return Optional.empty();
+      });
+  }
+
+  /**
+   * Find the target release if one is specified, or return the current release otherwise.
+   *
+   * @param version The release version
+   *
+   * @return The target release
+   */
+
+  default Optional<CRelease> findTargetReleaseOrLatest(
+    final Optional<CVersion> version)
+  {
+    return version.flatMap(this::findTargetRelease)
+      .or(this::latestRelease);
+  }
+
+  /**
+   * Find the target release.
+   *
+   * @param version The release version
+   *
+   * @return The target release
+   */
+
+  default Optional<CRelease> findTargetRelease(
+    final CVersion version)
+  {
+    return Optional.ofNullable(this.releases().get(version));
   }
 
   /**
@@ -133,6 +208,19 @@ public interface CChangelogType
   default void checkPreconditions()
   {
     final Map<String, CTicketSystem> systems = this.ticketSystems();
+
+    final var openReleases =
+      this.releases()
+        .values()
+        .stream()
+        .filter(CReleaseType::isOpen)
+        .count();
+
+    Preconditions.checkPreconditionL(
+      openReleases,
+      openReleases <= 1L,
+      c -> "At most one release may be open at any given time"
+    );
 
     this.releases().forEach(
       (version, release) ->

@@ -19,34 +19,32 @@ package com.io7m.changelog.cmdline.internal;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.io7m.changelog.core.CChangelog;
-import com.io7m.changelog.core.CRelease;
-import com.io7m.changelog.core.CVersionType;
+import com.io7m.changelog.core.CChangelogFilters;
+import com.io7m.changelog.core.CVersion;
 import com.io7m.changelog.core.CVersions;
 import com.io7m.changelog.parser.api.CParseErrorHandlers;
+import com.io7m.changelog.text.api.CPlainChangelogWriterConfiguration;
+import com.io7m.changelog.text.api.CPlainChangelogWriterProviderType;
+import com.io7m.changelog.text.api.CPlainChangelogWriterType;
 import com.io7m.changelog.xml.api.CXMLChangelogParserProviderType;
 import com.io7m.changelog.xml.api.CXMLChangelogParserType;
-import com.io7m.changelog.xml.api.CXMLChangelogWriterProviderType;
-import com.io7m.changelog.xml.api.CXMLChangelogWriterType;
 import com.io7m.claypot.core.CLPCommandContextType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.ServiceLoader;
 
-@Parameters(commandDescription = "Add a new release")
-public final class CLCommandAddRelease extends CLAbstractCommand
+@Parameters(commandDescription = "Generate a plain text log")
+public final class CLCommandWritePlain extends CLAbstractCommand
 {
   private static final Logger LOG =
-    LoggerFactory.getLogger(CLCommandAddRelease.class);
+    LoggerFactory.getLogger(CLCommandWritePlain.class);
 
   @Parameter(
     names = "--file",
@@ -55,15 +53,21 @@ public final class CLCommandAddRelease extends CLAbstractCommand
   private Path path = Paths.get("README-CHANGES.xml");
 
   @Parameter(
-    names = "--version",
-    required = true,
-    description = "The new release version")
-  private String version_text;
+    names = "--release",
+    description = "The release")
+  private String release;
 
   @Parameter(
-    names = "--ticket-system",
-    description = "The new release ticket system name")
-  private String ticket_system;
+    names = "--show-dates",
+    arity = 1,
+    description = "Show dates")
+  private boolean date;
+
+  @Parameter(
+    names = "--count",
+    required = false,
+    description = "The total number of releases to display")
+  private int count = 1;
 
   /**
    * Construct a command.
@@ -71,7 +75,7 @@ public final class CLCommandAddRelease extends CLAbstractCommand
    * @param inContext The command context
    */
 
-  public CLCommandAddRelease(
+  public CLCommandWritePlain(
     final CLPCommandContextType inContext)
   {
     super(LOG, inContext);
@@ -81,7 +85,12 @@ public final class CLCommandAddRelease extends CLAbstractCommand
   public Status executeActual()
     throws Exception
   {
-    final CVersionType version = CVersions.parse(this.version_text);
+    final Optional<CVersion> version;
+    if (this.release != null) {
+      version = Optional.of(CVersions.parse(this.release));
+    } else {
+      version = Optional.empty();
+    }
 
     final Optional<CXMLChangelogParserProviderType> parser_provider_opt =
       ServiceLoader.load(CXMLChangelogParserProviderType.class).findFirst();
@@ -91,20 +100,18 @@ public final class CLCommandAddRelease extends CLAbstractCommand
       return Status.FAILURE;
     }
 
-    final Optional<CXMLChangelogWriterProviderType> writer_provider_opt =
-      ServiceLoader.load(CXMLChangelogWriterProviderType.class).findFirst();
+    final Optional<CPlainChangelogWriterProviderType> writer_provider_opt =
+      ServiceLoader.load(CPlainChangelogWriterProviderType.class).findFirst();
 
     if (!writer_provider_opt.isPresent()) {
-      LOG.error("No XML writer providers are available");
+      LOG.error("No plain-text writer providers are available");
       return Status.FAILURE;
     }
 
     final CXMLChangelogParserProviderType parser_provider =
       parser_provider_opt.get();
-    final CXMLChangelogWriterProviderType writer_provider =
+    final CPlainChangelogWriterProviderType writer_provider =
       writer_provider_opt.get();
-
-    final Path path_tmp = Paths.get(this.path + ".tmp");
 
     try (InputStream stream = Files.newInputStream(this.path)) {
       final CXMLChangelogParserType parser = parser_provider.create(
@@ -113,47 +120,30 @@ public final class CLCommandAddRelease extends CLAbstractCommand
         CParseErrorHandlers.loggingHandler(LOG));
 
       final CChangelog changelog = parser.parse();
-
-      if (changelog.releases().containsKey(version)) {
-        LOG.error("Release {} already exists", version.toVersionString());
-        return Status.FAILURE;
-      }
-
-      final Optional<String> ticket_system_opt =
-        changelog.findTicketSystem(Optional.ofNullable(this.ticket_system));
-
-      if (ticket_system_opt.isEmpty()) {
-        if (this.ticket_system != null) {
-          LOG.error("No ticket system named {} is defined", this.ticket_system);
-        } else {
-          LOG.error("No default ticket system is available");
+      final CChangelog changelog_write;
+      if (version.isPresent()) {
+        final Optional<CChangelog> c_opt =
+          CChangelogFilters.upToAndIncluding(
+            changelog, version.get(), this.count);
+        if (!c_opt.isPresent()) {
+          LOG.error("Changelog does not contain release {}", this.release);
+          return Status.FAILURE;
         }
-        return Status.FAILURE;
+        changelog_write = c_opt.get();
+      } else {
+        changelog_write = CChangelogFilters.limit(changelog, this.count);
       }
 
-      final ZonedDateTime date =
-        ZonedDateTime.now(ZoneId.of("UTC"));
-
-      final CRelease newRelease =
-        CRelease.builder()
-          .setTicketSystemID(ticket_system_opt.get())
-          .setVersion(version)
-          .setDate(date)
+      final CPlainChangelogWriterConfiguration config =
+        CPlainChangelogWriterConfiguration.builder()
+          .setShowDates(this.date)
           .build();
 
-      final CChangelog changelog_write =
-        CChangelog.builder()
-          .from(changelog)
-          .putReleases(version, newRelease)
-          .build();
+      final CPlainChangelogWriterType writer =
+        writer_provider.createWithConfiguration(
+          config, URI.create("urn:stdout"), System.out);
 
-      try (OutputStream output = Files.newOutputStream(path_tmp)) {
-        final CXMLChangelogWriterType writer =
-          writer_provider.create(this.path.toUri(), output);
-        writer.write(changelog_write);
-      }
-
-      Files.move(path_tmp, this.path, StandardCopyOption.ATOMIC_MOVE);
+      writer.write(changelog_write);
     }
 
     return Status.SUCCESS;
@@ -162,6 +152,12 @@ public final class CLCommandAddRelease extends CLAbstractCommand
   @Override
   public String name()
   {
-    return "add-release";
+    return "write-plain";
+  }
+
+  @Override
+  public String extendedHelp()
+  {
+    return this.messages().format("helpWritePlain");
   }
 }
