@@ -37,7 +37,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -146,8 +148,15 @@ public final class CAtomChangelogWriters
           this.date_formatter.format(this.configuration.updated()));
         e_root.appendChild(e_updated);
 
-        for (final CRelease r : changelog.releases().values().reverse()) {
-          this.writeRelease(changelog, doc, e_root, r);
+        final var versions =
+          changelog.releaseVersions()
+            .stream()
+            .sorted(Comparator.reverseOrder())
+            .collect(Collectors.toList());
+
+        for (final var version : versions) {
+          final CRelease release = changelog.releases().get(version);
+          this.writeRelease(changelog, doc, e_root, release);
         }
 
         this.serializeDocument(doc);

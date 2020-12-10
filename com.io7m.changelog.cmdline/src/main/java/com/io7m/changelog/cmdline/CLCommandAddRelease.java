@@ -20,7 +20,6 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.io7m.changelog.core.CChangelog;
 import com.io7m.changelog.core.CRelease;
-import com.io7m.changelog.core.CTicketSystem;
 import com.io7m.changelog.core.CVersionType;
 import com.io7m.changelog.core.CVersions;
 import com.io7m.changelog.parser.api.CParseErrorHandlers;
@@ -116,8 +115,10 @@ final class CLCommandAddRelease extends CLCommandRoot
         return Status.FAILURE;
       }
 
-      final Optional<String> ticket_system_opt = this.findTicketSystem(changelog);
-      if (!ticket_system_opt.isPresent()) {
+      final Optional<String> ticket_system_opt =
+        changelog.findTicketSystem(Optional.ofNullable(this.ticket_system));
+
+      if (ticket_system_opt.isEmpty()) {
         if (this.ticket_system != null) {
           LOG.error("No ticket system named {} is defined", this.ticket_system);
         } else {
@@ -126,17 +127,21 @@ final class CLCommandAddRelease extends CLCommandRoot
         return Status.FAILURE;
       }
 
-      final ZonedDateTime date = ZonedDateTime.now(ZoneId.of("UTC"));
+      final ZonedDateTime date =
+        ZonedDateTime.now(ZoneId.of("UTC"));
 
-      final CChangelog changelog_write = changelog.withReleases(
-        changelog.releases()
-          .put(
-            version,
-            CRelease.builder()
-              .setTicketSystemID(ticket_system_opt.get())
-              .setVersion(version)
-              .setDate(date)
-              .build()));
+      final CRelease newRelease =
+        CRelease.builder()
+          .setTicketSystemID(ticket_system_opt.get())
+          .setVersion(version)
+          .setDate(date)
+          .build();
+
+      final CChangelog changelog_write =
+        CChangelog.builder()
+          .from(changelog)
+          .putReleases(version, newRelease)
+          .build();
 
       try (OutputStream output = Files.newOutputStream(path_tmp)) {
         final CXMLChangelogWriterType writer =
@@ -148,37 +153,5 @@ final class CLCommandAddRelease extends CLCommandRoot
     }
 
     return Status.SUCCESS;
-  }
-
-  private Optional<String> findTicketSystem(
-    final CChangelog changelog)
-  {
-    /*
-     * If there's an explicitly defined ticket system, use that.
-     */
-
-    if (this.ticket_system != null) {
-      return changelog.ticketSystems()
-        .get(this.ticket_system)
-        .toJavaOptional()
-        .map(CTicketSystem::id);
-    }
-
-    /*
-     * Otherwise, if there's only one defined, use that.
-     */
-
-    if (changelog.ticketSystems().size() == 1) {
-      return Optional.of(changelog.ticketSystems().keySet().get());
-    }
-
-    /*
-     * Otherwise, try to find the default.
-     */
-
-    return changelog.ticketSystems()
-      .find(p -> p._2.isDefault())
-      .toJavaOptional()
-      .map(p -> p._1);
   }
 }

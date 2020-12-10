@@ -19,7 +19,6 @@ package com.io7m.changelog.core;
 import com.io7m.immutables.styles.ImmutablesStyleType;
 import com.io7m.jaffirm.core.Preconditions;
 import org.immutables.value.Value;
-import org.immutables.vavr.encodings.VavrEncodingEnabled;
 
 import static org.immutables.value.Value.Immutable;
 
@@ -28,7 +27,6 @@ import static org.immutables.value.Value.Immutable;
  */
 
 @ImmutablesStyleType
-@VavrEncodingEnabled
 @Immutable
 public interface CProjectNameType
 {

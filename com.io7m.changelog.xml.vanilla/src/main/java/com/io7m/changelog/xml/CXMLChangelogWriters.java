@@ -25,7 +25,6 @@ import com.io7m.changelog.core.CVersionType;
 import com.io7m.changelog.schema.CSchema;
 import com.io7m.changelog.xml.api.CXMLChangelogWriterProviderType;
 import com.io7m.changelog.xml.api.CXMLChangelogWriterType;
-import io.vavr.collection.List;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -47,6 +46,7 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Objects;
 
 /**

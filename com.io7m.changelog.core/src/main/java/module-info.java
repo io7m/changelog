@@ -14,16 +14,17 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+/**
+ * Changelog core types.
+ */
 
 module com.io7m.changelog.core
 {
   requires static com.io7m.immutables.style;
   requires static org.immutables.value;
-  requires static org.immutables.vavr.encodings;
 
   requires com.io7m.jaffirm.core;
   requires com.io7m.junreachable.core;
-  requires io.vavr;
 
   exports com.io7m.changelog.core;
 }

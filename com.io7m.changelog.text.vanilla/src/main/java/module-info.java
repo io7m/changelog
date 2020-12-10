@@ -17,7 +17,6 @@
 
 module com.io7m.changelog.text.vanilla
 {
-  requires io.vavr;
   requires com.io7m.changelog.core;
   requires com.io7m.changelog.text.api;
 

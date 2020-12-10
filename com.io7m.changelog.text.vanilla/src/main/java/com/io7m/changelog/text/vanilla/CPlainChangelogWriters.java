@@ -16,14 +16,13 @@
 
 package com.io7m.changelog.text.vanilla;
 
+import com.io7m.changelog.core.CChange;
 import com.io7m.changelog.core.CChangelog;
 import com.io7m.changelog.core.CRelease;
 import com.io7m.changelog.core.CVersionType;
 import com.io7m.changelog.text.api.CPlainChangelogWriterConfiguration;
 import com.io7m.changelog.text.api.CPlainChangelogWriterProviderType;
 import com.io7m.changelog.text.api.CPlainChangelogWriterType;
-import io.vavr.collection.List;
-import io.vavr.collection.SortedMap;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -33,6 +32,9 @@ import java.io.UncheckedIOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -88,12 +90,15 @@ public final class CPlainChangelogWriters
       throws IOException
     {
       try {
-        final SortedMap<CVersionType, CRelease> releases = changelog.releases();
+        final Map<CVersionType, CRelease> releases = changelog.releases();
         final List<CVersionType> versions =
-          releases.keySet().toList().reverse();
+          releases.keySet()
+            .stream()
+            .sorted(Comparator.reverseOrder())
+            .collect(Collectors.toList());
 
         for (final CVersionType v : versions) {
-          final CRelease release = releases.get(v).get();
+          final CRelease release = releases.get(v);
           this.writeRelease(changelog, release);
         }
 
@@ -119,48 +124,63 @@ public final class CPlainChangelogWriters
       this.writer.append(release.version().toVersionString());
       this.writer.newLine();
 
-      release.changes().reverse().forEach(change -> {
-        try {
-          if (this.config.showDates()) {
-            this.writer.append(this.date_formatter.format(change.date()));
-            this.writer.append(" ");
-          }
+      final var changes =
+        release.changes()
+          .stream()
+          .sorted(Comparator.comparing(CChange::date).reversed())
+          .collect(Collectors.toList());
 
-          this.writer.append("Change: ");
-          change.module().ifPresent(module -> {
-            try {
-              this.writer.append(module.value());
-              this.writer.append(": ");
-            } catch (final IOException e) {
-              throw new UncheckedIOException(e);
-            }
-          });
+      try {
+        changes.forEach(this::writeChange);
+      } catch (final UncheckedIOException e) {
+        throw e.getCause();
+      }
+    }
 
-          if (!change.backwardsCompatible()) {
-            this.writer.append("(Backwards incompatible) ");
-          }
-
-          this.writer.append(change.summary());
-
-          if (!change.tickets().isEmpty()) {
-            if (change.tickets().size() == 1) {
-              this.writer.append(" (Ticket: ");
-            } else {
-              this.writer.append(" (Tickets: ");
-            }
-
-            this.writer.append(
-              change.tickets()
-                .map(t -> "#" + t.value())
-                .collect(Collectors.joining(", ")));
-            this.writer.append(")");
-          }
-
-          this.writer.newLine();
-        } catch (final IOException e) {
-          throw new UncheckedIOException(e);
+    private void writeChange(
+      final CChange change)
+    {
+      try {
+        if (this.config.showDates()) {
+          this.writer.append(this.date_formatter.format(change.date()));
+          this.writer.append(" ");
         }
-      });
+
+        this.writer.append("Change: ");
+        change.module().ifPresent(module -> {
+          try {
+            this.writer.append(module.value());
+            this.writer.append(": ");
+          } catch (final IOException e) {
+            throw new UncheckedIOException(e);
+          }
+        });
+
+        if (!change.backwardsCompatible()) {
+          this.writer.append("(Backwards incompatible) ");
+        }
+
+        this.writer.append(change.summary());
+
+        if (!change.tickets().isEmpty()) {
+          if (change.tickets().size() == 1) {
+            this.writer.append(" (Ticket: ");
+          } else {
+            this.writer.append(" (Tickets: ");
+          }
+
+          this.writer.append(
+            change.tickets()
+              .stream()
+              .map(t -> String.format("#%s", t.value()))
+              .collect(Collectors.joining(", ")));
+          this.writer.append(")");
+        }
+
+        this.writer.newLine();
+      } catch (final IOException e) {
+        throw new UncheckedIOException(e);
+      }
     }
   }
 }

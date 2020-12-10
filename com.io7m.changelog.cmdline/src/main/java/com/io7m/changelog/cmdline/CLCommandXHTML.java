@@ -120,8 +120,7 @@ final class CLCommandXHTML extends CLCommandRoot
         }
         changelog_write = c_opt.get();
       } else {
-        changelog_write =
-          changelog.withReleases(changelog.releases().takeRight(this.count));
+        changelog_write = CChangelogFilters.limit(changelog, this.count);
       }
 
       final CXHTMLChangelogWriterType writer =

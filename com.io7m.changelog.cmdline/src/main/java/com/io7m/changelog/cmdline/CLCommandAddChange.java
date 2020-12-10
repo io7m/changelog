@@ -23,13 +23,11 @@ import com.io7m.changelog.core.CChangelog;
 import com.io7m.changelog.core.CModuleName;
 import com.io7m.changelog.core.CRelease;
 import com.io7m.changelog.core.CTicketID;
-import com.io7m.changelog.core.CVersionType;
 import com.io7m.changelog.parser.api.CParseErrorHandlers;
 import com.io7m.changelog.xml.api.CXMLChangelogParserProviderType;
 import com.io7m.changelog.xml.api.CXMLChangelogParserType;
 import com.io7m.changelog.xml.api.CXMLChangelogWriterProviderType;
 import com.io7m.changelog.xml.api.CXMLChangelogWriterType;
-import io.vavr.collection.SortedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -128,8 +126,8 @@ final class CLCommandAddChange extends CLCommandRoot
 
       final CChangelog changelog = parser.parse();
 
-      final SortedMap<CVersionType, CRelease> latest =
-        changelog.releases().takeRight(1);
+      final Optional<CRelease> latest =
+        changelog.latestRelease();
 
       if (latest.isEmpty()) {
         LOG.error("No current release exists");
@@ -148,14 +146,19 @@ final class CLCommandAddChange extends CLCommandRoot
           .setTickets(io.vavr.collection.List.ofAll(this.tickets))
           .build();
 
-      final CRelease release = latest.get()._2;
-      final CRelease release_write = release
-        .withChanges(release.changes().append(change))
-        .withDate(now);
+      final CRelease release = latest.get();
+      final CRelease release_write =
+        CRelease.builder()
+          .from(release)
+          .addChanges(change)
+          .setDate(now)
+          .build();
 
       final CChangelog changelog_write =
-        changelog.withReleases(
-          changelog.releases().put(release_write.version(), release_write));
+        CChangelog.builder()
+          .from(changelog)
+          .putReleases(release_write.version(), release_write)
+          .build();
 
       try (OutputStream output = Files.newOutputStream(path_tmp)) {
         final CXMLChangelogWriterType writer =

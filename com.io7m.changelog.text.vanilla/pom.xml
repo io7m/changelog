@@ -28,11 +28,6 @@
       <artifactId>com.io7m.changelog.text.api</artifactId>
       <version>${project.version}</version>
     </dependency>
-
-    <dependency>
-      <groupId>io.vavr</groupId>
-      <artifactId>vavr</artifactId>
-    </dependency>
   </dependencies>
 
   <build>

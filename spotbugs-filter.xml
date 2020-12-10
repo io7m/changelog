@@ -48,6 +48,16 @@
   </Match>
 
   <Match>
+    <Class name="com.io7m.changelog.text.vanilla.CPlainChangelogWriters$Writer"/>
+    <Bug pattern="EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS"/>
+  </Match>
+
+  <Match>
+    <Class name="com.io7m.changelog.text.vanilla.CPlainChangelogWriters$Writer"/>
+    <Bug pattern="LEST_LOST_EXCEPTION_STACK_TRACE"/>
+  </Match>
+
+  <Match>
     <Or>
       <Bug pattern="IMC_IMMATURE_CLASS_NO_TOSTRING"/>
       <Bug pattern="OPM_OVERLY_PERMISSIVE_METHOD"/>

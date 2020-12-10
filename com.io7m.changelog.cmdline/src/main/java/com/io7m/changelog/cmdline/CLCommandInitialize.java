@@ -97,16 +97,17 @@ final class CLCommandInitialize extends CLCommandRoot
 
     final Path path_tmp = Paths.get(this.path + ".tmp");
     try (OutputStream stream = Files.newOutputStream(path_tmp)) {
-      final CTicketSystem ticket_system =
-        CTicketSystem.of(
-          this.ticket_system_name,
-          this.ticket_system_uri,
-          true);
+      final var ticketSystem =
+        CTicketSystem.builder()
+          .setId(this.ticket_system_name)
+          .setUri(this.ticket_system_uri)
+          .setDefault(true)
+          .build();
 
       final CChangelog changelog =
         CChangelog.builder()
           .setProject(this.project)
-          .putTicketSystems(this.ticket_system_name, ticket_system)
+          .putTicketSystems(this.ticket_system_name, ticketSystem)
           .build();
 
       final CXMLChangelogWriterType writer =

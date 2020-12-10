@@ -49,7 +49,7 @@ final class CVersionStandardComparator implements CVersionVisitorType<Integer>
       return r_patch;
     }
 
-    return compareQualifiers(other);
+    return this.compareQualifiers(other);
   }
 
   private Integer compareQualifiers(
@@ -62,7 +62,7 @@ final class CVersionStandardComparator implements CVersionVisitorType<Integer>
      * qualifiers are simply compared lexicographically.
      */
 
-    final String c_qual = current.qualifier();
+    final String c_qual = this.current.qualifier();
     final String o_qual = other.qualifier();
     if (c_qual.isEmpty() && !o_qual.isEmpty()) {
       return 1;

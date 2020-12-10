@@ -19,14 +19,11 @@ package com.io7m.changelog.cmdline;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.io7m.changelog.core.CChangelog;
-import com.io7m.changelog.core.CRelease;
-import com.io7m.changelog.core.CVersionType;
 import com.io7m.changelog.parser.api.CParseErrorHandlers;
 import com.io7m.changelog.xml.api.CXMLChangelogParserProviderType;
 import com.io7m.changelog.xml.api.CXMLChangelogParserType;
 import com.io7m.changelog.xml.api.CXMLChangelogWriterProviderType;
 import com.io7m.changelog.xml.api.CXMLChangelogWriterType;
-import io.vavr.Tuple2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -97,14 +94,22 @@ final class CLCommandTouchRelease extends CLCommandRoot
 
       final CChangelog changelog = parser.parse();
 
-      final Tuple2<CVersionType, CRelease> release = changelog.releases().last();
+      final var latestReleaseOpt = changelog.latestRelease();
+      if (latestReleaseOpt.isEmpty()) {
+        LOG.error("There is no current release!");
+        return Status.FAILURE;
+      }
 
-      final ZonedDateTime date = ZonedDateTime.now(ZoneId.of("UTC"));
+      final var latestRelease =
+        latestReleaseOpt.get();
+      final ZonedDateTime date =
+        ZonedDateTime.now(ZoneId.of("UTC"));
 
       final CChangelog changelog_write =
-        changelog.withReleases(
-          changelog.releases()
-            .put(release._1, release._2.withDate(date)));
+        CChangelog.builder()
+          .from(changelog)
+          .putReleases(latestRelease.version(), latestRelease.withDate(date))
+          .build();
 
       try (OutputStream output = Files.newOutputStream(path_tmp)) {
         final CXMLChangelogWriterType writer =
