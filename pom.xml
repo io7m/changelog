@@ -184,13 +184,6 @@
   <build>
     <pluginManagement>
       <plugins>
-        <!-- JStructural Maven plugin -->
-        <plugin>
-          <groupId>com.io7m.jstructural</groupId>
-          <artifactId>io7m-jstructural-maven-plugin</artifactId>
-          <version>5.0.0</version>
-        </plugin>
-
         <!-- Configure compiler -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
