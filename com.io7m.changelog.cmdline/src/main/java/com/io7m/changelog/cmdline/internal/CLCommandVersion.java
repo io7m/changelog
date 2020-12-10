@@ -21,7 +21,7 @@ import com.io7m.claypot.core.CLPCommandContextType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Parameters(commandDescription = "Retrieve the program version")
+@Parameters(commandDescription = "Retrieve the program version.")
 public final class CLCommandVersion extends CLAbstractCommand
 {
   private static final Logger LOG =

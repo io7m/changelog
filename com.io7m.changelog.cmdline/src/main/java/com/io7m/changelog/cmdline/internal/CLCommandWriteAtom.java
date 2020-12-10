@@ -39,7 +39,7 @@ import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.ServiceLoader;
 
-@Parameters(commandDescription = "Generate an atom feed")
+@Parameters(commandDescription = "Generate an atom feed.")
 public final class CLCommandWriteAtom extends CLAbstractCommand
 {
   private static final Logger LOG =

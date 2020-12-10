@@ -36,7 +36,7 @@ import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.ServiceLoader;
 
-@Parameters(commandDescription = "Generate a plain text log")
+@Parameters(commandDescription = "Generate a plain text log.")
 public final class CLCommandWritePlain extends CLAbstractCommand
 {
   private static final Logger LOG =

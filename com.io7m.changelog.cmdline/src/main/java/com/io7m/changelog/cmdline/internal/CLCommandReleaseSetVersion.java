@@ -35,7 +35,7 @@ import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.ServiceLoader;
 
-@Parameters(commandDescription = "Set the version number of the current release")
+@Parameters(commandDescription = "Set the version number of the current release.")
 public final class CLCommandReleaseSetVersion extends CLAbstractCommand
 {
   private static final Logger LOG =

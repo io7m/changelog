@@ -35,7 +35,7 @@ import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.ServiceLoader;
 
-@Parameters(commandDescription = "Generate an XHTML log")
+@Parameters(commandDescription = "Generate an XHTML log.")
 public final class CLCommandWriteXHTML extends CLAbstractCommand
 {
   private static final Logger LOG =

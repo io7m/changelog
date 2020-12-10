@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ServiceLoader;
 
-@Parameters(commandDescription = "Add a change to the current release")
+@Parameters(commandDescription = "Add a change to the current release.")
 public final class CLCommandChangeAdd extends CLAbstractCommand
 {
   private static final Logger LOG =

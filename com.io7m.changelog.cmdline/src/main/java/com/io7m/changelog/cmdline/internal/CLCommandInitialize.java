@@ -36,7 +36,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 import java.util.ServiceLoader;
 
-@Parameters(commandDescription = "Initialize the changelog")
+@Parameters(commandDescription = "Initialize the changelog.")
 public final class CLCommandInitialize extends CLAbstractCommand
 {
   private static final Logger LOG =

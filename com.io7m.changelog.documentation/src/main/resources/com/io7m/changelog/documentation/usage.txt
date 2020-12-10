@@ -18,16 +18,18 @@ changelog: Main: INFO: Usage: changelog [options] [command] [command options]
     $ changelog @file.txt
 
   Commands:
-    change-add              Add a change to the current release
+    change-add              Add a change to the current release.
     help                    Show detailed help messages for commands.
-    initialize              Initialize the changelog
+    initialize              Initialize the changelog.
     release-begin           Start the development of a new release.
+    release-current         Display the version number of the current release.
     release-finish          Finish a release.
-    release-set-version     Set the version number of the current release
-    version                 Retrieve the program version
-    write-atom              Generate an atom feed
-    write-plain             Generate a plain text log
-    write-xhtml             Generate an XHTML log
+    release-set-version     Set the version number of the current release.
+    version                 Retrieve the program version.
+    write-atom              Generate an atom feed.
+    write-plain             Generate a plain text log.
+    write-xhtml             Generate an XHTML log.
 
   Documentation:
     https://www.io7m.com/software/changelog/documentation/
+
