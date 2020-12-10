@@ -16,7 +16,7 @@
 
 module com.io7m.changelog.cmdline {
   requires ch.qos.logback.classic;
-  requires com.beust.jcommander;
+  requires jcommander;
   requires com.io7m.changelog.core;
   requires com.io7m.changelog.parser.api;
   requires com.io7m.changelog.text.api;
