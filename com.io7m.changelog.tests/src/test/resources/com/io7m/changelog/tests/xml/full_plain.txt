@@ -6,7 +6,7 @@
 2017-10-15 Release: com.io7m.changelog 3.1.0
 2017-10-15 Change: Rename project. Use the new primogenitor POM and 2017 project conventions.
 2017-01-10 Release: com.io7m.changelog 3.0.3
-2017-01-10 Change: Fix printing of version numbers in report generation. (Ticket: #3)
+2017-01-10 Change: Fix printing of version numbers in report generation. (Tickets: #3, #4, #5)
 2017-01-10 Release: com.io7m.changelog 3.0.2
 2017-01-10 Change: Fix date formatting in report generation. (Ticket: #2)
 2016-12-21 Release: com.io7m.changelog 3.0.1
