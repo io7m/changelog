@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016 <code@io7m.com> http://io7m.com
+ * Copyright © 2020 Mark Raynsford <code@io7m.com> http://io7m.com
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,12 +14,33 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.changelog.cmdline;
+package com.io7m.changelog.cmdline.internal;
 
-final class CLLogLevelUnrecognized extends RuntimeException
+import java.util.ResourceBundle;
+
+public final class CLMessages extends CLAbstractStrings
 {
-  CLLogLevelUnrecognized(final String message)
+  private CLMessages(
+    final ResourceBundle inResources)
   {
-    super(message);
+    super(inResources);
+  }
+
+  public static CLMessages create()
+  {
+    return new CLMessages(
+      ofXMLResource(
+        CLMessages.class,
+        "/com/io7m/changelog/cmdline/internal/Messages.xml")
+    );
+  }
+
+  @Override
+  public String toString()
+  {
+    return String.format(
+      "[CLMessages 0x%s]",
+      Long.toUnsignedString(System.identityHashCode(this), 16)
+    );
   }
 }

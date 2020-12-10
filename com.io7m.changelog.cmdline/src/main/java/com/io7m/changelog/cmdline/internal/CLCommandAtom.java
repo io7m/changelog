@@ -14,55 +14,89 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.changelog.cmdline;
+package com.io7m.changelog.cmdline.internal;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.io7m.changelog.core.CChangelog;
 import com.io7m.changelog.parser.api.CParseErrorHandlers;
+import com.io7m.changelog.xml.api.CAtomChangelogWriterConfiguration;
+import com.io7m.changelog.xml.api.CAtomChangelogWriterProviderType;
+import com.io7m.changelog.xml.api.CAtomChangelogWriterType;
 import com.io7m.changelog.xml.api.CXMLChangelogParserProviderType;
 import com.io7m.changelog.xml.api.CXMLChangelogParserType;
-import com.io7m.changelog.xml.api.CXMLChangelogWriterProviderType;
-import com.io7m.changelog.xml.api.CXMLChangelogWriterType;
+import com.io7m.claypot.core.CLPCommandContextType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.ServiceLoader;
 
-@Parameters(commandDescription = "Update the date of the latest release")
-final class CLCommandTouchRelease extends CLCommandRoot
+@Parameters(commandDescription = "Generate an atom feed")
+public final class CLCommandAtom extends CLAbstractCommand
 {
   private static final Logger LOG =
-    LoggerFactory.getLogger(CLCommandTouchRelease.class);
+    LoggerFactory.getLogger(CLCommandAtom.class);
 
   @Parameter(
-    names = "-file",
+    names = "--file",
     required = false,
     description = "The changelog file")
   private Path path = Paths.get("README-CHANGES.xml");
 
-  CLCommandTouchRelease()
-  {
+  @Parameter(
+    names = "--author-email",
+    required = true,
+    description = "The author email address")
+  private String author_email;
 
+  @Parameter(
+    names = "--author-name",
+    required = true,
+    description = "The author name")
+  private String author_name;
+
+  @Parameter(
+    names = "--title",
+    required = true,
+    description = "The feed title")
+  private String title;
+
+  @Parameter(
+    names = "--uri",
+    required = true,
+    description = "The feed URI")
+  private URI uri;
+
+  /**
+   * Construct a command.
+   *
+   * @param inContext The command context
+   */
+
+  public CLCommandAtom(
+    final CLPCommandContextType inContext)
+  {
+    super(LOG, inContext);
   }
 
   @Override
-  public Status execute()
+  public String name()
+  {
+    return "atom";
+  }
+
+  @Override
+  public Status executeActual()
     throws Exception
   {
-    if (super.execute() == Status.FAILURE) {
-      return Status.FAILURE;
-    }
-
     final Optional<CXMLChangelogParserProviderType> parser_provider_opt =
       ServiceLoader.load(CXMLChangelogParserProviderType.class).findFirst();
 
@@ -71,20 +105,18 @@ final class CLCommandTouchRelease extends CLCommandRoot
       return Status.FAILURE;
     }
 
-    final Optional<CXMLChangelogWriterProviderType> writer_provider_opt =
-      ServiceLoader.load(CXMLChangelogWriterProviderType.class).findFirst();
+    final Optional<CAtomChangelogWriterProviderType> writer_provider_opt =
+      ServiceLoader.load(CAtomChangelogWriterProviderType.class).findFirst();
 
     if (!writer_provider_opt.isPresent()) {
-      LOG.error("No XML writer providers are available");
+      LOG.error("No Atom writer providers are available");
       return Status.FAILURE;
     }
 
     final CXMLChangelogParserProviderType parser_provider =
       parser_provider_opt.get();
-    final CXMLChangelogWriterProviderType writer_provider =
+    final CAtomChangelogWriterProviderType writer_provider =
       writer_provider_opt.get();
-
-    final Path path_tmp = Paths.get(this.path + ".tmp");
 
     try (InputStream stream = Files.newInputStream(this.path)) {
       final CXMLChangelogParserType parser = parser_provider.create(
@@ -94,30 +126,19 @@ final class CLCommandTouchRelease extends CLCommandRoot
 
       final CChangelog changelog = parser.parse();
 
-      final var latestReleaseOpt = changelog.latestRelease();
-      if (latestReleaseOpt.isEmpty()) {
-        LOG.error("There is no current release!");
-        return Status.FAILURE;
-      }
+      final CAtomChangelogWriterType writer =
+        writer_provider.createWithConfiguration(
+          CAtomChangelogWriterConfiguration.builder()
+            .setUpdated(ZonedDateTime.now(ZoneId.of("UTC")))
+            .setUri(this.uri)
+            .setTitle(this.title)
+            .setAuthorName(this.author_name)
+            .setAuthorEmail(this.author_email)
+            .build(),
+          this.uri,
+          System.out);
 
-      final var latestRelease =
-        latestReleaseOpt.get();
-      final ZonedDateTime date =
-        ZonedDateTime.now(ZoneId.of("UTC"));
-
-      final CChangelog changelog_write =
-        CChangelog.builder()
-          .from(changelog)
-          .putReleases(latestRelease.version(), latestRelease.withDate(date))
-          .build();
-
-      try (OutputStream output = Files.newOutputStream(path_tmp)) {
-        final CXMLChangelogWriterType writer =
-          writer_provider.create(this.path.toUri(), output);
-        writer.write(changelog_write);
-      }
-
-      Files.move(path_tmp, this.path, StandardCopyOption.ATOMIC_MOVE);
+      writer.write(changelog);
     }
 
     return Status.SUCCESS;

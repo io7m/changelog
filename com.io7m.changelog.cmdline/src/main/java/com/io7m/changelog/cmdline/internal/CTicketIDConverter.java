@@ -14,7 +14,7 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.changelog.cmdline;
+package com.io7m.changelog.cmdline.internal;
 
 import com.beust.jcommander.IStringConverter;
 import com.beust.jcommander.ParameterException;

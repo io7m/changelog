@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016 <code@io7m.com> http://io7m.com
+ * Copyright © 2020 <code@io7m.com> http://io7m.com
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,29 +14,11 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.changelog.cmdline;
+/**
+ * Software changelogs (Command line frontend [Internal classes])
+ */
 
-import com.io7m.junreachable.UnreachableCodeException;
+@Version("4.0.0")
+package com.io7m.changelog.cmdline.internal;
 
-interface CLCommandType
-{
-  Status execute()
-    throws Exception;
-
-  enum Status
-  {
-    SUCCESS,
-    FAILURE;
-
-    int exitCode()
-    {
-      switch (this) {
-        case SUCCESS:
-          return 0;
-        case FAILURE:
-          return 1;
-      }
-      throw new UnreachableCodeException();
-    }
-  }
-}
+import org.osgi.annotation.versioning.Version;

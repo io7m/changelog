@@ -14,7 +14,7 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.changelog.cmdline;
+package com.io7m.changelog.cmdline.internal;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
@@ -23,10 +23,12 @@ import com.io7m.changelog.core.CChangelogFilters;
 import com.io7m.changelog.core.CVersionType;
 import com.io7m.changelog.core.CVersions;
 import com.io7m.changelog.parser.api.CParseErrorHandlers;
-import com.io7m.changelog.xml.api.CXHTMLChangelogWriterProviderType;
-import com.io7m.changelog.xml.api.CXHTMLChangelogWriterType;
+import com.io7m.changelog.text.api.CPlainChangelogWriterConfiguration;
+import com.io7m.changelog.text.api.CPlainChangelogWriterProviderType;
+import com.io7m.changelog.text.api.CPlainChangelogWriterType;
 import com.io7m.changelog.xml.api.CXMLChangelogParserProviderType;
 import com.io7m.changelog.xml.api.CXMLChangelogParserType;
+import com.io7m.claypot.core.CLPCommandContextType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,42 +40,51 @@ import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.ServiceLoader;
 
-@Parameters(commandDescription = "Generate an XHTML log")
-final class CLCommandXHTML extends CLCommandRoot
+@Parameters(commandDescription = "Generate a plain text log")
+public final class CLCommandPlain extends CLAbstractCommand
 {
   private static final Logger LOG =
-    LoggerFactory.getLogger(CLCommandXHTML.class);
+    LoggerFactory.getLogger(CLCommandPlain.class);
 
   @Parameter(
-    names = "-file",
+    names = "--file",
     required = false,
     description = "The changelog file")
   private Path path = Paths.get("README-CHANGES.xml");
 
   @Parameter(
-    names = "-release",
+    names = "--release",
     description = "The release")
   private String release;
 
   @Parameter(
-    names = "-count",
+    names = "--show-dates",
+    arity = 1,
+    description = "Show dates")
+  private boolean date;
+
+  @Parameter(
+    names = "--count",
     required = false,
     description = "The total number of releases to display")
-  private int count = Integer.MAX_VALUE;
+  private int count = 1;
 
-  CLCommandXHTML()
+  /**
+   * Construct a command.
+   *
+   * @param inContext The command context
+   */
+
+  public CLCommandPlain(
+    final CLPCommandContextType inContext)
   {
-
+    super(LOG, inContext);
   }
 
   @Override
-  public Status execute()
+  public Status executeActual()
     throws Exception
   {
-    if (super.execute() == Status.FAILURE) {
-      return Status.FAILURE;
-    }
-
     final Optional<CVersionType> version;
     if (this.release != null) {
       version = Optional.of(CVersions.parse(this.release));
@@ -89,17 +100,17 @@ final class CLCommandXHTML extends CLCommandRoot
       return Status.FAILURE;
     }
 
-    final Optional<CXHTMLChangelogWriterProviderType> writer_provider_opt =
-      ServiceLoader.load(CXHTMLChangelogWriterProviderType.class).findFirst();
+    final Optional<CPlainChangelogWriterProviderType> writer_provider_opt =
+      ServiceLoader.load(CPlainChangelogWriterProviderType.class).findFirst();
 
     if (!writer_provider_opt.isPresent()) {
-      LOG.error("No XHTML writer providers are available");
+      LOG.error("No plain-text writer providers are available");
       return Status.FAILURE;
     }
 
     final CXMLChangelogParserProviderType parser_provider =
       parser_provider_opt.get();
-    final CXHTMLChangelogWriterProviderType writer_provider =
+    final CPlainChangelogWriterProviderType writer_provider =
       writer_provider_opt.get();
 
     try (InputStream stream = Files.newInputStream(this.path)) {
@@ -123,12 +134,24 @@ final class CLCommandXHTML extends CLCommandRoot
         changelog_write = CChangelogFilters.limit(changelog, this.count);
       }
 
-      final CXHTMLChangelogWriterType writer =
-        writer_provider.create(URI.create("urn:stdout"), System.out);
+      final CPlainChangelogWriterConfiguration config =
+        CPlainChangelogWriterConfiguration.builder()
+          .setShowDates(this.date)
+          .build();
+
+      final CPlainChangelogWriterType writer =
+        writer_provider.createWithConfiguration(
+          config, URI.create("urn:stdout"), System.out);
 
       writer.write(changelog_write);
     }
 
     return Status.SUCCESS;
+  }
+
+  @Override
+  public String name()
+  {
+    return "plain";
   }
 }

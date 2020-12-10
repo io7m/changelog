@@ -14,7 +14,7 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.changelog.cmdline;
+package com.io7m.changelog.cmdline.internal;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
@@ -23,6 +23,7 @@ import com.io7m.changelog.core.CProjectName;
 import com.io7m.changelog.core.CTicketSystem;
 import com.io7m.changelog.xml.api.CXMLChangelogWriterProviderType;
 import com.io7m.changelog.xml.api.CXMLChangelogWriterType;
+import com.io7m.claypot.core.CLPCommandContextType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,51 +37,55 @@ import java.util.Optional;
 import java.util.ServiceLoader;
 
 @Parameters(commandDescription = "Initialize the changelog")
-final class CLCommandInitialize extends CLCommandRoot
+public final class CLCommandInitialize extends CLAbstractCommand
 {
   private static final Logger LOG =
     LoggerFactory.getLogger(CLCommandInitialize.class);
 
   @Parameter(
-    names = "-file",
+    names = "--file",
     required = false,
     description = "The changelog file")
   private Path path = Paths.get("README-CHANGES.xml");
 
   @Parameter(
-    names = "-project",
+    names = "--project",
     required = true,
     description = "The project name",
     converter = CProjectNameConverter.class)
   private CProjectName project;
 
   @Parameter(
-    names = "-ticket-system-name",
+    names = "--ticket-system-name",
     required = true,
     description = "The name of the primary ticket system")
   private String ticket_system_name;
 
   @Parameter(
-    names = "-ticket-system-uri",
+    names = "--ticket-system-uri",
     required = true,
     description = "The URI of the primary ticket system")
   private URI ticket_system_uri;
 
-  CLCommandInitialize()
-  {
+  /**
+   * Construct a command.
+   *
+   * @param inContext The command context
+   */
 
+  public CLCommandInitialize(
+    final CLPCommandContextType inContext)
+  {
+    super(LOG, inContext);
   }
 
   @Override
-  public Status execute()
+  public Status executeActual()
     throws Exception
   {
-    if (super.execute() == Status.FAILURE) {
-      return Status.FAILURE;
-    }
-
     final Optional<CXMLChangelogWriterProviderType> writer_provider_opt =
-      ServiceLoader.load(CXMLChangelogWriterProviderType.class).findFirst();
+      ServiceLoader.load(CXMLChangelogWriterProviderType.class)
+        .findFirst();
 
     if (!writer_provider_opt.isPresent()) {
       LOG.error("No XML writer providers are available");
@@ -117,5 +122,17 @@ final class CLCommandInitialize extends CLCommandRoot
 
     Files.move(path_tmp, this.path, StandardCopyOption.ATOMIC_MOVE);
     return Status.SUCCESS;
+  }
+
+  @Override
+  public String name()
+  {
+    return "initialize";
+  }
+
+  @Override
+  public String extendedHelp()
+  {
+    return this.messages().format("helpInitialize");
   }
 }

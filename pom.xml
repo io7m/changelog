@@ -93,6 +93,11 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>com.io7m.claypot</groupId>
+        <artifactId>com.io7m.claypot.core</artifactId>
+        <version>0.0.5</version>
+      </dependency>
+      <dependency>
         <groupId>com.io7m.jaffirm</groupId>
         <artifactId>com.io7m.jaffirm.core</artifactId>
         <version>3.0.4</version>

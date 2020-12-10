@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016 <code@io7m.com> http://io7m.com
+ * Copyright © 2020 Mark Raynsford <code@io7m.com> http://io7m.com
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -16,15 +16,28 @@
 
 package com.io7m.changelog.cmdline;
 
-import com.beust.jcommander.JCommander;
-import com.beust.jcommander.ParameterException;
-import com.beust.jcommander.internal.Console;
+import com.io7m.changelog.cmdline.internal.CLCommandAddChange;
+import com.io7m.changelog.cmdline.internal.CLCommandAddRelease;
+import com.io7m.changelog.cmdline.internal.CLCommandAtom;
+import com.io7m.changelog.cmdline.internal.CLCommandInitialize;
+import com.io7m.changelog.cmdline.internal.CLCommandPlain;
+import com.io7m.changelog.cmdline.internal.CLCommandTouchRelease;
+import com.io7m.changelog.cmdline.internal.CLCommandVersion;
+import com.io7m.changelog.cmdline.internal.CLCommandXHTML;
+import com.io7m.claypot.core.CLPApplicationConfiguration;
+import com.io7m.claypot.core.CLPCommandConstructorType;
+import com.io7m.claypot.core.CLPCommandType;
+import com.io7m.claypot.core.Claypot;
+import com.io7m.claypot.core.ClaypotType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.net.URI;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.SortedMap;
+import java.util.stream.Stream;
 
 /**
  * Main command line entry point.
@@ -32,53 +45,40 @@ import java.util.Objects;
 
 public final class Main implements Runnable
 {
-  private static final Logger LOG;
+  private static final Logger LOG =
+    LoggerFactory.getLogger(Main.class);
 
-  static {
-    LOG = LoggerFactory.getLogger(Main.class);
-  }
-
-  private final Map<String, CLCommandType> commands;
-  private final JCommander commander;
   private final String[] args;
-  private int exit_code;
+  private final ClaypotType claypot;
 
-  private Main(
-    final String[] in_args)
+  Main(
+    final String[] inArgs)
   {
     this.args =
-      Objects.requireNonNull(in_args, "Command line arguments");
+      Objects.requireNonNull(inArgs, "Command line arguments");
 
-    final CLCommandRoot r = new CLCommandRoot();
-    final CLCommandVersion version = new CLCommandVersion();
-    final CLCommandAtom atom = new CLCommandAtom();
-    final CLCommandPlain plain = new CLCommandPlain();
-    final CLCommandInitialize initialize = new CLCommandInitialize();
-    final CLCommandAddChange add_change = new CLCommandAddChange();
-    final CLCommandAddRelease add_release = new CLCommandAddRelease();
-    final CLCommandTouchRelease touch_release = new CLCommandTouchRelease();
-    final CLCommandXHTML xhtml = new CLCommandXHTML();
+    final List<CLPCommandConstructorType> commands =
+      List.of(
+        CLCommandAddChange::new,
+        CLCommandAddRelease::new,
+        CLCommandAtom::new,
+        CLCommandInitialize::new,
+        CLCommandPlain::new,
+        CLCommandTouchRelease::new,
+        CLCommandVersion::new,
+        CLCommandXHTML::new
+      );
 
-    this.commands = new HashMap<>(8);
-    this.commands.put("atom", atom);
-    this.commands.put("plain", plain);
-    this.commands.put("version", version);
-    this.commands.put("initialize", initialize);
-    this.commands.put("add-change", add_change);
-    this.commands.put("add-release", add_release);
-    this.commands.put("touch-release", touch_release);
-    this.commands.put("xhtml", xhtml);
+    final var configuration =
+      CLPApplicationConfiguration.builder()
+        .setLogger(LOG)
+        .setProgramName("changelog")
+        .setCommands(commands)
+        .setDocumentationURI(URI.create(
+          "https://www.io7m.com/software/changelog/documentation/"))
+        .build();
 
-    this.commander = new JCommander(r);
-    this.commander.setProgramName("changelog");
-    this.commander.addCommand("atom", atom);
-    this.commander.addCommand("initialize", initialize);
-    this.commander.addCommand("plain", plain);
-    this.commander.addCommand("version", version);
-    this.commander.addCommand("add-change", add_change);
-    this.commander.addCommand("add-release", add_release);
-    this.commander.addCommand("touch-release", touch_release);
-    this.commander.addCommand("xhtml", xhtml);
+    this.claypot = Claypot.create(configuration);
   }
 
   /**
@@ -100,63 +100,50 @@ public final class Main implements Runnable
 
   public int exitCode()
   {
-    return this.exit_code;
+    return this.claypot.exitCode();
   }
 
   @Override
   public void run()
   {
-    try {
-      this.commander.parse(this.args);
-
-      final String cmd = this.commander.getParsedCommand();
-      if (cmd == null) {
-        final var console = new StringBuilderConsole();
-        this.commander.setConsole(console);
-        this.commander.usage();
-        LOG.info("Arguments required.\n{}", console.builder.toString());
-        this.exit_code = 1;
-        return;
-      }
-
-      final CLCommandType command = this.commands.get(cmd);
-      final CLCommandType.Status status = command.execute();
-      this.exit_code = status.exitCode();
-    } catch (final ParameterException e) {
-      LOG.error("{}", e.getMessage());
-      this.exit_code = 1;
-    } catch (final Exception e) {
-      LOG.error("{}", e.getMessage(), e);
-      this.exit_code = 1;
-    }
+    this.claypot.execute(this.args);
   }
 
-  private static final class StringBuilderConsole implements Console
+  /**
+   * @return The names of the available commands
+   */
+
+  public Stream<String> commandNames()
   {
-    private final StringBuilder builder;
+    return this.commands()
+      .keySet()
+      .stream();
+  }
 
-    StringBuilderConsole()
-    {
-      this.builder = new StringBuilder(128);
-    }
+  /**
+   * @return The available commands
+   */
 
-    @Override
-    public void print(final String s)
-    {
-      this.builder.append(s);
-    }
+  public SortedMap<String, CLPCommandType> commands()
+  {
+    return this.claypot.commands();
+  }
 
-    @Override
-    public void println(final String s)
-    {
-      this.builder.append(s);
-      this.builder.append('\n');
-    }
+  @Override
+  public String toString()
+  {
+    return String.format(
+      "[Main 0x%s]",
+      Long.toUnsignedString(System.identityHashCode(this), 16)
+    );
+  }
 
-    @Override
-    public char[] readPassword(final boolean b)
-    {
-      return new char[0];
-    }
+  /**
+   * @return The exception that caused the exit
+   */
+
+  public Optional<Exception> exitCause()
+  {
+    return this.claypot.exitCause();
   }
 }

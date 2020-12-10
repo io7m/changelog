@@ -14,33 +14,42 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.changelog.cmdline;
+package com.io7m.changelog.cmdline.internal;
 
 import com.beust.jcommander.Parameters;
+import com.io7m.claypot.core.CLPCommandContextType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Parameters(commandDescription = "Retrieve the program version")
-final class CLCommandVersion extends CLCommandRoot
+public final class CLCommandVersion extends CLAbstractCommand
 {
-  CLCommandVersion()
-  {
+  private static final Logger LOG =
+    LoggerFactory.getLogger(CLCommandVersion.class);
 
+  /**
+   * Construct a command.
+   *
+   * @param inContext The command context
+   */
+
+  public CLCommandVersion(
+    final CLPCommandContextType inContext)
+  {
+    super(LOG, inContext);
   }
 
   @Override
-  public Status execute()
-    throws Exception
+  public Status executeActual()
   {
-    if (super.execute() == Status.FAILURE) {
-      return Status.FAILURE;
-    }
-
     final Package p = this.getClass().getPackage();
-    System.out.printf(
-      "%s %s %s%n",
-      p.getImplementationVendor(),
-      p.getImplementationTitle(),
-      p.getImplementationVersion());
-
+    System.out.printf("changelog %s%n", p.getImplementationVersion());
     return Status.SUCCESS;
+  }
+
+  @Override
+  public String name()
+  {
+    return "version";
   }
 }

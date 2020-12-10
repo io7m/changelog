@@ -14,19 +14,21 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.changelog.cmdline;
+package com.io7m.changelog.cmdline.internal;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
+import com.io7m.changelog.core.CChange;
 import com.io7m.changelog.core.CChangelog;
+import com.io7m.changelog.core.CModuleName;
 import com.io7m.changelog.core.CRelease;
-import com.io7m.changelog.core.CVersionType;
-import com.io7m.changelog.core.CVersions;
+import com.io7m.changelog.core.CTicketID;
 import com.io7m.changelog.parser.api.CParseErrorHandlers;
 import com.io7m.changelog.xml.api.CXMLChangelogParserProviderType;
 import com.io7m.changelog.xml.api.CXMLChangelogParserType;
 import com.io7m.changelog.xml.api.CXMLChangelogWriterProviderType;
 import com.io7m.changelog.xml.api.CXMLChangelogWriterType;
+import com.io7m.claypot.core.CLPCommandContextType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,47 +40,77 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.ServiceLoader;
 
-@Parameters(commandDescription = "Add a new release")
-final class CLCommandAddRelease extends CLCommandRoot
+@Parameters(commandDescription = "Add a change to the current release")
+public final class CLCommandAddChange extends CLAbstractCommand
 {
   private static final Logger LOG =
-    LoggerFactory.getLogger(CLCommandAddRelease.class);
+    LoggerFactory.getLogger(CLCommandAddChange.class);
 
   @Parameter(
-    names = "-file",
+    names = "--file",
     required = false,
     description = "The changelog file")
   private Path path = Paths.get("README-CHANGES.xml");
 
   @Parameter(
-    names = "-version",
+    names = "--summary",
     required = true,
-    description = "The new release version")
-  private String version_text;
+    description = "The change summary")
+  private String summary;
 
   @Parameter(
-    names = "-ticket-system",
-    description = "The new release ticket system name")
-  private String ticket_system;
+    names = "--module",
+    required = false,
+    converter = CModuleNameConverter.class,
+    description = "The affected module")
+  private CModuleName module;
 
-  CLCommandAddRelease()
+  @Parameter(
+    names = "--ticket",
+    required = false,
+    converter = CTicketIDConverter.class,
+    description = "The list of tickets (Can be specified multiple times)")
+  private List<CTicketID> tickets = new ArrayList<>();
+
+  @Parameter(
+    names = "--incompatible",
+    required = false,
+    description = "Indicates that the change is backwards incompatible")
+  private boolean incompatible;
+
+  /**
+   * Construct a command.
+   *
+   * @param inContext The command context
+   */
+
+  public CLCommandAddChange(
+    final CLPCommandContextType inContext)
   {
-
+    super(LOG, inContext);
   }
 
   @Override
-  public Status execute()
+  public String name()
+  {
+    return "add-change";
+  }
+
+  @Override
+  public String extendedHelp()
+  {
+    return this.messages().format("helpAddChange");
+  }
+
+  @Override
+  public Status executeActual()
     throws Exception
   {
-    if (super.execute() == Status.FAILURE) {
-      return Status.FAILURE;
-    }
-
-    final CVersionType version = CVersions.parse(this.version_text);
-
     final Optional<CXMLChangelogParserProviderType> parser_provider_opt =
       ServiceLoader.load(CXMLChangelogParserProviderType.class).findFirst();
 
@@ -110,42 +142,44 @@ final class CLCommandAddRelease extends CLCommandRoot
 
       final CChangelog changelog = parser.parse();
 
-      if (changelog.releases().containsKey(version)) {
-        LOG.error("Release {} already exists", version.toVersionString());
+      final Optional<CRelease> latest =
+        changelog.latestRelease();
+
+      if (latest.isEmpty()) {
+        LOG.error("No current release exists");
         return Status.FAILURE;
       }
 
-      final Optional<String> ticket_system_opt =
-        changelog.findTicketSystem(Optional.ofNullable(this.ticket_system));
-
-      if (ticket_system_opt.isEmpty()) {
-        if (this.ticket_system != null) {
-          LOG.error("No ticket system named {} is defined", this.ticket_system);
-        } else {
-          LOG.error("No default ticket system is available");
-        }
-        return Status.FAILURE;
-      }
-
-      final ZonedDateTime date =
+      final ZonedDateTime now =
         ZonedDateTime.now(ZoneId.of("UTC"));
 
-      final CRelease newRelease =
+      final CChange change =
+        CChange.builder()
+          .setModule(Optional.ofNullable(this.module))
+          .setBackwardsCompatible(!this.incompatible)
+          .setDate(now)
+          .setSummary(this.summary)
+          .setTickets(List.copyOf(this.tickets))
+          .build();
+
+      final CRelease release = latest.get();
+      final CRelease release_write =
         CRelease.builder()
-          .setTicketSystemID(ticket_system_opt.get())
-          .setVersion(version)
-          .setDate(date)
+          .from(release)
+          .addChanges(change)
+          .setDate(now)
           .build();
 
       final CChangelog changelog_write =
         CChangelog.builder()
           .from(changelog)
-          .putReleases(version, newRelease)
+          .putReleases(release_write.version(), release_write)
           .build();
 
       try (OutputStream output = Files.newOutputStream(path_tmp)) {
         final CXMLChangelogWriterType writer =
           writer_provider.create(this.path.toUri(), output);
+
         writer.write(changelog_write);
       }
 

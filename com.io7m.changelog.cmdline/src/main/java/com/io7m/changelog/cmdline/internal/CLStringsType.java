@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016 <code@io7m.com> http://io7m.com
+ * Copyright © 2020 Mark Raynsford <code@io7m.com> http://io7m.com
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,36 +14,41 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.changelog.cmdline;
+package com.io7m.changelog.cmdline.internal;
 
-import com.beust.jcommander.IStringConverter;
+import java.text.MessageFormat;
+import java.util.Objects;
+import java.util.ResourceBundle;
 
 /**
- * A converter for {@link CLLogLevel} values.
+ * A provider of string resources.
  */
 
-public final class CLLogLevelConverter implements
-  IStringConverter<CLLogLevel>
+public interface CLStringsType
 {
   /**
-   * Construct a new converter.
+   * @return The underlying resource bundle
    */
 
-  public CLLogLevelConverter()
+  ResourceBundle resources();
+
+  /**
+   * Format a message.
+   *
+   * @param id   The string resource ID
+   * @param args Any required string format arguments
+   *
+   * @return A formatted string
+   *
+   * @see MessageFormat
+   */
+
+  default String format(
+    final String id,
+    final Object... args)
   {
-
-  }
-
-  @Override
-  public CLLogLevel convert(final String value)
-  {
-    for (final CLLogLevel v : CLLogLevel.values()) {
-      if (value.equals(v.getName())) {
-        return v;
-      }
-    }
-
-    throw new CLLogLevelUnrecognized(
-      "Unrecognized verbosity level: " + value);
+    Objects.requireNonNull(id, "id");
+    Objects.requireNonNull(args, "args");
+    return MessageFormat.format(this.resources().getString(id), args);
   }
 }

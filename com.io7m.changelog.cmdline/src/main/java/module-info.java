@@ -29,7 +29,16 @@ module com.io7m.changelog.cmdline
   requires com.io7m.changelog.xml.api;
 
   requires ch.qos.logback.classic;
+  requires com.io7m.claypot.core;
   requires com.io7m.junreachable.core;
   requires jcommander;
   requires org.slf4j;
+
+  uses com.io7m.changelog.text.api.CPlainChangelogWriterProviderType;
+  uses com.io7m.changelog.xml.api.CXMLChangelogParserProviderType;
+  uses com.io7m.changelog.xml.api.CXMLChangelogWriterProviderType;
+
+  opens com.io7m.changelog.cmdline.internal to jcommander;
+
+  exports com.io7m.changelog.cmdline;
 }

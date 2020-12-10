@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+  <entry key="helpAddChange"><![CDATA[The add-change command adds a change to the currently open release.]]></entry>
+  <entry key="helpInitialize"><![CDATA[The initialize command initializes an empty changelog.]]></entry>
+</properties>

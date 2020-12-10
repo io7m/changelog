@@ -14,17 +14,20 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.changelog.cmdline;
+package com.io7m.changelog.cmdline.internal;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.io7m.changelog.core.CChangelog;
+import com.io7m.changelog.core.CChangelogFilters;
+import com.io7m.changelog.core.CVersionType;
+import com.io7m.changelog.core.CVersions;
 import com.io7m.changelog.parser.api.CParseErrorHandlers;
-import com.io7m.changelog.xml.api.CAtomChangelogWriterConfiguration;
-import com.io7m.changelog.xml.api.CAtomChangelogWriterProviderType;
-import com.io7m.changelog.xml.api.CAtomChangelogWriterType;
+import com.io7m.changelog.xml.api.CXHTMLChangelogWriterProviderType;
+import com.io7m.changelog.xml.api.CXHTMLChangelogWriterType;
 import com.io7m.changelog.xml.api.CXMLChangelogParserProviderType;
 import com.io7m.changelog.xml.api.CXMLChangelogParserType;
+import com.io7m.claypot.core.CLPCommandContextType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,58 +36,53 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.ServiceLoader;
 
-@Parameters(commandDescription = "Generate an atom feed")
-final class CLCommandAtom extends CLCommandRoot
+@Parameters(commandDescription = "Generate an XHTML log")
+public final class CLCommandXHTML extends CLAbstractCommand
 {
   private static final Logger LOG =
-    LoggerFactory.getLogger(CLCommandAtom.class);
+    LoggerFactory.getLogger(CLCommandXHTML.class);
 
   @Parameter(
-    names = "-file",
+    names = "--file",
     required = false,
     description = "The changelog file")
   private Path path = Paths.get("README-CHANGES.xml");
 
   @Parameter(
-    names = "-author-email",
-    required = true,
-    description = "The author email address")
-  private String author_email;
+    names = "--release",
+    description = "The release")
+  private String release;
 
   @Parameter(
-    names = "-author-name",
-    required = true,
-    description = "The author name")
-  private String author_name;
+    names = "--count",
+    required = false,
+    description = "The total number of releases to display")
+  private int count = Integer.MAX_VALUE;
 
-  @Parameter(
-    names = "-title",
-    required = true,
-    description = "The feed title")
-  private String title;
+  /**
+   * Construct a command.
+   *
+   * @param inContext The command context
+   */
 
-  @Parameter(
-    names = "-uri",
-    required = true,
-    description = "The feed URI")
-  private URI uri;
-
-  CLCommandAtom()
+  public CLCommandXHTML(
+    final CLPCommandContextType inContext)
   {
-
+    super(LOG, inContext);
   }
 
   @Override
-  public Status execute()
+  public Status executeActual()
     throws Exception
   {
-    if (super.execute() == Status.FAILURE) {
-      return Status.FAILURE;
+    final Optional<CVersionType> version;
+    if (this.release != null) {
+      version = Optional.of(CVersions.parse(this.release));
+    } else {
+      version = Optional.empty();
     }
 
     final Optional<CXMLChangelogParserProviderType> parser_provider_opt =
@@ -95,17 +93,17 @@ final class CLCommandAtom extends CLCommandRoot
       return Status.FAILURE;
     }
 
-    final Optional<CAtomChangelogWriterProviderType> writer_provider_opt =
-      ServiceLoader.load(CAtomChangelogWriterProviderType.class).findFirst();
+    final Optional<CXHTMLChangelogWriterProviderType> writer_provider_opt =
+      ServiceLoader.load(CXHTMLChangelogWriterProviderType.class).findFirst();
 
     if (!writer_provider_opt.isPresent()) {
-      LOG.error("No Atom writer providers are available");
+      LOG.error("No XHTML writer providers are available");
       return Status.FAILURE;
     }
 
     final CXMLChangelogParserProviderType parser_provider =
       parser_provider_opt.get();
-    final CAtomChangelogWriterProviderType writer_provider =
+    final CXHTMLChangelogWriterProviderType writer_provider =
       writer_provider_opt.get();
 
     try (InputStream stream = Files.newInputStream(this.path)) {
@@ -115,22 +113,32 @@ final class CLCommandAtom extends CLCommandRoot
         CParseErrorHandlers.loggingHandler(LOG));
 
       final CChangelog changelog = parser.parse();
+      final CChangelog changelog_write;
+      if (version.isPresent()) {
+        final Optional<CChangelog> c_opt =
+          CChangelogFilters.upToAndIncluding(
+            changelog, version.get(), this.count);
+        if (!c_opt.isPresent()) {
+          LOG.error("Changelog does not contain release {}", this.release);
+          return Status.FAILURE;
+        }
+        changelog_write = c_opt.get();
+      } else {
+        changelog_write = CChangelogFilters.limit(changelog, this.count);
+      }
 
-      final CAtomChangelogWriterType writer =
-        writer_provider.createWithConfiguration(
-          CAtomChangelogWriterConfiguration.builder()
-            .setUpdated(ZonedDateTime.now(ZoneId.of("UTC")))
-            .setUri(this.uri)
-            .setTitle(this.title)
-            .setAuthorName(this.author_name)
-            .setAuthorEmail(this.author_email)
-            .build(),
-          this.uri,
-          System.out);
+      final CXHTMLChangelogWriterType writer =
+        writer_provider.create(URI.create("urn:stdout"), System.out);
 
-      writer.write(changelog);
+      writer.write(changelog_write);
     }
 
     return Status.SUCCESS;
+  }
+
+  @Override
+  public String name()
+  {
+    return "xhtml";
   }
 }

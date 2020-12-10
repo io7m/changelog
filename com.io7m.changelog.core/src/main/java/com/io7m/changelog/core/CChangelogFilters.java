@@ -111,6 +111,7 @@ public final class CChangelogFilters
         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
     return CChangelog.builder()
+      .from(changelog)
       .setReleases(newReleases)
       .build();
   }
