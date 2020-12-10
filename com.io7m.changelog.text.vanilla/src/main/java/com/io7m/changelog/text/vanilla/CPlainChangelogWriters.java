@@ -164,16 +164,16 @@ public final class CPlainChangelogWriters
 
         if (!change.tickets().isEmpty()) {
           if (change.tickets().size() == 1) {
-            this.writer.append(" (Ticket: ");
+            this.writer.append(" (Ticket:");
           } else {
-            this.writer.append(" (Tickets: ");
+            this.writer.append(" (Tickets:");
           }
 
           this.writer.append(
             change.tickets()
               .stream()
-              .map(t -> String.format("#%s", t.value()))
-              .collect(Collectors.joining(", ")));
+              .map(t -> String.format(" #%s", t.value()))
+              .collect(Collectors.joining(",")));
           this.writer.append(")");
         }
 

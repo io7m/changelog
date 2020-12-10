@@ -70,14 +70,19 @@
         <c:change date="2017-10-15T00:00:00+00:00" summary="Rename project. Use the new primogenitor POM and 2017 project conventions."/>
       </c:changes>
     </c:release>
-    <c:release date="2020-12-10T13:04:35+00:00" ticket-system="com.io7m.github.changelog" version="4.0.0">
+    <c:release date="2020-12-10T13:23:24+00:00" ticket-system="com.io7m.github.changelog" version="4.0.0">
       <c:changes>
         <c:change compatible="false" date="2017-11-03T00:00:00+00:00" module="com.io7m.changelog.maven_plugin" summary="Remove the Maven plugin"/>
         <c:change compatible="false" date="2017-11-03T00:00:00+00:00" summary="Remove the com.io7m.jnull dependency"/>
         <c:change compatible="false" date="2017-11-03T00:00:00+00:00" summary="Require JDK 9"/>
         <c:change compatible="false" date="2017-11-11T00:00:00+00:00" summary="Completely redesign the changelog format and remove the use of XOM"/>
         <c:change compatible="false" date="2020-12-10T00:00:00+00:00" summary="Remove Vavr"/>
-        <c:change compatible="false" date="2020-12-10T13:04:35+00:00" summary="Modernize command-line interface with double-hyphen options"/>
+        <c:change compatible="false" date="2020-12-10T00:00:00+00:00" summary="Modernize command-line interface with double-hyphen options"/>
+        <c:change date="2020-12-10T13:23:24+00:00" summary="Improve spacing in plain text log">
+          <c:tickets>
+            <c:ticket id="11"/>
+          </c:tickets>
+        </c:change>
       </c:changes>
     </c:release>
   </c:releases>

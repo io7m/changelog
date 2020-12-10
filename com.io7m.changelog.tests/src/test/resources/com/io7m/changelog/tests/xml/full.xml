@@ -83,6 +83,8 @@
         <c:change date="2017-01-10T00:00:00+00:00" summary="Fix printing of version numbers in report generation.">
           <c:tickets>
             <c:ticket id="3"/>
+            <c:ticket id="4"/>
+            <c:ticket id="5"/>
           </c:tickets>
         </c:change>
       </c:changes>
