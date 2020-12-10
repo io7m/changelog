@@ -123,11 +123,6 @@
         <artifactId>value</artifactId>
         <version>${io7m.org.immutables.version}</version>
       </dependency>
-      <dependency>
-        <groupId>org.immutables.vavr</groupId>
-        <artifactId>vavr-encodings</artifactId>
-        <version>0.6.0</version>
-      </dependency>
 
       <dependency>
         <groupId>com.io7m.primogenitor</groupId>
@@ -148,11 +143,6 @@
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
         <version>1.8.0-beta2</version>
-      </dependency>
-      <dependency>
-        <groupId>io.vavr</groupId>
-        <artifactId>vavr</artifactId>
-        <version>1.0.0-alpha-3</version>
       </dependency>
 
       <dependency>

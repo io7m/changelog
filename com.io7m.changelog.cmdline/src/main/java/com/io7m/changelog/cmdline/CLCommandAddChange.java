@@ -143,7 +143,7 @@ final class CLCommandAddChange extends CLCommandRoot
           .setBackwardsCompatible(!this.incompatible)
           .setDate(now)
           .setSummary(this.summary)
-          .setTickets(io.vavr.collection.List.ofAll(this.tickets))
+          .setTickets(List.copyOf(this.tickets))
           .build();
 
       final CRelease release = latest.get();

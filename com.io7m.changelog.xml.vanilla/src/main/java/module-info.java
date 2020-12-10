@@ -14,19 +14,17 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-
 module com.io7m.changelog.xml.vanilla
 {
-  requires java.xml;
-  requires com.io7m.jlexing.core;
-  requires com.io7m.junreachable.core;
-  requires com.io7m.jxe.core;
-  requires io.vavr;
-  requires org.slf4j;
   requires com.io7m.changelog.core;
   requires com.io7m.changelog.parser.api;
   requires com.io7m.changelog.schema;
   requires com.io7m.changelog.xml.api;
+  requires com.io7m.jlexing.core;
+  requires com.io7m.junreachable.core;
+  requires com.io7m.jxe.core;
+  requires java.xml;
+  requires org.slf4j;
 
   exports com.io7m.changelog.xml;
 }

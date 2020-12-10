@@ -34,7 +34,6 @@ import com.io7m.jxe.core.JXEHardenedSAXParsers;
 import com.io7m.jxe.core.JXESchemaDefinition;
 import com.io7m.jxe.core.JXESchemaResolutionMappings;
 import com.io7m.jxe.core.JXEXInclude;
-import io.vavr.collection.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
@@ -56,6 +55,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayDeque;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -85,7 +85,7 @@ public final class CXMLChangelogParsers
         CSchema.XML_URI,
         "changelog-4.0.xsd",
         CSchema.getURISchemaXSD().toURL());
-    } catch (MalformedURLException e) {
+    } catch (final MalformedURLException e) {
       throw new IllegalStateException(e);
     }
 
@@ -364,7 +364,7 @@ public final class CXMLChangelogParsers
 
       this.change_builder.setModule(Optional.empty());
       this.change_builder.setBackwardsCompatible(true);
-      this.change_builder.setTickets(List.empty());
+      this.change_builder.setTickets(List.of());
 
       for (int index = 0; index < attributes.getLength(); ++index) {
         switch (attributes.getLocalName(index)) {
@@ -406,7 +406,7 @@ public final class CXMLChangelogParsers
       final Attributes attributes)
     {
       this.elements.push(CurrentElement.RELEASE);
-      this.release_builder.setChanges(List.empty());
+      this.release_builder.setChanges(List.of());
 
       for (int index = 0; index < attributes.getLength(); ++index) {
         switch (attributes.getLocalName(index)) {
