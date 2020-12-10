@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <c:changelog project="com.io7m.changelog" xmlns:c="urn:com.io7m.changelog:4.0">
   <c:releases>
-    <c:release date="2012-03-15T00:00:00+00:00" ticket-system="com.io7m.fossil.changelog" version="1.0.0">
+    <c:release date="2012-03-15T00:00:00+00:00" is-open="false" ticket-system="com.io7m.fossil.changelog" version="1.0.0">
       <c:changes>
         <c:change date="2012-03-15T00:00:00+00:00" summary="Initial release."/>
       </c:changes>
     </c:release>
-    <c:release date="2014-04-17T00:00:00+00:00" ticket-system="com.io7m.fossil.changelog" version="2.0.0">
+    <c:release date="2014-04-17T00:00:00+00:00" is-open="false" ticket-system="com.io7m.fossil.changelog" version="2.0.0">
       <c:changes>
         <c:change date="2014-04-17T00:00:00+00:00" summary="Allow for zero or more releases in a file."/>
         <c:change date="2014-04-17T00:00:00+00:00" summary="Do not allow xml:id on changelogs."/>
@@ -15,25 +15,25 @@
         <c:change compatible="false" date="2014-04-17T00:00:00+00:00" summary="Change schema URI and increment version to 2.0.0"/>
       </c:changes>
     </c:release>
-    <c:release date="2014-04-19T00:00:00+00:00" ticket-system="com.io7m.fossil.changelog" version="2.1.0">
+    <c:release date="2014-04-19T00:00:00+00:00" is-open="false" ticket-system="com.io7m.fossil.changelog" version="2.1.0">
       <c:changes>
         <c:change date="2014-04-19T00:00:00+00:00" summary="Add Maven report plugin."/>
         <c:change date="2014-04-19T00:00:00+00:00" summary="Add simple Atom feed generator."/>
       </c:changes>
     </c:release>
-    <c:release date="2015-08-22T00:00:00+00:00" ticket-system="com.io7m.fossil.changelog" version="2.1.1">
+    <c:release date="2015-08-22T00:00:00+00:00" is-open="false" ticket-system="com.io7m.fossil.changelog" version="2.1.1">
       <c:changes>
         <c:change date="2015-08-22T00:00:00+00:00" summary="Migrate to GitHub."/>
         <c:change date="2014-12-03T00:00:00+00:00" summary="Fix javadoc comments for Java 8's doclint."/>
         <c:change date="2014-12-03T00:00:00+00:00" summary="Ensure source jars for unit tests are created."/>
       </c:changes>
     </c:release>
-    <c:release date="2016-05-06T00:00:00+00:00" ticket-system="com.io7m.fossil.changelog" version="2.1.2">
+    <c:release date="2016-05-06T00:00:00+00:00" is-open="false" ticket-system="com.io7m.fossil.changelog" version="2.1.2">
       <c:changes>
         <c:change date="2016-05-06T00:00:00+00:00" summary="Update site links and POM metadata"/>
       </c:changes>
     </c:release>
-    <c:release date="2016-12-21T00:00:00+00:00" ticket-system="com.io7m.fossil.changelog" version="3.0.0">
+    <c:release date="2016-12-21T00:00:00+00:00" is-open="false" ticket-system="com.io7m.fossil.changelog" version="3.0.0">
       <c:changes>
         <c:change compatible="false" date="2016-12-21T00:00:00+00:00" summary="The package now requires Java 8."/>
         <c:change date="2016-12-21T00:00:00+00:00" summary="The published artifacts are now OSGi bundles."/>
@@ -42,12 +42,12 @@
         <c:change date="2016-12-21T00:00:00+00:00" summary="Add a command-line frontend."/>
       </c:changes>
     </c:release>
-    <c:release date="2016-12-21T00:00:00+00:00" ticket-system="com.io7m.github.changelog" version="3.0.1">
+    <c:release date="2016-12-21T00:00:00+00:00" is-open="false" ticket-system="com.io7m.github.changelog" version="3.0.1">
       <c:changes>
         <c:change date="2016-12-21T00:00:00+00:00" summary="Fix the command line frontend onejar configuration."/>
       </c:changes>
     </c:release>
-    <c:release date="2017-01-10T00:00:00+00:00" ticket-system="com.io7m.github.changelog" version="3.0.2">
+    <c:release date="2017-01-10T00:00:00+00:00" is-open="false" ticket-system="com.io7m.github.changelog" version="3.0.2">
       <c:changes>
         <c:change date="2017-01-10T00:00:00+00:00" summary="Fix date formatting in report generation.">
           <c:tickets>
@@ -56,7 +56,7 @@
         </c:change>
       </c:changes>
     </c:release>
-    <c:release date="2017-01-10T00:00:00+00:00" ticket-system="com.io7m.github.changelog" version="3.0.3">
+    <c:release date="2017-01-10T00:00:00+00:00" is-open="false" ticket-system="com.io7m.github.changelog" version="3.0.3">
       <c:changes>
         <c:change date="2017-01-10T00:00:00+00:00" summary="Fix printing of version numbers in report generation.">
           <c:tickets>
@@ -65,12 +65,13 @@
         </c:change>
       </c:changes>
     </c:release>
-    <c:release date="2017-10-15T00:00:00+00:00" ticket-system="com.io7m.github.changelog" version="3.1.0">
+    <c:release date="2017-10-15T00:00:00+00:00" is-open="false" ticket-system="com.io7m.github.changelog" version="3.1.0">
       <c:changes>
         <c:change date="2017-10-15T00:00:00+00:00" summary="Rename project. Use the new primogenitor POM and 2017 project conventions."/>
       </c:changes>
     </c:release>
-    <c:release date="2020-12-10T15:16:35+00:00" ticket-system="com.io7m.github.changelog" version="4.0.0">
+    <c:release date="2020-12-10T19:20:53+00:00" is-open="true" ticket-system="com.io7m.github.changelog"
+               version="4.0.0">
       <c:changes>
         <c:change compatible="false" date="2017-11-03T00:00:00+00:00" module="com.io7m.changelog.maven_plugin" summary="Remove the Maven plugin"/>
         <c:change compatible="false" date="2017-11-03T00:00:00+00:00" summary="Remove the com.io7m.jnull dependency"/>
@@ -83,7 +84,7 @@
             <c:ticket id="11"/>
           </c:tickets>
         </c:change>
-        <c:change date="2020-12-10T15:16:35+00:00" summary="Change command-line interface to explicit start and finish releases"/>
+        <c:change date="2020-12-10T00:00:00+00:00" summary="Change command-line interface to explicit start and finish releases"/>
       </c:changes>
     </c:release>
   </c:releases>

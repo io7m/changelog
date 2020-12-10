@@ -17,6 +17,7 @@
 package com.io7m.changelog.cmdline;
 
 import com.io7m.changelog.cmdline.internal.CLCommandChangeAdd;
+import com.io7m.changelog.cmdline.internal.CLCommandReleaseCurrent;
 import com.io7m.changelog.cmdline.internal.CLCommandReleaseSetVersion;
 import com.io7m.changelog.cmdline.internal.CLCommandWriteAtom;
 import com.io7m.changelog.cmdline.internal.CLCommandInitialize;
@@ -63,6 +64,7 @@ public final class Main implements Runnable
         CLCommandChangeAdd::new,
         CLCommandInitialize::new,
         CLCommandReleaseBegin::new,
+        CLCommandReleaseCurrent::new,
         CLCommandReleaseFinish::new,
         CLCommandReleaseSetVersion::new,
         CLCommandVersion::new,

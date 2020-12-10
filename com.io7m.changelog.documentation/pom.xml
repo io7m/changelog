@@ -72,7 +72,10 @@
       <groupId>com.io7m.primogenitor</groupId>
       <artifactId>com.io7m.primogenitor.support</artifactId>
     </dependency>
-
+    <dependency>
+      <groupId>com.io7m.xstructural</groupId>
+      <artifactId>com.io7m.xstructural.cmdline</artifactId>
+    </dependency>
     <dependency>
       <groupId>com.io7m.junreachable</groupId>
       <artifactId>com.io7m.junreachable.core</artifactId>
@@ -101,6 +104,13 @@
   </dependencies>
 
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+
     <plugins>
       <!-- Copy documentation resources into build directory -->
       <plugin>
@@ -121,40 +131,6 @@
                   <filtering>true</filtering>
                 </resource>
               </resources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-      <!-- Produce documentation -->
-      <plugin>
-        <groupId>com.io7m.jstructural</groupId>
-        <artifactId>io7m-jstructural-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>make-documentation-single</id>
-            <phase>prepare-package</phase>
-            <goals>
-              <goal>transform</goal>
-            </goals>
-            <configuration>
-              <documentFile>${project.build.directory}/documentation/documentation.xml</documentFile>
-              <outputDirectory>${project.build.directory}/documentation/</outputDirectory>
-              <brandFile>${project.build.directory}/documentation/brand.xml</brandFile>
-              <pagination>XHTML_SINGLE</pagination>
-            </configuration>
-          </execution>
-          <execution>
-            <id>make-documentation-multi</id>
-            <phase>prepare-package</phase>
-            <goals>
-              <goal>transform</goal>
-            </goals>
-            <configuration>
-              <documentFile>${project.build.directory}/documentation/documentation.xml</documentFile>
-              <outputDirectory>${project.build.directory}/documentation/</outputDirectory>
-              <brandFile>${project.build.directory}/documentation/brand.xml</brandFile>
-              <pagination>XHTML_MULTI</pagination>
             </configuration>
           </execution>
         </executions>
@@ -198,6 +174,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <executions>
           <execution>
+            <id>javadoc</id>
             <goals>
               <goal>java</goal>
             </goals>
@@ -210,6 +187,50 @@
                 <argument>${project.build.directory}/documentation/apidocs</argument>
                 <argument>${project.build.directory}/javadoc-log.txt</argument>
                 <argument>${project.build.directory}/javadoc-options</argument>
+              </arguments>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>xhtml-single</id>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <mainClass>com.io7m.xstructural.cmdline.MainExitless</mainClass>
+              <arguments>
+                <argument>xhtml</argument>
+                <argument>--brandingFile</argument>
+                <argument>${project.build.directory}/documentation/brand.xml</argument>
+                <argument>--sourceFile</argument>
+                <argument>${project.build.directory}/documentation/main.xml</argument>
+                <argument>--outputDirectory</argument>
+                <argument>${project.build.directory}/documentation</argument>
+                <argument>--stylesheet</argument>
+                <argument>SINGLE_FILE</argument>
+              </arguments>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>xhtml-multiple</id>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <mainClass>com.io7m.xstructural.cmdline.MainExitless</mainClass>
+              <arguments>
+                <argument>xhtml</argument>
+                <argument>--brandingFile</argument>
+                <argument>${project.build.directory}/documentation/brand.xml</argument>
+                <argument>--sourceFile</argument>
+                <argument>${project.build.directory}/documentation/main.xml</argument>
+                <argument>--outputDirectory</argument>
+                <argument>${project.build.directory}/documentation</argument>
+                <argument>--stylesheet</argument>
+                <argument>MULTIPLE_FILE</argument>
               </arguments>
             </configuration>
           </execution>
@@ -239,7 +260,7 @@
         </executions>
       </plugin>
 
-      <!-- Unpack the documentation archive to the parent's generated minisite directory. -->
+      <!-- Unpack the documentation archive to the parent's generated site minisite directory. -->
       <!-- This is arguably abusive, but there appears to be no other way to achieve it. -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -255,7 +276,9 @@
             <configuration>
               <verbose>true</verbose>
               <fileset>
-                <directory>${project.build.directory}/${project.name}-${project.version}.zip/${project.name}-${project.version}/</directory>
+                <directory>
+                  ${project.build.directory}/${project.name}-${project.version}.zip/${project.name}-${project.version}/
+                </directory>
                 <outputDirectory>${project.parent.build.directory}/minisite/documentation/</outputDirectory>
               </fileset>
             </configuration>

@@ -1,0 +1,13 @@
+$ (cat <<EOF
+--file
+README-CHANGES.xml
+--ticket-system-name
+com.github.io7m.changelog.test
+--ticket-system-uri
+https://www.github.com/io7m/changelog/issues/
+--project
+com.io7m.changelog.test
+EOF
+) > args.txt
+
+$ changelog initialize @args.txt

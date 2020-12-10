@@ -1,0 +1,10 @@
+$ changelog release-current
+changelog: CLCommandReleaseCurrent: ERROR: No current release exists
+
+$ changelog release-begin
+$ changelog release-current
+1.0.0 (open)
+
+$ changelog release-finish
+$ changelog release-current
+1.0.0 (closed)

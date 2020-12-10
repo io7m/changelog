@@ -1,0 +1,177 @@
+$ changelog write-xhtml
+
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<table class="changelog" summary="Changes for project com.io7m.changelog" xmlns="http://www.w3.org/1999/xhtml">
+  <tr>
+    <td>2020-12-10</td>
+    <td>Release: com.io7m.changelog 4.0.0</td>
+  </tr>
+  <tr>
+    <td>2017-11-03</td>
+    <td>Change: (Backwards incompatible) CModuleName{value=com.io7m.changelog.maven_plugin}: Remove the Maven plugin</td>
+  </tr>
+  <tr>
+    <td>2017-11-03</td>
+    <td>Change: (Backwards incompatible) Remove the com.io7m.jnull dependency</td>
+  </tr>
+  <tr>
+    <td>2017-11-03</td>
+    <td>Change: (Backwards incompatible) Require JDK 9</td>
+  </tr>
+  <tr>
+    <td>2017-11-11</td>
+    <td>Change: (Backwards incompatible) Completely redesign the changelog format and remove the use of XOM</td>
+  </tr>
+  <tr>
+    <td>2020-12-10</td>
+    <td>Change: (Backwards incompatible) Remove Vavr</td>
+  </tr>
+  <tr>
+    <td>2020-12-10</td>
+    <td>Change: (Backwards incompatible) Modernize command-line interface with double-hyphen options</td>
+  </tr>
+  <tr>
+    <td>2020-12-10</td>
+    <td>
+      Change: Improve spacing in plain text log (tickets:
+      <a href="https://github.com/io7m/changelog/issues/11">11</a>
+      )
+    </td>
+  </tr>
+  <tr>
+    <td>2020-12-10</td>
+    <td>Change: Change command-line interface to explicit start and finish releases</td>
+  </tr>
+  <tr>
+    <td>2017-10-15</td>
+    <td>Release: com.io7m.changelog 3.1.0</td>
+  </tr>
+  <tr>
+    <td>2017-10-15</td>
+    <td>Change: Rename project. Use the new primogenitor POM and 2017 project conventions.</td>
+  </tr>
+  <tr>
+    <td>2017-01-10</td>
+    <td>Release: com.io7m.changelog 3.0.3</td>
+  </tr>
+  <tr>
+    <td>2017-01-10</td>
+    <td>
+      Change: Fix printing of version numbers in report generation. (tickets:
+      <a href="https://github.com/io7m/changelog/issues/3">3</a>
+      )
+    </td>
+  </tr>
+  <tr>
+    <td>2017-01-10</td>
+    <td>Release: com.io7m.changelog 3.0.2</td>
+  </tr>
+  <tr>
+    <td>2017-01-10</td>
+    <td>
+      Change: Fix date formatting in report generation. (tickets:
+      <a href="https://github.com/io7m/changelog/issues/2">2</a>
+      )
+    </td>
+  </tr>
+  <tr>
+    <td>2016-12-21</td>
+    <td>Release: com.io7m.changelog 3.0.1</td>
+  </tr>
+  <tr>
+    <td>2016-12-21</td>
+    <td>Change: Fix the command line frontend onejar configuration.</td>
+  </tr>
+  <tr>
+    <td>2016-12-21</td>
+    <td>Release: com.io7m.changelog 3.0.0</td>
+  </tr>
+  <tr>
+    <td>2016-12-21</td>
+    <td>Change: (Backwards incompatible) The package now requires Java 8.</td>
+  </tr>
+  <tr>
+    <td>2016-12-21</td>
+    <td>Change: The published artifacts are now OSGi bundles.</td>
+  </tr>
+  <tr>
+    <td>2016-12-21</td>
+    <td>Change: (Backwards incompatible) Consistently use com.io7m.changelog.* everywhere (some packages were rooted at com.io7m.changelogs).</td>
+  </tr>
+  <tr>
+    <td>2016-12-21</td>
+    <td>Change: (Backwards incompatible) Replace most of the API with Immutables.org generated types.</td>
+  </tr>
+  <tr>
+    <td>2016-12-21</td>
+    <td>Change: Add a command-line frontend.</td>
+  </tr>
+  <tr>
+    <td>2016-05-06</td>
+    <td>Release: com.io7m.changelog 2.1.2</td>
+  </tr>
+  <tr>
+    <td>2016-05-06</td>
+    <td>Change: Update site links and POM metadata</td>
+  </tr>
+  <tr>
+    <td>2015-08-22</td>
+    <td>Release: com.io7m.changelog 2.1.1</td>
+  </tr>
+  <tr>
+    <td>2015-08-22</td>
+    <td>Change: Migrate to GitHub.</td>
+  </tr>
+  <tr>
+    <td>2014-12-03</td>
+    <td>Change: Fix javadoc comments for Java 8's doclint.</td>
+  </tr>
+  <tr>
+    <td>2014-12-03</td>
+    <td>Change: Ensure source jars for unit tests are created.</td>
+  </tr>
+  <tr>
+    <td>2014-04-19</td>
+    <td>Release: com.io7m.changelog 2.1.0</td>
+  </tr>
+  <tr>
+    <td>2014-04-19</td>
+    <td>Change: Add Maven report plugin.</td>
+  </tr>
+  <tr>
+    <td>2014-04-19</td>
+    <td>Change: Add simple Atom feed generator.</td>
+  </tr>
+  <tr>
+    <td>2014-04-17</td>
+    <td>Release: com.io7m.changelog 2.0.0</td>
+  </tr>
+  <tr>
+    <td>2014-04-17</td>
+    <td>Change: Allow for zero or more releases in a file.</td>
+  </tr>
+  <tr>
+    <td>2014-04-17</td>
+    <td>Change: Do not allow xml:id on changelogs.</td>
+  </tr>
+  <tr>
+    <td>2014-04-17</td>
+    <td>Change: Allow multiple tickets per changelog item.</td>
+  </tr>
+  <tr>
+    <td>2014-04-17</td>
+    <td>Change: Redevelop package in Java, eliminate XSLT stylesheets.</td>
+  </tr>
+  <tr>
+    <td>2014-04-17</td>
+    <td>Change: (Backwards incompatible) Change schema URI and increment version to 2.0.0</td>
+  </tr>
+  <tr>
+    <td>2012-03-15</td>
+    <td>Release: com.io7m.changelog 1.0.0</td>
+  </tr>
+  <tr>
+    <td>2012-03-15</td>
+    <td>Change: Initial release.</td>
+  </tr>
+</table>

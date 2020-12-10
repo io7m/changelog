@@ -18,28 +18,24 @@ package com.io7m.changelog.cmdline.internal;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
-import com.io7m.changelog.core.CChangelog;
-import com.io7m.changelog.core.CChangelogFilters;
-import com.io7m.changelog.core.CVersion;
-import com.io7m.changelog.core.CVersions;
 import com.io7m.changelog.parser.api.CParseErrorHandlers;
-import com.io7m.changelog.xml.api.CXHTMLChangelogWriterProviderType;
 import com.io7m.changelog.xml.api.CXMLChangelogParserProviderType;
 import com.io7m.claypot.core.CLPCommandContextType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Optional;
 import java.util.ServiceLoader;
 
-@Parameters(commandDescription = "Generate an XHTML log")
-public final class CLCommandWriteXHTML extends CLAbstractCommand
+import static com.io7m.claypot.core.CLPCommandType.Status.FAILURE;
+import static com.io7m.claypot.core.CLPCommandType.Status.SUCCESS;
+
+@Parameters(commandDescription = "Display the version number of the current release.")
+public final class CLCommandReleaseCurrent extends CLAbstractCommand
 {
   private static final Logger LOG =
-    LoggerFactory.getLogger(CLCommandWriteXHTML.class);
+    LoggerFactory.getLogger(CLCommandReleaseCurrent.class);
 
   @Parameter(
     names = "--file",
@@ -47,24 +43,13 @@ public final class CLCommandWriteXHTML extends CLAbstractCommand
     description = "The changelog file")
   private Path path = Paths.get("README-CHANGES.xml");
 
-  @Parameter(
-    names = "--version",
-    description = "The version for which to produce output")
-  private String versionText;
-
-  @Parameter(
-    names = "--count",
-    required = false,
-    description = "The total number of releases to display")
-  private int count = Integer.MAX_VALUE;
-
   /**
    * Construct a command.
    *
    * @param inContext The command context
    */
 
-  public CLCommandWriteXHTML(
+  public CLCommandReleaseCurrent(
     final CLPCommandContextType inContext)
   {
     super(LOG, inContext);
@@ -74,64 +59,43 @@ public final class CLCommandWriteXHTML extends CLAbstractCommand
   public Status executeActual()
     throws Exception
   {
-    final Optional<CVersion> version;
-    if (this.versionText != null) {
-      version = Optional.of(CVersions.parse(this.versionText));
-    } else {
-      version = Optional.empty();
-    }
-
     final var parsersOpt =
       ServiceLoader.load(CXMLChangelogParserProviderType.class).findFirst();
 
     if (parsersOpt.isEmpty()) {
       LOG.error("No XML parser providers are available");
-      return Status.FAILURE;
+      return FAILURE;
     }
 
-    final var writersOpt =
-      ServiceLoader.load(CXHTMLChangelogWriterProviderType.class).findFirst();
-
-    if (writersOpt.isEmpty()) {
-      LOG.error("No XHTML writer providers are available");
-      return Status.FAILURE;
-    }
-
-    final var parsers = parsersOpt.get();
-    final var writers = writersOpt.get();
+    final var parsers =
+      parsersOpt.get();
     final var changelog =
       parsers.parse(this.path, CParseErrorHandlers.loggingHandler(LOG));
 
-    final CChangelog changelogWrite;
-    if (version.isPresent()) {
-      final var c_opt =
-        CChangelogFilters.upToAndIncluding(
-          changelog, version.get(), this.count);
-      if (c_opt.isEmpty()) {
-        LOG.error("Changelog does not contain release {}", this.versionText);
-        return Status.FAILURE;
-      }
-      changelogWrite = c_opt.get();
-    } else {
-      changelogWrite = CChangelogFilters.limit(changelog, this.count);
+    final var latestOpt = changelog.latestRelease();
+    if (latestOpt.isEmpty()) {
+      LOG.error("No current release exists");
+      return FAILURE;
     }
 
-    final var writer =
-      writers.create(URI.create("urn:stdout"), System.out);
-
-    writer.write(changelogWrite);
-    return Status.SUCCESS;
+    final var latest = latestOpt.get();
+    System.out.printf(
+      "%s (%s)%n",
+      latest.version(),
+      latest.isOpen() ? "open" : "closed"
+    );
+    return SUCCESS;
   }
 
   @Override
   public String name()
   {
-    return "write-xhtml";
+    return "release-current";
   }
 
   @Override
   public String extendedHelp()
   {
-    return this.messages().format("helpWriteXHTML");
+    return this.messages().format("helpReleaseCurrent");
   }
 }

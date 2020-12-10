@@ -52,4 +52,9 @@ The release-set-version command attempts to set the version number of the
 currently open release.
 ]]></entry>
 
+  <entry key="helpReleaseCurrent"><![CDATA[
+The release-current command displays the version of the current release (if
+any exists), and whether or not the release is open for modification.
+]]></entry>
+
 </properties>

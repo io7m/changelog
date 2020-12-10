@@ -25,16 +25,12 @@ import com.io7m.changelog.core.CVersions;
 import com.io7m.changelog.parser.api.CParseErrorHandlers;
 import com.io7m.changelog.text.api.CPlainChangelogWriterConfiguration;
 import com.io7m.changelog.text.api.CPlainChangelogWriterProviderType;
-import com.io7m.changelog.text.api.CPlainChangelogWriterType;
 import com.io7m.changelog.xml.api.CXMLChangelogParserProviderType;
-import com.io7m.changelog.xml.api.CXMLChangelogParserType;
 import com.io7m.claypot.core.CLPCommandContextType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.InputStream;
 import java.net.URI;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
@@ -53,9 +49,9 @@ public final class CLCommandWritePlain extends CLAbstractCommand
   private Path path = Paths.get("README-CHANGES.xml");
 
   @Parameter(
-    names = "--release",
-    description = "The release")
-  private String release;
+    names = "--version",
+    description = "The version for which to produce output")
+  private String versionText;
 
   @Parameter(
     names = "--show-dates",
@@ -86,66 +82,63 @@ public final class CLCommandWritePlain extends CLAbstractCommand
     throws Exception
   {
     final Optional<CVersion> version;
-    if (this.release != null) {
-      version = Optional.of(CVersions.parse(this.release));
+    if (this.versionText != null) {
+      version = Optional.of(CVersions.parse(this.versionText));
     } else {
       version = Optional.empty();
     }
 
-    final Optional<CXMLChangelogParserProviderType> parser_provider_opt =
+    final var parsersOpt =
       ServiceLoader.load(CXMLChangelogParserProviderType.class).findFirst();
 
-    if (!parser_provider_opt.isPresent()) {
+    if (parsersOpt.isEmpty()) {
       LOG.error("No XML parser providers are available");
       return Status.FAILURE;
     }
 
-    final Optional<CPlainChangelogWriterProviderType> writer_provider_opt =
+    final var writersOpt =
       ServiceLoader.load(CPlainChangelogWriterProviderType.class).findFirst();
 
-    if (!writer_provider_opt.isPresent()) {
+    if (writersOpt.isEmpty()) {
       LOG.error("No plain-text writer providers are available");
       return Status.FAILURE;
     }
 
-    final CXMLChangelogParserProviderType parser_provider =
-      parser_provider_opt.get();
-    final CPlainChangelogWriterProviderType writer_provider =
-      writer_provider_opt.get();
+    final var writers =
+      writersOpt.get();
+    final var parsers =
+      parsersOpt.get();
+    final var changelog =
+      parsers.parse(this.path, CParseErrorHandlers.loggingHandler(LOG));
 
-    try (InputStream stream = Files.newInputStream(this.path)) {
-      final CXMLChangelogParserType parser = parser_provider.create(
-        this.path.toUri(),
-        stream,
-        CParseErrorHandlers.loggingHandler(LOG));
+    final CChangelog changelogFiltered;
+    if (version.isPresent()) {
+      final var c_opt =
+        CChangelogFilters.upToAndIncluding(
+          changelog,
+          version.get(),
+          this.count
+        );
 
-      final CChangelog changelog = parser.parse();
-      final CChangelog changelog_write;
-      if (version.isPresent()) {
-        final Optional<CChangelog> c_opt =
-          CChangelogFilters.upToAndIncluding(
-            changelog, version.get(), this.count);
-        if (!c_opt.isPresent()) {
-          LOG.error("Changelog does not contain release {}", this.release);
-          return Status.FAILURE;
-        }
-        changelog_write = c_opt.get();
-      } else {
-        changelog_write = CChangelogFilters.limit(changelog, this.count);
+      if (c_opt.isEmpty()) {
+        LOG.error("Changelog does not contain release {}", this.versionText);
+        return Status.FAILURE;
       }
-
-      final CPlainChangelogWriterConfiguration config =
-        CPlainChangelogWriterConfiguration.builder()
-          .setShowDates(this.date)
-          .build();
-
-      final CPlainChangelogWriterType writer =
-        writer_provider.createWithConfiguration(
-          config, URI.create("urn:stdout"), System.out);
-
-      writer.write(changelog_write);
+      changelogFiltered = c_opt.get();
+    } else {
+      changelogFiltered = CChangelogFilters.limit(changelog, this.count);
     }
 
+    final var config =
+      CPlainChangelogWriterConfiguration.builder()
+        .setShowDates(this.date)
+        .build();
+
+    final var writer =
+      writers.createWithConfiguration(
+        config, URI.create("urn:stdout"), System.out);
+
+    writer.write(changelogFiltered);
     return Status.SUCCESS;
   }
 

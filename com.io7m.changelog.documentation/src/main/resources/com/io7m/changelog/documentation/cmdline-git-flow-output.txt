@@ -1,0 +1,30 @@
+$ git branch
+develop
+
+$ changelog release-begin --version 1.0.0
+$ changelog release-current
+1.0.0 (open)
+
+...
+<development work happens here>
+...
+
+$ changelog change-add --summary 'Implemented something'
+
+...
+<development work happens here>
+...
+
+$ changelog change-add --summary 'Implemented something else'
+
+...
+<development work happens here>
+...
+
+$ git flow release start 1.0.0
+$ changelog release-finish
+$ git flow release finish
+
+...
+<git flow asks for commit and merge messages>
+<developer uses $ changelog write-plain to generate nice messages>

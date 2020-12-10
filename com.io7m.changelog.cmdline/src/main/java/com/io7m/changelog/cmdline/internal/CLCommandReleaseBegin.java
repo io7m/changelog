@@ -123,8 +123,20 @@ public final class CLCommandReleaseBegin extends CLAbstractCommand
       return FAILURE;
     }
 
-    if (changelog.releases().containsKey(nextVersion)) {
+    final var releases = changelog.releases();
+    if (releases.containsKey(nextVersion)) {
       LOG.error("A release with version {} already exists", String.format("%s", nextVersion));
+      return FAILURE;
+    }
+
+    final var openRelease =
+      releases.values()
+        .stream()
+        .filter(CRelease::isOpen)
+        .findFirst();
+
+    if (openRelease.isPresent()) {
+      LOG.error("A release with version {} is already open", String.format("%s", openRelease.get().version()));
       return FAILURE;
     }
 

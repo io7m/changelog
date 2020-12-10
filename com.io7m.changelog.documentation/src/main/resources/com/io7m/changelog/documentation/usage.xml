@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Section xmlns="urn:com.io7m.structural:7:0"
+         title="Usage">
+
+  <Subsection title="Changelog"
+              id="67eb892f-44a6-4f1f-bf22-38d89ca9d26f">
+    <Paragraph>
+      The primary means by which users use the <Term type="package">changelog</Term> package is via the
+      <Term type="command">changelog</Term> command-line tool. This section of the documentation provides
+      a general usage guide for the command-line tool.
+    </Paragraph>
+  </Subsection>
+
+  <Subsection title="Initialization" id="30cb627d-8e75-4cdd-a9aa-0afb4dbed2b8">
+    <Paragraph>
+      The first step required in any project using <Term type="command">changelog</Term> is to initialize
+      an empty changelog. By convention, the changelog is called <Term type="file">README-CHANGES.xml</Term>
+      and lives in the root directory of the project. A changelog, if one doesn't already exist, can be
+      created using the <Link target="5313f412-61c3-437f-97ac-0787c4f76462">initialize</Link> command:
+    </Paragraph>
+    <FormalItem title="Initialization Example">
+      <Verbatim>
+        <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+                    parse="text"
+                    href="usage-initialize.txt"/>
+      </Verbatim>
+    </FormalItem>
+  </Subsection>
+
+  <Subsection title="Beginning Releases" id="3be05f7b-b312-45f8-ae0c-00a0528a6273">
+    <Paragraph>
+      In order to start recording changes to the changelog, it's necessary to <Term type="term">begin</Term>
+      a release using the <Link target="f6203bbe-ebac-415c-bb7b-f177ccc0ae7e">release-begin</Link> command. Once
+      a release has begun, the release is <Term type="term">open</Term> for modification (meaning that the version
+      number can be changed, and that changes can be logged to the release). At most one release can be
+      <Term type="term">open</Term> at any given time.
+    </Paragraph>
+    <FormalItem title="release-begin Example">
+      <Verbatim>
+        <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+                    parse="text"
+                    href="cmdline-release-begin-output.txt"/>
+      </Verbatim>
+    </FormalItem>
+    <Paragraph>
+      The <Term type="package">changelog</Term> package assumes that you're using
+      <LinkExternal target="https://www.semver.org">Semantic Versioning</LinkExternal> for your project,
+      and requires that you use simple three-part <Term type="term">(major, minor, patch)</Term> version
+      numbers. Upon attempting to begin a release, a version number will be selected for the new release
+      if a number isn't specified with <Term type="parameter">--version</Term>. The new release number
+      will have the same <Term type="term">major</Term> number as the previous release, with an incremented
+      <Term type="term">minor</Term> number and zero <Term type="term">patch</Term> number. If there is
+      no previous release, the package assumes the first release will be <Term type="constant">1.0.0</Term>.
+      The <Link target="69ceedcf-616d-4103-b1c8-edd8915ea325">release-current</Link> command shows the
+      version number of the current release, and whether or not the release is open for modification.
+    </Paragraph>
+    <FormalItem title="release-current Example">
+      <Verbatim>
+        <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+                    parse="text"
+                    href="cmdline-release-current-output.txt"/>
+      </Verbatim>
+    </FormalItem>
+    <Paragraph>
+      The <Term type="command">release-begin</Term> and <Term type="command">release-finish</Term> commands
+      are designed to work well in combination with <LinkExternal
+      target="https://github.com/petervanderdoes/gitflow-avh">gitflow-avh</LinkExternal>; on a <Term type="term">git
+      flow</Term>-enabled repo, developers would use the following sequence of commands during development:
+    </Paragraph>
+    <FormalItem title="Git Flow Example">
+      <Verbatim>
+        <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+                    parse="text"
+                    href="cmdline-git-flow-output.txt"/>
+      </Verbatim>
+    </FormalItem>
+    <Paragraph>
+      Essentially, the <Term type="command">release-begin</Term> command is used when development
+      begins on the <Term type="constant">develop</Term> branch. The developer makes numerous commits
+      (possibly over the course of weeks or months), noting changes along the way with
+      <Link target="51af82f4-b748-441c-934a-32fc8a7f77a9">change-add</Link>. Then, when the user
+      finally decides to actually produce a release, the <Term type="command">release-finish</Term>
+      command is used in combination with <Term type="command">git flow release finish</Term> to mark
+      the release as closed for modification.
+    </Paragraph>
+  </Subsection>
+
+  <Subsection title="Adding Changes" id="51af82f4-b748-441c-934a-32fc8a7f77a9">
+    <Paragraph>
+      To record changes to the changelog, the <Link target="61a8eeb6-9d74-4f1b-a299-173b4bb9b735">change-add</Link>
+      command should be used. The command accepts a mandatory <Term type="parameter">--summary</Term> parameter
+      that provides a very brief description (typically one line) of the change. The command also takes
+      zero or more <Term type="parameter">--ticket</Term> parameters that specify the IDs of the tickets
+      affected by the change. Only an <Term type="term">open</Term> release can be modified by the
+      <Term type="command">change-add</Term>.
+    </Paragraph>
+    <FormalItem title="change-add Example">
+      <Verbatim>
+        <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+                    parse="text"
+                    href="cmdline-change-add-output.txt"/>
+      </Verbatim>
+    </FormalItem>
+  </Subsection>
+
+  <Subsection title="Finishing Releases" id="31fe1fbf-62b9-4811-93dd-252a9ebfb222">
+    <Paragraph>
+      To finish a release, the <Link target="1278b2a0-a3d7-45ab-924e-9d4315bf7032">release-finish</Link>
+      command should be used. Once a release is <Term type="term">finished</Term>, no more changes may be
+      added to the release.
+    </Paragraph>
+    <FormalItem title="release-finish Example">
+      <Verbatim>
+        <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+                    parse="text"
+                    href="cmdline-release-finish-output.txt"/>
+      </Verbatim>
+    </FormalItem>
+  </Subsection>
+
+  <Subsection title="Formatting Changelogs" id="55cf6870-e8f8-4f6b-bd60-9c8f1991e583">
+    <Paragraph>
+      To produce a humanly-readable version of a changelog, various commands are available. The
+      <Link target="80b721a8-4023-4421-ae15-81537608daff">write-plain</Link> command produces
+      a plain text log that is suitable for use in commit messages and other plain text media.
+    </Paragraph>
+    <FormalItem title="write-plain Example">
+      <Verbatim>
+        <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+                    parse="text"
+                    href="cmdline-write-plain-output.txt"/>
+      </Verbatim>
+    </FormalItem>
+  </Subsection>
+
+</Section>

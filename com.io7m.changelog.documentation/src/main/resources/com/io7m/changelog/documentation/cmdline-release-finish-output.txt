@@ -1,0 +1,7 @@
+$ changelog release-finish
+
+$ changelog release-finish
+changelog: CLCommandReleaseFinish: ERROR: No release is currently open
+
+$ changelog add-change --summary 'Did something'
+changelog: CLCommandChangeAdd: ERROR: The current release is not open for modification.

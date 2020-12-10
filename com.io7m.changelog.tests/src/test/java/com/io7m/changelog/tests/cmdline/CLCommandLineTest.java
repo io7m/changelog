@@ -737,7 +737,23 @@ public final class CLCommandLineTest
     MainExitless.main(new String[]{
       "write-plain",
       "--file",
+      this.outputPath.toString(),
+      "--version",
+      "1.0.0"
+    });
+
+    MainExitless.main(new String[]{
+      "write-plain",
+      "--file",
       this.outputPath.toString()
+    });
+
+    MainExitless.main(new String[]{
+      "write-plain",
+      "--file",
+      this.outputPath.toString(),
+      "--show-dates",
+      "true"
     });
   }
 
@@ -784,6 +800,20 @@ public final class CLCommandLineTest
       "3",
       "--module",
       "com.io7m.test"
+    });
+
+    MainExitless.main(new String[]{
+      "write-xhtml",
+      "--file",
+      this.outputPath.toString()
+    });
+
+    MainExitless.main(new String[]{
+      "write-xhtml",
+      "--file",
+      this.outputPath.toString(),
+      "--version",
+      "1.0.0"
     });
 
     MainExitless.main(new String[]{
@@ -1176,5 +1206,66 @@ public final class CLCommandLineTest
         "2.0.1"
       });
     });
+  }
+
+  @Test
+  public void testReleaseCurrent()
+    throws IOException
+  {
+    System.setOut(this.outputPrint);
+    System.setErr(this.outputPrint);
+
+    Files.deleteIfExists(this.outputPath);
+
+    MainExitless.main(new String[]{
+      "initialize",
+      "--file",
+      this.outputPath.toString(),
+      "--ticket-system-name",
+      "com.github.io7m.changelog.test",
+      "--ticket-system-uri",
+      "https://www.github.com/io7m/changelog/issues/",
+      "--project",
+      "com.io7m.changelog.test"
+    });
+
+    assertThrows(IOException.class, () -> {
+      MainExitless.main(new String[]{
+        "release-current",
+        "--file",
+        this.outputPath.toString()
+      });
+    });
+
+    MainExitless.main(new String[]{
+      "release-begin",
+      "--file",
+      this.outputPath.toString()
+    });
+
+    MainExitless.main(new String[]{
+      "release-current",
+      "--file",
+      this.outputPath.toString()
+    });
+
+    MainExitless.main(new String[]{
+      "release-finish",
+      "--file",
+      this.outputPath.toString()
+    });
+
+    MainExitless.main(new String[]{
+      "release-current",
+      "--file",
+      this.outputPath.toString()
+    });
+
+    this.flush();
+    final var text = this.output.toString();
+    assertTrue(text.contains("No current release exists"));
+    assertTrue(text.contains("1.0.0 (open)"));
+    assertTrue(text.contains("1.0.0 (closed)"));
+    LOG.debug("{}", text);
   }
 }
