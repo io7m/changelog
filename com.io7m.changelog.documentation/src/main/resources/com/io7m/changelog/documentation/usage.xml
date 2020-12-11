@@ -26,6 +26,14 @@
                     href="usage-initialize.txt"/>
       </Verbatim>
     </FormalItem>
+    <Paragraph>
+      The <Term type="command">changelog</Term> package allows for referencing tickets in external
+      issue trackers in the recorded changes. This is accomplished by specifying one or more
+      <Term type="term">ticket systems</Term>, with exactly one <Term type="term">ticket system</Term>
+      being the default at any given time. Initializing a changelog requires specifying the default
+      ticket system, but this ticket system can be changed on a per-release basis (as software projects
+      often migrate to different issue tracking systems over their lifetime).
+    </Paragraph>
   </Subsection>
 
   <Subsection title="Beginning Releases" id="3be05f7b-b312-45f8-ae0c-00a0528a6273">
