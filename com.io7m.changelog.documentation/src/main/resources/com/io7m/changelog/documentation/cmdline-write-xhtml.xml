@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Section xmlns="urn:com.io7m.structural:7:0"
+         id="c38f5da0-6850-4d5e-9a81-d4eaf3ed7db0"
+         title="write-xhtml"
+         xmlns:xi="http://www.w3.org/2001/XInclude">
+
+  <Subsection title="Name">
+    <Paragraph>
+      <Term type="command">write-xhtml</Term>
+      - Produce an XHTML log
+    </Paragraph>
+  </Subsection>
+
+  <Subsection title="Description">
+    <Paragraph>
+      The <Term type="command">write-xhtml</Term> command produces an XHTML version of a changelog.
+      The command can produce output for a specific version, and produces output for the most recent version
+      if no version is specified.
+    </Paragraph>
+    <FormalItem title="Parameters">
+      <Table type="parametersTable">
+        <Columns>
+          <Column>Parameter</Column>
+          <Column>Type</Column>
+          <Column>Required</Column>
+          <Column>Description</Column>
+        </Columns>
+        <Row>
+          <Cell>
+            <Term type="parameter">--file</Term>
+          </Cell>
+          <Cell>
+            <Term type="parameterType">Path</Term>
+          </Cell>
+          <Cell>
+            <Term type="constant">false</Term>
+          </Cell>
+          <Cell>Set the name of the changelog file.</Cell>
+        </Row>
+        <Row>
+          <Cell>
+            <Term type="parameter">--verbose</Term>
+          </Cell>
+          <Cell>
+            <Term type="parameterType">Log Level</Term>
+          </Cell>
+          <Cell>
+            <Term type="constant">false</Term>
+          </Cell>
+          <Cell>Set the minimum logging verbosity level.</Cell>
+        </Row>
+        <Row>
+          <Cell>
+            <Term type="parameter">--version</Term>
+          </Cell>
+          <Cell>
+            <Term type="parameterType">Version</Term>
+          </Cell>
+          <Cell>
+            <Term type="constant">false</Term>
+          </Cell>
+          <Cell>The release version.</Cell>
+        </Row>
+        <Row>
+          <Cell>
+            <Term type="parameter">--count</Term>
+          </Cell>
+          <Cell>
+            <Term type="parameterType">Integer</Term>
+          </Cell>
+          <Cell>
+            <Term type="constant">false</Term>
+          </Cell>
+          <Cell>The number of releases to show.</Cell>
+        </Row>
+      </Table>
+    </FormalItem>
+  </Subsection>
+
+  <Subsection title="Example">
+    <FormalItem title="Example">
+      <Verbatim>
+        <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+                    parse="text"
+                    href="cmdline-write-xhtml-output.txt"/>
+      </Verbatim>
+    </FormalItem>
+  </Subsection>
+
+</Section>

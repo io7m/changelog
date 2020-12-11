@@ -17,11 +17,10 @@
 package com.io7m.changelog.core;
 
 import com.io7m.immutables.styles.ImmutablesStyleType;
-import io.vavr.collection.List;
 import org.immutables.value.Value;
-import org.immutables.vavr.encodings.VavrEncodingEnabled;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.immutables.value.Value.Immutable;
@@ -31,7 +30,6 @@ import static org.immutables.value.Value.Immutable;
  */
 
 @ImmutablesStyleType
-@VavrEncodingEnabled
 @Immutable
 public interface CChangeType
 {
@@ -39,28 +37,24 @@ public interface CChangeType
    * @return The change date
    */
 
-  @Value.Parameter
   ZonedDateTime date();
 
   /**
    * @return The change summary
    */
 
-  @Value.Parameter
   String summary();
 
   /**
    * @return The change tickets
    */
 
-  @Value.Parameter
   List<CTicketID> tickets();
 
   /**
    * @return The module that this change affects
    */
 
-  @Value.Parameter
   Optional<CModuleName> module();
 
   /**
@@ -68,11 +62,9 @@ public interface CChangeType
    */
 
   @Value.Default
-  @Value.Parameter
   default boolean backwardsCompatible()
   {
     return true;
   }
-
 
 }

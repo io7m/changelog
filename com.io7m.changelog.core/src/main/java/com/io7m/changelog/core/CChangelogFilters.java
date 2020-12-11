@@ -17,10 +17,13 @@
 package com.io7m.changelog.core;
 
 import com.io7m.junreachable.UnreachableCodeException;
-import io.vavr.collection.SortedMap;
 
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Functions to transform and filter changelogs.
@@ -45,18 +48,71 @@ public final class CChangelogFilters
 
   public static Optional<CChangelog> upToAndIncluding(
     final CChangelog changelog,
-    final CVersionType version,
+    final CVersion version,
     final int count)
   {
     Objects.requireNonNull(changelog, "Changelog");
     Objects.requireNonNull(version, "Version");
 
-    final SortedMap<CVersionType, CRelease> releases = changelog.releases();
-    if (releases.containsKey(version)) {
-      final SortedMap<CVersionType, CRelease> rr =
-        releases.takeUntil(p -> version.compareTo(p._1) < 0).takeRight(count);
-      return Optional.of(changelog.withReleases(rr));
+    final var releases = changelog.releases();
+    if (!releases.containsKey(version)) {
+      return Optional.empty();
     }
-    return Optional.empty();
+
+    final var versions =
+      changelog.releaseVersions()
+        .stream()
+        .filter(v -> v.compareTo(version) >= 0)
+        .limit(count)
+        .collect(Collectors.toList());
+
+    final var releasesFiltered =
+      new HashMap<CVersion, CRelease>(versions.size());
+    for (final var currentVersion : versions) {
+      releasesFiltered.put(currentVersion, releases.get(version));
+    }
+
+    final var newChangelog =
+      CChangelog.builder()
+        .from(changelog)
+        .setReleases(releasesFiltered)
+        .build();
+
+    return Optional.of(newChangelog);
+  }
+
+  /**
+   * Filter the changelog to only contain the {@code size} most recent releases.
+   *
+   * @param changelog The changelog
+   * @param size      The limit
+   *
+   * @return A new changelog containing only the filtered releases
+   */
+
+  public static CChangelog limit(
+    final CChangelog changelog,
+    final long size)
+  {
+    Objects.requireNonNull(changelog, "changelog");
+
+    final var versions =
+      changelog.releaseVersions()
+        .stream()
+        .sorted(Comparator.reverseOrder())
+        .limit(size)
+        .collect(Collectors.toSet());
+
+    final var newReleases =
+      changelog.releases()
+        .entrySet()
+        .stream()
+        .filter(e -> versions.contains(e.getKey()))
+        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+    return CChangelog.builder()
+      .from(changelog)
+      .setReleases(newReleases)
+      .build();
   }
 }

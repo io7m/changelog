@@ -1,0 +1,13 @@
+$ changelog initialize
+changelog: Main: ERROR: The following options are required: [--ticket-system-name], [--ticket-system-uri], [--project]
+
+$ changelog initialize \
+  --ticket-system-name com.github.io7m.example \
+  --ticket-system-uri https://www.github.com/io7m/example/issues/ \
+  --project com.io7m.example
+
+$ changelog initialize \
+  --ticket-system-name com.github.io7m.example \
+  --ticket-system-uri https://www.github.com/io7m/example/issues/ \
+  --project com.io7m.example
+changelog: CLCommandInitialize: ERROR: File README-CHANGES.xml already exists

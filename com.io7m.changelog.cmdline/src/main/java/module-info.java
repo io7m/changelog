@@ -14,14 +14,34 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-module com.io7m.changelog.cmdline {
-  requires ch.qos.logback.classic;
+/**
+ * Software changelogs (Command line frontend)
+ */
+
+module com.io7m.changelog.cmdline
+{
+  requires static org.osgi.annotation.bundle;
+  requires static org.osgi.annotation.versioning;
+
   requires com.io7m.changelog.core;
   requires com.io7m.changelog.parser.api;
   requires com.io7m.changelog.text.api;
   requires com.io7m.changelog.xml.api;
+
+  requires ch.qos.logback.classic;
+  requires com.io7m.claypot.core;
+  requires com.io7m.jaffirm.core;
   requires com.io7m.junreachable.core;
-  requires io.vavr;
-  requires com.beust.jcommander;
+  requires jcommander;
   requires org.slf4j;
+
+  uses com.io7m.changelog.text.api.CPlainChangelogWriterProviderType;
+  uses com.io7m.changelog.xml.api.CAtomChangelogWriterProviderType;
+  uses com.io7m.changelog.xml.api.CXHTMLChangelogWriterProviderType;
+  uses com.io7m.changelog.xml.api.CXMLChangelogParserProviderType;
+  uses com.io7m.changelog.xml.api.CXMLChangelogWriterProviderType;
+
+  opens com.io7m.changelog.cmdline.internal to jcommander;
+
+  exports com.io7m.changelog.cmdline;
 }

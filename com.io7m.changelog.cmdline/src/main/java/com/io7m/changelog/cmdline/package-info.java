@@ -15,8 +15,12 @@
  */
 
 /**
- * Command line interface.
+ * Software changelogs (Command line frontend)
  */
 
+@Export
+@Version("4.0.0")
 package com.io7m.changelog.cmdline;
 
+import org.osgi.annotation.bundle.Export;
+import org.osgi.annotation.versioning.Version;

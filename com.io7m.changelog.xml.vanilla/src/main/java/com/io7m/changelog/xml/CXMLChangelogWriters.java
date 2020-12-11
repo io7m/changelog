@@ -21,11 +21,10 @@ import com.io7m.changelog.core.CChangelog;
 import com.io7m.changelog.core.CRelease;
 import com.io7m.changelog.core.CTicketID;
 import com.io7m.changelog.core.CTicketSystem;
-import com.io7m.changelog.core.CVersionType;
+import com.io7m.changelog.core.CVersion;
 import com.io7m.changelog.schema.CSchema;
 import com.io7m.changelog.xml.api.CXMLChangelogWriterProviderType;
 import com.io7m.changelog.xml.api.CXMLChangelogWriterType;
-import io.vavr.collection.List;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -47,6 +46,7 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -177,7 +177,7 @@ public final class CXMLChangelogWriters
     private void writeRelease(
       final Document doc,
       final Element releases,
-      final CVersionType version,
+      final CVersion version,
       final CRelease release)
     {
       final Element e_release =
@@ -188,10 +188,13 @@ public final class CXMLChangelogWriters
         this.date_formatter.format(release.date()));
       e_release.setAttribute(
         "version",
-        version.toVersionString());
+        String.format("%s", version));
       e_release.setAttribute(
         "ticket-system",
         release.ticketSystemID());
+      e_release.setAttribute(
+        "is-open",
+        release.isOpen() ? "true" : "false");
 
       final Element changes =
         doc.createElementNS(this.schema_uri, "c:changes");

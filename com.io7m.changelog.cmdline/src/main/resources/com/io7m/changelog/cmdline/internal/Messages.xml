@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+  <entry key="helpChangeAdd"><![CDATA[
+The change-add command adds a change to the currently open release.
+The command will fail if the release is not open for modification.
+Releases are opened for modification with the release-begin command,
+and closed for modification with the release-finish command.
+]]></entry>
+
+  <entry key="helpInitialize"><![CDATA[
+The initialize command initializes an empty changelog.
+]]></entry>
+
+  <entry key="helpWritePlain"><![CDATA[
+The write-plain command produces a humanly-readable plain text version
+of the changelog. Various options can be specified to control which
+entries are displayed, and how they are formatted.
+]]></entry>
+
+  <entry key="helpWriteXHTML"><![CDATA[
+The write-xhtml command produces an XHTML version of the changelog.
+Various options can be specified to control which entries are
+displayed, and how they are formatted.
+]]></entry>
+
+  <entry key="helpWriteAtom"><![CDATA[
+The write-atom command produces an Atom RSS feed of the changelog.
+Various options can be specified to control which entries are
+displayed, and how they are formatted.
+]]></entry>
+
+  <entry key="helpReleaseBegin"><![CDATA[
+The release-begin command attempts to add a new open release to the changelog.
+The created release is open for modification such that subsequent uses of the
+change-add command will successfully add changes to the release. If the --version
+option is not used, a sensible version number will be generated based on the
+previous release (if any).
+]]></entry>
+
+  <entry key="helpReleaseFinish"><![CDATA[
+The release-finish command attempts to close the most recent open release
+present in the changelog, or a specific release if the --version option is
+specified. The target release is closed for modification such that subsequent
+uses of the change-add command targeting this release will fail.
+]]></entry>
+
+  <entry key="helpReleaseSetVersion"><![CDATA[
+The release-set-version command attempts to set the version number of the
+currently open release.
+]]></entry>
+
+  <entry key="helpReleaseCurrent"><![CDATA[
+The release-current command displays the version of the current release (if
+any exists), and whether or not the release is open for modification.
+]]></entry>
+
+</properties>

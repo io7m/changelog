@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>com.io7m.primogenitor</groupId>
     <artifactId>com.io7m.primogenitor.lite</artifactId>
-    <version>3.1.0</version>
+    <version>6.0.0</version>
   </parent>
 
   <groupId>com.io7m.changelog</groupId>
   <artifactId>com.io7m.changelog</artifactId>
-  <version>4.0.0-beta0014</version>
+  <version>4.0.0</version>
 
   <packaging>pom</packaging>
   <name>com.io7m.changelog</name>
@@ -34,7 +37,8 @@
 
   <properties>
     <io7m.api.previousVersion>3.1.0</io7m.api.previousVersion>
-    <io7m.org.immutables.version>2.6.0</io7m.org.immutables.version>
+    <io7m.org.immutables.version>2.8.8</io7m.org.immutables.version>
+    <com.io7m.xstructural.version>0.0.5</com.io7m.xstructural.version>
 
     <!-- Temporarily disable baselining due to large structural changes
          between 3.* and 4.* -->
@@ -81,8 +85,8 @@
   </distributionManagement>
 
   <ciManagement>
-    <system>Travis CI</system>
-    <url>https://travis-ci.org/io7m/changelog</url>
+    <system>GitHub Actions</system>
+    <url>https://github.com/io7m/changelog/actions</url>
   </ciManagement>
 
   <prerequisites>
@@ -92,9 +96,14 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>com.io7m.claypot</groupId>
+        <artifactId>com.io7m.claypot.core</artifactId>
+        <version>0.0.5</version>
+      </dependency>
+      <dependency>
         <groupId>com.io7m.jaffirm</groupId>
         <artifactId>com.io7m.jaffirm.core</artifactId>
-        <version>2.0.0</version>
+        <version>3.0.4</version>
       </dependency>
       <dependency>
         <groupId>com.io7m.junreachable</groupId>
@@ -109,12 +118,17 @@
       <dependency>
         <groupId>com.io7m.jxe</groupId>
         <artifactId>com.io7m.jxe.core</artifactId>
-        <version>0.0.1</version>
+        <version>1.0.0</version>
       </dependency>
       <dependency>
         <groupId>com.io7m.immutables.style</groupId>
         <artifactId>com.io7m.immutables.style</artifactId>
         <version>0.0.1</version>
+      </dependency>
+      <dependency>
+        <groupId>com.io7m.xstructural</groupId>
+        <artifactId>com.io7m.xstructural.cmdline</artifactId>
+        <version>${com.io7m.xstructural.version}</version>
       </dependency>
 
       <dependency>
@@ -122,16 +136,26 @@
         <artifactId>value</artifactId>
         <version>${io7m.org.immutables.version}</version>
       </dependency>
-      <dependency>
-        <groupId>org.immutables.vavr</groupId>
-        <artifactId>vavr-encodings</artifactId>
-        <version>0.6.0</version>
-      </dependency>
 
+      <dependency>
+        <groupId>org.osgi</groupId>
+        <artifactId>org.osgi.annotation.bundle</artifactId>
+        <version>1.0.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.osgi</groupId>
+        <artifactId>org.osgi.annotation.versioning</artifactId>
+        <version>1.1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.io7m.primogenitor</groupId>
+        <artifactId>com.io7m.primogenitor.support</artifactId>
+        <version>6.0.0</version>
+      </dependency>
       <dependency>
         <groupId>com.beust</groupId>
         <artifactId>jcommander</artifactId>
-        <version>1.75</version>
+        <version>1.78</version>
       </dependency>
       <dependency>
         <groupId>ch.qos.logback</groupId>
@@ -143,21 +167,16 @@
         <artifactId>slf4j-api</artifactId>
         <version>1.8.0-beta2</version>
       </dependency>
-      <dependency>
-        <groupId>io.vavr</groupId>
-        <artifactId>vavr</artifactId>
-        <version>1.0.0-alpha-3</version>
-      </dependency>
 
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-api</artifactId>
-        <version>5.5.1</version>
+        <version>5.7.0</version>
       </dependency>
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-engine</artifactId>
-        <version>5.5.1</version>
+        <version>5.7.0</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -165,13 +184,6 @@
   <build>
     <pluginManagement>
       <plugins>
-        <!-- JStructural Maven plugin -->
-        <plugin>
-          <groupId>com.io7m.jstructural</groupId>
-          <artifactId>io7m-jstructural-maven-plugin</artifactId>
-          <version>5.0.0</version>
-        </plugin>
-
         <!-- Configure compiler -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -197,6 +209,40 @@
         </plugin>
       </plugins>
     </pluginManagement>
+
+    <plugins>
+      <!-- Spot bugs -->
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>com.io7m.minisite</groupId>
+        <artifactId>com.io7m.minisite.maven_plugin</artifactId>
+        <version>2.0.1</version>
+        <inherited>false</inherited>
+        <executions>
+          <execution>
+            <id>minisite</id>
+            <phase>site</phase>
+            <goals>
+              <goal>generateSite</goal>
+            </goals>
+            <configuration>
+              <changelogFeedEmail>contact@io7m.com</changelogFeedEmail>
+              <changelogFile>README-CHANGES.xml</changelogFile>
+              <documentationFile>src/site/resources/documentation.xml</documentationFile>
+              <featuresFile>src/site/resources/features.xml</featuresFile>
+              <headerFile>src/site/resources/header.xml</headerFile>
+              <outputDirectory>${project.build.directory}/minisite</outputDirectory>
+              <overviewFile>src/site/resources/overview.xml</overviewFile>
+              <resourceDirectory>${project.basedir}/src/site/resources</resourceDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
 
 </project>

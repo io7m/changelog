@@ -15,8 +15,12 @@
  */
 
 /**
- * XML API.
+ * Software changelogs (XML API)
  */
 
+@Export
+@Version("4.0.0")
 package com.io7m.changelog.xml.api;
 
+import org.osgi.annotation.bundle.Export;
+import org.osgi.annotation.versioning.Version;

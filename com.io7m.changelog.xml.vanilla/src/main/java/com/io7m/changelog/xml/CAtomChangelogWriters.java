@@ -37,7 +37,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -146,8 +148,15 @@ public final class CAtomChangelogWriters
           this.date_formatter.format(this.configuration.updated()));
         e_root.appendChild(e_updated);
 
-        for (final CRelease r : changelog.releases().values().reverse()) {
-          this.writeRelease(changelog, doc, e_root, r);
+        final var versions =
+          changelog.releaseVersions()
+            .stream()
+            .sorted(Comparator.reverseOrder())
+            .collect(Collectors.toList());
+
+        for (final var version : versions) {
+          final CRelease release = changelog.releases().get(version);
+          this.writeRelease(changelog, doc, e_root, release);
         }
 
         this.serializeDocument(doc);
@@ -167,7 +176,7 @@ public final class CAtomChangelogWriters
 
       final Element e_id =
         doc.createElementNS(ATOM_NS, "a:id");
-      e_id.setTextContent(r.version().toVersionString());
+      e_id.setTextContent(String.format("%s", r.version()));
 
       final Element e_updated =
         doc.createElementNS(ATOM_NS, "a:updated");
@@ -185,7 +194,7 @@ public final class CAtomChangelogWriters
         new StringBuilder(64)
           .append(changelog.project().value())
           .append(" ")
-          .append(r.version().toVersionString())
+          .append(String.format("%s", r.version()))
           .append(" released")
           .toString();
 

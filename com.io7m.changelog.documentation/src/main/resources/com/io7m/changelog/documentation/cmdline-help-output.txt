@@ -1,0 +1,37 @@
+$ changelog help help
+changelog: Main: INFO: Usage: help [options] command
+
+  Options:
+    --verbose
+      Set the minimum logging verbosity level.
+      Default: info
+      Possible Values: [trace, debug, info, warn, error]
+
+  The "help" command, executed without arguments, shows the names of all
+  commands including the names and types of all of their parameters.
+
+  The "help" command can also be passed the name of a command. Commands
+  may include extended help messages such as the one you are reading
+  right now.
+
+  Example: changelog help help
+
+$ changelog help initialize
+changelog: Main: INFO: Usage: initialize [options]
+
+  Options:
+    --file
+      The changelog file
+      Default: README-CHANGES.xml
+  * --project
+      The project name
+  * --ticket-system-name
+      The name of the primary ticket system
+  * --ticket-system-uri
+      The URI of the primary ticket system
+    --verbose
+      Set the minimum logging verbosity level.
+      Default: info
+      Possible Values: [trace, debug, info, warn, error]
+
+  The initialize command initializes an empty changelog.

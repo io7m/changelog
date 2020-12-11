@@ -23,7 +23,6 @@ import com.io7m.changelog.core.CTicketID;
 import com.io7m.changelog.core.CTicketSystem;
 import com.io7m.changelog.xml.api.CXHTMLChangelogWriterProviderType;
 import com.io7m.changelog.xml.api.CXHTMLChangelogWriterType;
-import io.vavr.collection.List;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -42,7 +41,11 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * A provider for XHTML writers.
@@ -102,8 +105,9 @@ public final class CXHTMLChangelogWriters
       final CRelease release,
       final List<CTicketID> tickets)
     {
-      return tickets.map(
-        ticket -> transformTicket(changelog, doc, release, ticket));
+      return tickets.stream()
+        .map(ticket -> transformTicket(changelog, doc, release, ticket))
+        .collect(Collectors.toList());
     }
 
     private static Node transformTicket(
@@ -113,7 +117,9 @@ public final class CXHTMLChangelogWriters
       final CTicketID ticket)
     {
       final CTicketSystem ticket_system =
-        changelog.ticketSystems().get(release.ticketSystemID()).get();
+        changelog.ticketSystems()
+          .get(release.ticketSystemID());
+
       final Element a =
         doc.createElement("a");
       final String ticket_val = ticket.value();
@@ -167,7 +173,14 @@ public final class CXHTMLChangelogWriters
           "Changes for project " + changelog.project().value());
         root.setAttribute("class", "changelog");
 
-        for (final CRelease release : changelog.releases().values().reverse()) {
+        final var versions =
+          changelog.releaseVersions()
+            .stream()
+            .sorted(Comparator.reverseOrder())
+            .collect(Collectors.toList());
+
+        for (final var version : versions) {
+          final var release = changelog.releases().get(version);
           this.writeRelease(changelog, doc, root, release);
         }
 
@@ -194,8 +207,9 @@ public final class CXHTMLChangelogWriters
             .append("Release: ")
             .append(changelog.project().value())
             .append(" ")
-            .append(release.version().toVersionString())
-            .toString())));
+            .append(String.format("%s", release.version()))
+            .toString()))
+      );
 
       for (final CChange change : release.changes()) {
         row(
@@ -212,7 +226,7 @@ public final class CXHTMLChangelogWriters
       final CRelease release,
       final CChange change)
     {
-      List<Node> nodes = List.empty();
+      final List<Node> nodes = new ArrayList<>();
 
       final StringBuilder sb = new StringBuilder(128);
       sb.append("Change: ");
@@ -225,17 +239,16 @@ public final class CXHTMLChangelogWriters
       });
 
       sb.append(change.summary());
-      nodes = nodes.append(doc.createTextNode(sb.toString()));
+      nodes.add(doc.createTextNode(sb.toString()));
 
       final List<CTicketID> tickets = change.tickets();
       if (!tickets.isEmpty()) {
-        nodes = nodes.append(doc.createTextNode(" (tickets: "));
-        nodes = nodes.appendAll(
-          transformTickets(changelog, doc, release, tickets));
-        nodes = nodes.append(doc.createTextNode(")"));
+        nodes.add(doc.createTextNode(" (tickets: "));
+        nodes.addAll(transformTickets(changelog, doc, release, tickets));
+        nodes.add(doc.createTextNode(")"));
       }
 
-      return nodes;
+      return List.copyOf(nodes);
     }
 
     private void serializeDocument(

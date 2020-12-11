@@ -14,11 +14,16 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+/**
+ * Software changelogs (Text API)
+ */
 
 module com.io7m.changelog.text.api
 {
   requires static com.io7m.immutables.style;
   requires static org.immutables.value;
+  requires static org.osgi.annotation.bundle;
+  requires static org.osgi.annotation.versioning;
 
   requires com.io7m.changelog.writer.api;
 

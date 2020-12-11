@@ -1,0 +1,2 @@
+$ changelog version
+changelog 4.0.0

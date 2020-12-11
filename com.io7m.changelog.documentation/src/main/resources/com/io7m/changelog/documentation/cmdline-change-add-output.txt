@@ -1,0 +1,8 @@
+$ changelog change-add --summary 'Broke something'
+
+$ changelog change-add --summary 'Broke something new' --ticket 230 --ticket 2391
+
+$ changelog release-finish
+
+$ changelog change-add --summary 'Broke something else'
+changelog: CLCommandChangeAdd: ERROR: The current release is not open for modification.

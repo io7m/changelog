@@ -86,7 +86,7 @@ public abstract class CAtomWriterContract
     writer.write(clog);
 
     final String text =
-      new String(bao.toByteArray(), StandardCharsets.UTF_8).trim();
+      bao.toString(StandardCharsets.UTF_8).trim();
     final URL u =
       CAtomWriterContract.class.getResource(plain_name);
 

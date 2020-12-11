@@ -17,11 +17,9 @@
 package com.io7m.changelog.core;
 
 import com.io7m.immutables.styles.ImmutablesStyleType;
-import io.vavr.collection.List;
-import org.immutables.value.Value;
-import org.immutables.vavr.encodings.VavrEncodingEnabled;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 import static org.immutables.value.Value.Immutable;
 
@@ -30,7 +28,6 @@ import static org.immutables.value.Value.Immutable;
  */
 
 @ImmutablesStyleType
-@VavrEncodingEnabled
 @Immutable
 public interface CReleaseType
 {
@@ -38,27 +35,29 @@ public interface CReleaseType
    * @return The release date
    */
 
-  @Value.Parameter
   ZonedDateTime date();
 
   /**
    * @return The list of release changes
    */
 
-  @Value.Parameter
   List<CChange> changes();
 
   /**
    * @return The ticket system ID
    */
 
-  @Value.Parameter
   String ticketSystemID();
 
   /**
    * @return The version number
    */
 
-  @Value.Parameter
-  CVersionType version();
+  CVersion version();
+
+  /**
+   * @return {@code true} if the release is open for modifications
+   */
+
+  boolean isOpen();
 }

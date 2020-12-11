@@ -14,9 +14,15 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+/**
+ * Software changelogs (Writer API)
+ */
 
 module com.io7m.changelog.writer.api
 {
+  requires static org.osgi.annotation.bundle;
+  requires static org.osgi.annotation.versioning;
+
   requires com.io7m.changelog.core;
 
   exports com.io7m.changelog.writer.api;

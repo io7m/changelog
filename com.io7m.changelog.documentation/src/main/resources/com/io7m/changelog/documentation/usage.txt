@@ -1,0 +1,35 @@
+changelog: Main: INFO: Usage: changelog [options] [command] [command options]
+
+  Options:
+    --verbose
+      Set the minimum logging verbosity level.
+      Default: info
+      Possible Values: [trace, debug, info, warn, error]
+
+  Use the "help" command to examine specific commands:
+
+    $ changelog help help.
+
+  Command-line arguments can be placed one per line into a file, and the file
+  can be referenced using the @ symbol:
+
+    $ echo help > file.txt
+    $ echo help >> file.txt
+    $ changelog @file.txt
+
+  Commands:
+    change-add              Add a change to the current release.
+    help                    Show detailed help messages for commands.
+    initialize              Initialize the changelog.
+    release-begin           Start the development of a new release.
+    release-current         Display the version number of the current release.
+    release-finish          Finish a release.
+    release-set-version     Set the version number of the current release.
+    version                 Retrieve the program version.
+    write-atom              Generate an atom feed.
+    write-plain             Generate a plain text log.
+    write-xhtml             Generate an XHTML log.
+
+  Documentation:
+    https://www.io7m.com/software/changelog/documentation/
+

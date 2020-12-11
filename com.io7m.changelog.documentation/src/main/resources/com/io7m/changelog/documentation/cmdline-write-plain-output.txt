@@ -1,0 +1,25 @@
+$ changelog write-plain
+Release: com.io7m.changelog 4.0.0
+Change: (Backwards incompatible) Remove Vavr
+Change: (Backwards incompatible) Modernize command-line interface with double-hyphen options
+Change: Improve spacing in plain text log (Ticket: #11)
+Change: Change command-line interface to explicit start and finish releases
+Change: (Backwards incompatible) Completely redesign the changelog format and remove the use of XOM
+Change: com.io7m.changelog.maven_plugin: (Backwards incompatible) Remove the Maven plugin
+Change: (Backwards incompatible) Remove the com.io7m.jnull dependency
+Change: (Backwards incompatible) Require JDK 9
+
+$ changelog write-plain --show-dates true
+2020-12-10 Release: com.io7m.changelog 4.0.0
+2020-12-10 Change: (Backwards incompatible) Remove Vavr
+2020-12-10 Change: (Backwards incompatible) Modernize command-line interface with double-hyphen options
+2020-12-10 Change: Improve spacing in plain text log (Ticket: #11)
+2020-12-10 Change: Change command-line interface to explicit start and finish releases
+2017-11-11 Change: (Backwards incompatible) Completely redesign the changelog format and remove the use of XOM
+2017-11-03 Change: com.io7m.changelog.maven_plugin: (Backwards incompatible) Remove the Maven plugin
+2017-11-03 Change: (Backwards incompatible) Remove the com.io7m.jnull dependency
+2017-11-03 Change: (Backwards incompatible) Require JDK 9
+
+$ changelog write-plain --show-dates true --version 3.1.0
+2017-10-15 Release: com.io7m.changelog 3.1.0
+2017-10-15 Change: Rename project. Use the new primogenitor POM and 2017 project conventions.

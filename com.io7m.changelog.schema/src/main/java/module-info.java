@@ -14,7 +14,14 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+/**
+ * Software changelogs (XML schema)
+ */
+
 module com.io7m.changelog.schema
 {
+  requires static org.osgi.annotation.bundle;
+  requires static org.osgi.annotation.versioning;
+
   exports com.io7m.changelog.schema;
 }

@@ -1,0 +1,4 @@
+$ changelog release-begin
+
+$ changelog release-begin
+changelog: CLCommandReleaseBegin: ERROR: A release with version 4.0.0 is already open

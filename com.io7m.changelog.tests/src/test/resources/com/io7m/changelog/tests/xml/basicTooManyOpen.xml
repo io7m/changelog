@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<c:changelog xmlns:c="urn:com.io7m.changelog:4.0"
+             project="com.io7m.changelog">
+
+  <c:releases>
+    <c:release date="2017-11-10T00:00:00+00:00"
+               version="3.0.0"
+               ticket-system="com.io7m.github.changelog"
+               is-open="true">
+      <c:changes/>
+    </c:release>
+
+    <c:release date="2017-11-10T00:00:00+00:00"
+               version="3.0.1"
+               ticket-system="com.io7m.github.changelog"
+               is-open="true">
+      <c:changes/>
+    </c:release>
+  </c:releases>
+
+  <c:ticket-systems>
+    <c:ticket-system id="com.io7m.github.changelog"
+                     default="true"
+                     url="https://github.com/io7m/changelog/issues/"/>
+  </c:ticket-systems>
+
+</c:changelog>

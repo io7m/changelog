@@ -18,7 +18,6 @@ package com.io7m.changelog.core;
 
 import com.io7m.immutables.styles.ImmutablesStyleType;
 import org.immutables.value.Value;
-import org.immutables.vavr.encodings.VavrEncodingEnabled;
 
 import java.net.URI;
 
@@ -29,7 +28,6 @@ import static org.immutables.value.Value.Immutable;
  */
 
 @ImmutablesStyleType
-@VavrEncodingEnabled
 @Immutable
 public interface CTicketSystemType
 {
@@ -37,14 +35,12 @@ public interface CTicketSystemType
    * @return The ID of the ticket system
    */
 
-  @Value.Parameter
   String id();
 
   /**
    * @return The URI for the ticket system
    */
 
-  @Value.Parameter
   URI uri();
 
   /**
@@ -52,7 +48,6 @@ public interface CTicketSystemType
    */
 
   @Value.Default
-  @Value.Parameter
   default boolean isDefault()
   {
     return false;
