@@ -9,12 +9,12 @@
   <parent>
     <groupId>com.io7m.primogenitor</groupId>
     <artifactId>com.io7m.primogenitor.lite</artifactId>
-    <version>6.0.0</version>
+    <version>6.2.0</version>
   </parent>
 
   <groupId>com.io7m.changelog</groupId>
   <artifactId>com.io7m.changelog</artifactId>
-  <version>4.0.0</version>
+  <version>4.1.0</version>
 
   <packaging>pom</packaging>
   <name>com.io7m.changelog</name>
@@ -36,13 +36,9 @@
   </modules>
 
   <properties>
-    <io7m.api.previousVersion>3.1.0</io7m.api.previousVersion>
+    <io7m.api.previousVersion>4.0.0</io7m.api.previousVersion>
     <io7m.org.immutables.version>2.8.8</io7m.org.immutables.version>
     <com.io7m.xstructural.version>0.0.5</com.io7m.xstructural.version>
-
-    <!-- Temporarily disable baselining due to large structural changes
-         between 3.* and 4.* -->
-    <bnd.baseline.skip>true</bnd.baseline.skip>
   </properties>
 
   <licenses>
@@ -150,7 +146,7 @@
       <dependency>
         <groupId>com.io7m.primogenitor</groupId>
         <artifactId>com.io7m.primogenitor.support</artifactId>
-        <version>6.0.0</version>
+        <version>6.2.0</version>
       </dependency>
       <dependency>
         <groupId>com.beust</groupId>
@@ -220,7 +216,7 @@
       <plugin>
         <groupId>com.io7m.minisite</groupId>
         <artifactId>com.io7m.minisite.maven_plugin</artifactId>
-        <version>2.0.1</version>
+        <version>3.0.0</version>
         <inherited>false</inherited>
         <executions>
           <execution>
