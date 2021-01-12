@@ -36,13 +36,9 @@
   </modules>
 
   <properties>
-    <io7m.api.previousVersion>3.1.0</io7m.api.previousVersion>
+    <io7m.api.previousVersion>4.0.0</io7m.api.previousVersion>
     <io7m.org.immutables.version>2.8.8</io7m.org.immutables.version>
     <com.io7m.xstructural.version>0.0.5</com.io7m.xstructural.version>
-
-    <!-- Temporarily disable baselining due to large structural changes
-         between 3.* and 4.* -->
-    <bnd.baseline.skip>true</bnd.baseline.skip>
   </properties>
 
   <licenses>
