@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Section xmlns="urn:com.io7m.structural:7:0"
+         title="Installation">
+
+  <Paragraph>
+    Download the executable jar file and the command-line wrapper:
+  </Paragraph>
+  
+  <FormalItem title="Artifacts">
+    <Table>
+      <Columns>
+        <Column>File</Column>
+        <Column>Description</Column>
+      </Columns>
+      <Row>
+        <Cell>
+          <LinkExternal
+            target="https://repo1.maven.org/maven2/com/io7m/changelog/com.io7m.changelog.cmdline/${project.version}/com.io7m.changelog.cmdline-${project.version}-main.jar">
+            com.io7m.changelog.cmdline-${project.version}-main.jar
+          </LinkExternal>
+        </Cell>
+        <Cell>
+          The main executable jar.
+        </Cell>
+      </Row>
+      <Row>
+        <Cell>
+          <LinkExternal
+            target="https://repo1.maven.org/maven2/com/io7m/changelog/com.io7m.changelog.cmdline/${project.version}/com.io7m.changelog.cmdline-${project.version}-main.jar.asc">
+            com.io7m.changelog.cmdline-${project.version}-main.jar.asc
+          </LinkExternal>
+        </Cell>
+        <Cell>
+          The PGP signature of the executable jar.
+        </Cell>
+      </Row>
+      <Row>
+        <Cell>
+          <LinkExternal
+            target="https://repo1.maven.org/maven2/com/io7m/changelog/com.io7m.changelog.cmdline/${project.version}/com.io7m.changelog.cmdline-${project.version}.sh">
+            com.io7m.changelog.cmdline-${project.version}.sh
+          </LinkExternal>
+        </Cell>
+        <Cell>
+          The main command-line wrapper.
+        </Cell>
+      </Row>
+      <Row>
+        <Cell>
+          <LinkExternal
+            target="https://repo1.maven.org/maven2/com/io7m/changelog/com.io7m.changelog.cmdline/${project.version}/com.io7m.changelog.cmdline-${project.version}.sh.asc">
+            com.io7m.changelog.cmdline-${project.version}.sh.asc
+          </LinkExternal>
+        </Cell>
+        <Cell>
+          The PGP signature of the command-line wrapper.
+        </Cell>
+      </Row>
+    </Table>
+  </FormalItem>
+
+  <Paragraph>
+    Verify the PGP signatures:
+  </Paragraph>
+
+  <FormalItem title="Verification">
+    <Verbatim><![CDATA[
+$ gpg --verify com.io7m.changelog.cmdline-${project.version}-main.jar.asc
+$ gpg --verify com.io7m.changelog.cmdline-${project.version}.sh.asc
+]]></Verbatim>
+  </FormalItem>
+
+  <Paragraph>
+    The executable jar file can be used directly:
+  </Paragraph>
+
+  <FormalItem title="Executable Jar">
+    <Verbatim><![CDATA[
+$ java -jar com.io7m.changelog.cmdline-${project.version}-main.jar version
+changelog ${project.version}
+]]></Verbatim>
+  </FormalItem>
+
+  <Paragraph>
+    On POSIX-like operating systems, the command-line wrapper can be placed on your
+    <Term type="variable">$PATH</Term> and used as a convenient shorthand. The
+    environment variables <Term type="variable">$CHANGELOG_HOME</Term> and
+    <Term type="variable">$CHANGELOG_JAR_NAME</Term> must be set in order to
+    allow the command-line wrapper to locate the executable jar.
+  </Paragraph>
+
+  <FormalItem title="Environment Variables">
+    <Verbatim><![CDATA[
+$ mkdir $HOME/bin
+$ cp com.io7m.changelog.cmdline-${project.version}-main.jar $HOME/bin/
+
+$ export PATH="${PATH}:${HOME}/bin"
+$ export CHANGELOG_HOME="$HOME/bin"
+$ export CHANGELOG_JAR_NAME="com.io7m.changelog.cmdline-${project.version}-main.jar"
+
+$ changelog version
+changelog ${project.version}
+
+$ which changelog
+/home/example/bin/changelog
+]]></Verbatim>
+  </FormalItem>
+
+</Section>

@@ -25,7 +25,8 @@
 .file,
 .function,
 .package,
-.parameter
+.parameter,
+.variable
 {
   font-family: monospace;
 }

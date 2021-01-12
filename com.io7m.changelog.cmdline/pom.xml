@@ -104,6 +104,29 @@
         </configuration>
       </plugin>
 
+      <!-- Attach the script -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-cmdline</id>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <artifacts>
+                <artifact>
+                  <file>src/main/resources/com/io7m/changelog/cmdline/changelog</file>
+                  <type>sh</type>
+                </artifact>
+              </artifacts>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
       <!-- Produce command-line onejar -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

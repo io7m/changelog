@@ -14,6 +14,7 @@
   </Metadata>
 
   <xi:include href="orientation.xml"/>
+  <xi:include href="installation.xml"/>
   <xi:include href="usage.xml"/>
   <xi:include href="cmdline.xml"/>
   <xi:include href="api.xml"/>
