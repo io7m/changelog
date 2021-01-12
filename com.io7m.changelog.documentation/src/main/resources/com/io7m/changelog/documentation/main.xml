@@ -10,7 +10,7 @@
     <dc:identifier>77a12e7a-9a2b-41f8-90e4-b11e5311fda0</dc:identifier>
     <dc:description>User documentation for the ${project.groupId} package.</dc:description>
     <dc:source>https://www.io7m.com/software/changelog/</dc:source>
-    <dc:date>2020-12-10</dc:date>
+    <dc:date>2021-01-12</dc:date>
   </Metadata>
 
   <xi:include href="orientation.xml"/>

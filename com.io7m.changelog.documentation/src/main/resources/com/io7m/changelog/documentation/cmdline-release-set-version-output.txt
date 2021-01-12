@@ -1,0 +1,7 @@
+$ changelog release-current
+0.9.2 (open)
+
+$ changelog release-set-version --version 1.0.0
+
+$ changelog release-current
+1.0.0 (open)

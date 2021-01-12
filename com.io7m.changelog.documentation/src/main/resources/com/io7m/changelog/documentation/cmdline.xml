@@ -60,6 +60,7 @@
   <xi:include href="cmdline-initialize.xml" />
   <xi:include href="cmdline-release-begin.xml" />
   <xi:include href="cmdline-release-current.xml" />
+  <xi:include href="cmdline-release-set-version.xml" />
   <xi:include href="cmdline-release-finish.xml" />
   <xi:include href="cmdline-version.xml" />
   <xi:include href="cmdline-write-atom.xml" />
