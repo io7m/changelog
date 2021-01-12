@@ -86,8 +86,10 @@
         <c:change date="2020-12-10T00:00:00+00:00" summary="Change command-line interface to explicit start and finish releases"/>
       </c:changes>
     </c:release>
-    <c:release date="2020-12-11T13:45:52+00:00" is-open="true" ticket-system="com.io7m.github.changelog" version="4.1.0">
-      <c:changes/>
+    <c:release date="2021-01-12T19:51:09+00:00" is-open="true" ticket-system="com.io7m.github.changelog" version="4.1.0">
+      <c:changes>
+        <c:change date="2021-01-12T19:51:09+00:00" summary="Improved documentation"/>
+      </c:changes>
     </c:release>
   </c:releases>
   <c:ticket-systems>
