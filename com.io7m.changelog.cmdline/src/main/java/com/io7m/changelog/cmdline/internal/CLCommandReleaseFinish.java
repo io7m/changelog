@@ -36,6 +36,10 @@ import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.ServiceLoader;
 
+/**
+ * The "release-finish" command.
+ */
+
 @Parameters(commandDescription = "Finish a release.")
 public final class CLCommandReleaseFinish extends CLAbstractCommand
 {

@@ -39,6 +39,10 @@ import java.util.ServiceLoader;
 import static com.io7m.claypot.core.CLPCommandType.Status.FAILURE;
 import static com.io7m.claypot.core.CLPCommandType.Status.SUCCESS;
 
+/**
+ * The "release-begin" command.
+ */
+
 @Parameters(commandDescription = "Start the development of a new release.")
 public final class CLCommandReleaseBegin extends CLAbstractCommand
 {

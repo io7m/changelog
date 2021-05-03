@@ -35,6 +35,10 @@ import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.ServiceLoader;
 
+/**
+ * The "write-xhtml" command.
+ */
+
 @Parameters(commandDescription = "Generate an XHTML log.")
 public final class CLCommandWriteXHTML extends CLAbstractCommand
 {

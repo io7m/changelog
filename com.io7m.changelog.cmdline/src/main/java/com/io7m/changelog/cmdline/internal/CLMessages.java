@@ -18,6 +18,10 @@ package com.io7m.changelog.cmdline.internal;
 
 import java.util.ResourceBundle;
 
+/**
+ * String resources.
+ */
+
 public final class CLMessages extends CLAbstractStrings
 {
   private CLMessages(
@@ -25,6 +29,12 @@ public final class CLMessages extends CLAbstractStrings
   {
     super(inResources);
   }
+
+  /**
+   * Create string resources.
+   *
+   * @return The string resources
+   */
 
   public static CLMessages create()
   {

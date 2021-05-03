@@ -25,15 +25,31 @@ import java.util.Comparator;
 import java.util.Formattable;
 import java.util.Formatter;
 
+/**
+ * A version number.
+ */
+
 @Value.Immutable
 @ImmutablesStyleType
 public interface CVersionType extends Comparable<CVersionType>, Formattable
 {
+  /**
+   * @return The major version
+   */
+
   @Value.Parameter
   BigInteger major();
 
+  /**
+   * @return The minor version
+   */
+
   @Value.Parameter
   BigInteger minor();
+
+  /**
+   * @return The patch version
+   */
 
   @Value.Parameter
   BigInteger patch();
@@ -47,6 +63,10 @@ public interface CVersionType extends Comparable<CVersionType>, Formattable
       .thenComparing(CVersionType::patch)
       .compare(this, other);
   }
+
+  /**
+   * Check preconditions for the type.
+   */
 
   @Value.Check
   default void checkPreconditions()

@@ -39,6 +39,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ServiceLoader;
 
+/**
+ * The "change-add" command.
+ */
+
 @Parameters(commandDescription = "Add a change to the current release.")
 public final class CLCommandChangeAdd extends CLAbstractCommand
 {

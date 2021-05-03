@@ -31,6 +31,10 @@ import java.util.ServiceLoader;
 import static com.io7m.claypot.core.CLPCommandType.Status.FAILURE;
 import static com.io7m.claypot.core.CLPCommandType.Status.SUCCESS;
 
+/**
+ * The "release-current" command.
+ */
+
 @Parameters(commandDescription = "Display the version number of the current release.")
 public final class CLCommandReleaseCurrent extends CLAbstractCommand
 {

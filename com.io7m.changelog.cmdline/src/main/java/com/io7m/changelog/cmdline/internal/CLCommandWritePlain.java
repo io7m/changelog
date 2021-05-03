@@ -36,6 +36,10 @@ import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.ServiceLoader;
 
+/**
+ * The "write-plain" command.
+ */
+
 @Parameters(commandDescription = "Generate a plain text log.")
 public final class CLCommandWritePlain extends CLAbstractCommand
 {

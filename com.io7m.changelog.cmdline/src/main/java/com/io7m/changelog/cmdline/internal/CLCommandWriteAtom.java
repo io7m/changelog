@@ -39,6 +39,10 @@ import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.ServiceLoader;
 
+/**
+ * The "write-atom" command.
+ */
+
 @Parameters(commandDescription = "Generate an atom feed.")
 public final class CLCommandWriteAtom extends CLAbstractCommand
 {

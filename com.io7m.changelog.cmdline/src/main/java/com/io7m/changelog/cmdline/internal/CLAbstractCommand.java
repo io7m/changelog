@@ -22,6 +22,10 @@ import org.slf4j.Logger;
 
 import java.util.Objects;
 
+/**
+ * The base type of commands.
+ */
+
 public abstract class CLAbstractCommand extends CLPAbstractCommand
 {
   private final CLMessages messages;

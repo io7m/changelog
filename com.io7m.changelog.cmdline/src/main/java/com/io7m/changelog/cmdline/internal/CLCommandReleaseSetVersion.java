@@ -35,6 +35,10 @@ import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.ServiceLoader;
 
+/**
+ * The "release-set-version" command.
+ */
+
 @Parameters(commandDescription = "Set the version number of the current release.")
 public final class CLCommandReleaseSetVersion extends CLAbstractCommand
 {

@@ -36,6 +36,10 @@ import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 import java.util.ServiceLoader;
 
+/**
+ * The "initialize" command.
+ */
+
 @Parameters(commandDescription = "Initialize the changelog.")
 public final class CLCommandInitialize extends CLAbstractCommand
 {
