@@ -77,6 +77,10 @@
     <Bug pattern="EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS"/>
   </Match>
   <Match>
+    <Class name="com.io7m.changelog.cmdline.internal.CLAbstractStrings"/>
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+  <Match>
     <Class name="com.io7m.changelog.cmdline.Main"/>
     <Bug pattern="UVA_USE_VAR_ARGS"/>
   </Match>
