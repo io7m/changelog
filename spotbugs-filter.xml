@@ -3,7 +3,6 @@
 
   <Match>
     <Or>
-      <Class name="~com\.io7m\.changelog\..+\$Builder"/>
       <Class name="com.io7m.changelog.core.CChange"/>
       <Class name="com.io7m.changelog.core.CChangelog"/>
       <Class name="com.io7m.changelog.core.CModuleName"/>
@@ -12,8 +11,11 @@
       <Class name="com.io7m.changelog.core.CTicketID"/>
       <Class name="com.io7m.changelog.core.CTicketSystem"/>
       <Class name="com.io7m.changelog.core.CVersion"/>
-      <Class name="~com\.io7m\.changelog\..+\$InitShim"/>
       <Class name="com.io7m.changelog.parser.api.CParseError"/>
+      <Class name="com.io7m.changelog.text.api.CPlainChangelogWriterConfiguration"/>
+      <Class name="com.io7m.changelog.xml.api.CAtomChangelogWriterConfiguration"/>
+      <Class name="~com\.io7m\.changelog\..+\$Builder"/>
+      <Class name="~com\.io7m\.changelog\..+\$InitShim"/>
     </Or>
   </Match>
 
